@@ -1,0 +1,21 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    
+    //TODO margin collapse shifts the body and adds a scrollbar
+    overflow: hidden;
+}
+
+body{
+    background-color: rgb(43, 43, 43);
+    color: rgb(196, 196, 196);
+
+    canvas{
+        background-color: rgb(50, 50, 50);
+        width: 80%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+}
