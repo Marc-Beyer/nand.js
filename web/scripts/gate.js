@@ -1,15 +1,17 @@
 var Gate = /** @class */ (function () {
-    function Gate(name, inputs, outputs, position) {
+    function Gate(name, inputs, outputs, position, boolFunction) {
         if (inputs === void 0) { inputs = 0; }
         if (outputs === void 0) { outputs = 0; }
         if (position === void 0) { position = { x: 0, y: 0 }; }
+        if (boolFunction === void 0) { boolFunction = function (inputs) { return [false]; }; }
         this.connections = [];
         this.ioWidth = 20;
         this.ioHeight = 3;
         this.name = name;
         this.inputs = inputs;
         this.outputs = outputs;
-        this.transform = { position: position, width: 200, height: 100 };
+        this.transform = { position: position, width: 70, height: 40 };
+        this.boolFunction = boolFunction;
         this.inputSignals = [];
         for (var index = 0; index < inputs; index++) {
             this.inputSignals.push(false);
@@ -71,6 +73,12 @@ var Gate = /** @class */ (function () {
     };
     // Draws the connections to the canvas
     Gate.prototype.drawConnations = function (ctx, offset) {
+        if (this.getOutput()) {
+            ctx.strokeStyle = "#FF0000";
+        }
+        else {
+            ctx.strokeStyle = "#DDDDDD";
+        }
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
             var connection = _a[_i];
             var inputPosition = connection.gate.getInputPosition(connection.inputNr);
@@ -80,6 +88,7 @@ var Gate = /** @class */ (function () {
             ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + this.ioHeight / 2 + offset.y);
             ctx.stroke();
         }
+        ctx.strokeStyle = "#DDDDDD";
     };
     // Get the position of the input with number nr
     Gate.prototype.getInputPosition = function (nr) {
@@ -100,6 +109,24 @@ var Gate = /** @class */ (function () {
         position.x = this.transform.position.x - position.x;
         position.y = this.transform.position.y - position.y;
         return position;
+    };
+    // Calculate the outputSignal
+    Gate.prototype.getOutput = function (nr) {
+        if (nr === void 0) { nr = 0; }
+        return this.boolFunction(this.inputSignals)[nr];
+    };
+    // Update signal at input eith the number nr
+    Gate.prototype.updateInput = function (nr, bool) {
+        if (this.inputSignals[nr] !== bool) {
+            this.inputSignals[nr] = bool;
+            for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
+                var connection = _a[_i];
+                connection.gate.updateInput(connection.inputNr, this.getOutput());
+            }
+        }
+        else {
+            this.inputSignals[nr] = bool;
+        }
     };
     // Returns the Gate type and position as string
     Gate.prototype.toString = function () {

@@ -5,15 +5,16 @@ class Gate {
     public outputs: number;
     public connections: Connection[] = [];
     public inputSignals: boolean[];
-    public boolFunction: (inputA: boolean, inputB: boolean) => boolean;
+    public boolFunction: (inputs: boolean[]) => boolean[];
     public ioWidth: number = 20;
     public ioHeight: number = 3;
 
-    constructor(name: string, inputs: number = 0, outputs: number = 0, position: Position2D = {x: 0, y: 0}) {
+    constructor(name: string, inputs: number = 0, outputs: number = 0, position: Position2D = {x: 0, y: 0}, boolFunction: (inputs: boolean[]) => boolean[] = (inputs: boolean[]) => {return [false]}) {
         this.name = name;
         this.inputs = inputs;
         this.outputs = outputs;
-        this.transform = {position: position, width: 200, height: 100};
+        this.transform = {position: position, width: 70, height: 40};
+        this.boolFunction = boolFunction;
         this.inputSignals = [];
         for (let index = 0; index < inputs; index++) {
             this.inputSignals.push(false);
@@ -85,6 +86,11 @@ class Gate {
     
     // Draws the connections to the canvas
     public drawConnations(ctx: CanvasRenderingContext2D, offset: Position2D) {
+        if(this.getOutput()){
+            ctx.strokeStyle = "#FF0000";
+        }else{
+            ctx.strokeStyle = "#DDDDDD";
+        }
         for (let connection of this.connections) {
             let inputPosition = connection.gate.getInputPosition(connection.inputNr);
             let outputPosition = this.getOutputPosition(connection.outputNr);
@@ -93,6 +99,7 @@ class Gate {
             ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + this.ioHeight/2 + offset.y);
             ctx.stroke();
         }
+        ctx.strokeStyle = "#DDDDDD";
     }
 
     // Get the position of the input with number nr
@@ -116,6 +123,23 @@ class Gate {
         position.x = this.transform.position.x - position.x;
         position.y = this.transform.position.y - position.y;
         return position;
+    }
+
+    // Calculate the outputSignal
+    public getOutput(nr: number = 0): boolean{
+        return this.boolFunction(this.inputSignals)[nr];
+    }
+
+    // Update signal at input eith the number nr
+    public updateInput(nr: number, bool: boolean){
+        if(this.inputSignals[nr] !== bool){
+            this.inputSignals[nr] = bool;
+            for (let connection of this.connections) {
+                connection.gate.updateInput(connection.inputNr, this.getOutput());
+            }
+        }else{
+            this.inputSignals[nr] = bool;
+        }
     }
 
     // Returns the Gate type and position as string
