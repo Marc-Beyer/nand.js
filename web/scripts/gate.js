@@ -10,6 +10,11 @@ var Gate = /** @class */ (function () {
         this.inputs = inputs;
         this.outputs = outputs;
         this.transform = { position: position, width: 200, height: 100 };
+        this.inputSignals = [];
+        for (var index = 0; index < inputs; index++) {
+            this.inputSignals.push(false);
+        }
+        console.log(this.inputSignals);
     }
     // If the position is within the bounds of the transform return true else return false
     Gate.prototype.isGateInPosition = function (position) {
@@ -43,36 +48,36 @@ var Gate = /** @class */ (function () {
         return null;
     };
     // Draws the Gate to the canvas
-    Gate.prototype.drawGate = function (ctx) {
+    Gate.prototype.drawGate = function (ctx, offset) {
         // Set style
         ctx.fillStyle = "#3B3B3B";
         // Draw background
-        ctx.fillRect(this.transform.position.x, this.transform.position.y, this.transform.width, this.transform.height);
+        ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         // Set style
         ctx.fillStyle = "#DDDDDD";
         // Draw box and name
-        ctx.strokeRect(this.transform.position.x, this.transform.position.y, this.transform.width, this.transform.height);
-        ctx.fillText(this.name, this.transform.position.x + this.transform.width / 2, this.transform.position.y + this.transform.height / 2);
+        ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+        ctx.fillText(this.name, this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + this.transform.height / 2 + offset.y);
         // Draw inputs
         for (var i = 0; i < this.inputs; i++) {
             var inputPosition = this.getInputPosition(i);
-            ctx.fillRect(inputPosition.x, inputPosition.y, this.ioWidth, this.ioHeight);
+            ctx.fillRect(inputPosition.x + offset.x, inputPosition.y + offset.y, this.ioWidth, this.ioHeight);
         }
         // Draw outputs
         for (var i = 0; i < this.outputs; i++) {
             var outputPosition = this.getOutputPosition(i);
-            ctx.fillRect(outputPosition.x, outputPosition.y, this.ioWidth, this.ioHeight);
+            ctx.fillRect(outputPosition.x + offset.x, outputPosition.y + offset.y, this.ioWidth, this.ioHeight);
         }
     };
     // Draws the connections to the canvas
-    Gate.prototype.drawConnations = function (ctx) {
+    Gate.prototype.drawConnations = function (ctx, offset) {
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
             var connection = _a[_i];
             var inputPosition = connection.gate.getInputPosition(connection.inputNr);
             var outputPosition = this.getOutputPosition(connection.outputNr);
             ctx.beginPath();
-            ctx.moveTo(outputPosition.x + this.ioWidth, outputPosition.y + this.ioHeight / 2);
-            ctx.lineTo(inputPosition.x, inputPosition.y + this.ioHeight / 2);
+            ctx.moveTo(outputPosition.x + this.ioWidth + offset.x, outputPosition.y + this.ioHeight / 2 + offset.y);
+            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + this.ioHeight / 2 + offset.y);
             ctx.stroke();
         }
     };

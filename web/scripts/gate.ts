@@ -4,15 +4,21 @@ class Gate {
     public inputs: number;
     public outputs: number;
     public connections: Connection[] = [];
-
-    private ioWidth: number = 20;
-    private ioHeight: number = 3;
+    public inputSignals: boolean[];
+    public boolFunction: (inputA: boolean, inputB: boolean) => boolean;
+    public ioWidth: number = 20;
+    public ioHeight: number = 3;
 
     constructor(name: string, inputs: number = 0, outputs: number = 0, position: Position2D = {x: 0, y: 0}) {
         this.name = name;
         this.inputs = inputs;
         this.outputs = outputs;
         this.transform = {position: position, width: 200, height: 100};
+        this.inputSignals = [];
+        for (let index = 0; index < inputs; index++) {
+            this.inputSignals.push(false);
+        }
+        console.log(this.inputSignals);
     }
 
     // If the position is within the bounds of the transform return true else return false
@@ -50,41 +56,41 @@ class Gate {
     }
 
     // Draws the Gate to the canvas
-    public drawGate(ctx: CanvasRenderingContext2D) {
+    public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D) {
         // Set style
         ctx.fillStyle = "#3B3B3B";
 
         // Draw background
-        ctx.fillRect(this.transform.position.x, this.transform.position.y, this.transform.width, this.transform.height);
+        ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         
         // Set style
         ctx.fillStyle = "#DDDDDD";
 
         // Draw box and name
-        ctx.strokeRect(this.transform.position.x, this.transform.position.y, this.transform.width, this.transform.height);
-        ctx.fillText(this.name, this.transform.position.x + this.transform.width/2, this.transform.position.y + this.transform.height/2);
+        ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+        ctx.fillText(this.name, this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + this.transform.height/2 + offset.y);
 
         // Draw inputs
         for (let i = 0; i < this.inputs; i++) {
             let inputPosition = this.getInputPosition(i);
-            ctx.fillRect(inputPosition.x, inputPosition.y, this.ioWidth, this.ioHeight);
+            ctx.fillRect(inputPosition.x + offset.x, inputPosition.y + offset.y, this.ioWidth, this.ioHeight);
         }
 
         // Draw outputs
         for (let i = 0; i < this.outputs; i++) {
             let outputPosition = this.getOutputPosition(i);
-            ctx.fillRect(outputPosition.x, outputPosition.y, this.ioWidth, this.ioHeight);
+            ctx.fillRect(outputPosition.x + offset.x, outputPosition.y + offset.y, this.ioWidth, this.ioHeight);
         }
     }
     
     // Draws the connections to the canvas
-    public drawConnations(ctx: CanvasRenderingContext2D) {
+    public drawConnations(ctx: CanvasRenderingContext2D, offset: Position2D) {
         for (let connection of this.connections) {
             let inputPosition = connection.gate.getInputPosition(connection.inputNr);
             let outputPosition = this.getOutputPosition(connection.outputNr);
             ctx.beginPath();
-            ctx.moveTo(outputPosition.x + this.ioWidth, outputPosition.y + this.ioHeight/2);
-            ctx.lineTo(inputPosition.x, inputPosition.y + this.ioHeight/2);
+            ctx.moveTo(outputPosition.x + this.ioWidth + offset.x, outputPosition.y + this.ioHeight/2 + offset.y);
+            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + this.ioHeight/2 + offset.y);
             ctx.stroke();
         }
     }

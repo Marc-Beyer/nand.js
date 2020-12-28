@@ -8,8 +8,23 @@ class Circuit{
 
     private mainCanvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
+    private gloabalOffset: Position2D = {x: 0, y: 0};
+    private mainCanvasRealWidth = 1000;
+    private mainCanvasRealHeight = 1000;
     private gates: Gate[] = [];
 
+    
+    private _zoomFactor: number = 1;
+
+    public get zoomFactor(): number {
+        return this._zoomFactor;
+    }
+    public set zoomFactor(value: number) {
+        console.log("this._zoomFactor",this.zoomFactor);
+        this.mainCanvas.width = this.mainCanvasRealWidth * value;
+        this.mainCanvas.height = this.mainCanvasRealHeight * value;
+        this._zoomFactor = value;
+    }
 
     constructor(grid: Position2D = {x: 1, y: 1}) {
         this.mainCanvas = document.getElementById("main-canvas") as HTMLCanvasElement;
@@ -17,6 +32,8 @@ class Circuit{
         let rect = this.mainCanvas.getBoundingClientRect();
         this.mainCanvas.width = rect.width;
         this.mainCanvas.height = rect.height;
+        this.mainCanvasRealWidth = this.mainCanvas.width;
+        this.mainCanvasRealHeight = this.mainCanvas.height;
         //TODO resize window event handler
         this.grid = grid;
     
@@ -25,7 +42,8 @@ class Circuit{
         this.mainCanvas.addEventListener("mousemove", this.mousemoveEventHandler);
         this.mainCanvas.addEventListener("mouseup", this.mouseupEventHandler);
         this.mainCanvas.addEventListener("mouseout", this.mouseoutEventHandler);
-    
+        this.mainCanvas.addEventListener("wheel", this.wheelEventHandler);
+        
         // Add touch event handler
         this.mainCanvas.addEventListener("touchstart", this.mousedownEventHandler);
         this.mainCanvas.addEventListener("touchmove", this.mousemoveEventHandler);
@@ -56,10 +74,10 @@ class Circuit{
 
         // Darw Gates and Connections
         for (let gate of this.gates) {
-            gate.drawConnations(this.ctx);
+            gate.drawConnations(this.ctx, this.gloabalOffset);
         }
         for (let gate of this.gates) {
-            gate.drawGate(this.ctx);
+            gate.drawGate(this.ctx, this.gloabalOffset);
         }
     }
 
@@ -126,7 +144,10 @@ class Circuit{
     // Get the mouseposition on the canvas from a mouseevent
     public getMousePositionOnCanvas(event: MouseEvent): Position2D {
         let rect = this.mainCanvas.getBoundingClientRect();
-        return {x: event.clientX - rect.left, y: event.clientY - rect.top};
+        return {
+            x: (event.clientX - rect.left) * this.zoomFactor - this.gloabalOffset.x,
+            y: (event.clientY - rect.top) * this.zoomFactor - this.gloabalOffset.y
+        };
     }
 
     /////////////////////
@@ -151,10 +172,39 @@ class Circuit{
 
     private mousemoveEventHandler(e: MouseEvent) {
         //console.log("e", e);
-        if(mainCircuit.isMouseDown && mainCircuit.activeGate !== null){
-            //console.log(mainCircuit.activeGate.toString());
-            mainCircuit.activeGate.transform.position = mainCircuit.stickPositionToGrid({x: e.clientX + mainCircuit.activeOffset.x, y: e.clientY + mainCircuit.activeOffset.y});
-            mainCircuit.refrashCanvas();
+        if(mainCircuit.isMouseDown) {
+            if(mainCircuit.activeGate !== null){
+                // Move activeGate
+                let mousePosition = mainCircuit.getMousePositionOnCanvas(e);
+                mousePosition.x += mainCircuit.activeOffset.x;
+                mousePosition.y += mainCircuit.activeOffset.y;
+                mainCircuit.activeGate.transform.position = mainCircuit.stickPositionToGrid(mousePosition);
+                mainCircuit.refrashCanvas();
+            }else if(mainCircuit.activeIO !== null){
+                // Draw unfinished connection
+                mainCircuit.refrashCanvas();
+                let ioPosition = null;
+                let mousePosition = mainCircuit.getMousePositionOnCanvas(e);
+
+                mainCircuit.ctx.beginPath();
+
+                if(mainCircuit.activeIO.ioType === IOType.Input){
+                    ioPosition = mainCircuit.activeIO.gate.getInputPosition(mainCircuit.activeIO.ioNr);
+                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.activeIO.gate.ioHeight/2 + mainCircuit.gloabalOffset.y);
+                }else{
+                    ioPosition = mainCircuit.activeIO.gate.getOutputPosition(mainCircuit.activeIO.ioNr);
+                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.activeIO.gate.ioWidth + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.activeIO.gate.ioHeight/2 + mainCircuit.gloabalOffset.y);
+                }
+
+                mainCircuit.ctx.lineTo(mousePosition.x + mainCircuit.gloabalOffset.x, mousePosition.y + mainCircuit.gloabalOffset.y);
+                mainCircuit.ctx.stroke();
+            }else{
+                // Change globalOffset
+                mainCircuit.gloabalOffset.x += e.movementX * mainCircuit.zoomFactor;
+                mainCircuit.gloabalOffset.y += e.movementY * mainCircuit.zoomFactor;
+                console.log(" * this.zoomFactor", mainCircuit.zoomFactor,"mainCircuit.gloabalOffset.x",mainCircuit.gloabalOffset.x,"mainCircuit.gloabalOffset.y",mainCircuit.gloabalOffset.y);
+                mainCircuit.refrashCanvas();
+            }0
         }
     }
 
@@ -186,11 +236,18 @@ class Circuit{
         mainCircuit.activeIO = null;
     }
 
-    private mouseoutEventHandler(e: MouseEvent  ) {
+    private mouseoutEventHandler(e: MouseEvent) {
         //console.log("e", e);
         mainCircuit.isMouseDown = false;
         mainCircuit.activeGate = null;
         mainCircuit.activeIO = null;
+    }
+
+    private wheelEventHandler(e: WheelEvent){
+        e.preventDefault();
+        
+        mainCircuit.zoomFactor = mainCircuit.zoomFactor + e.deltaY * -0.01;
+        mainCircuit.refrashCanvas();
     }
 }
 

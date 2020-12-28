@@ -17,5 +17,20 @@ body{
         height: 100%;
         margin: 0;
         padding: 0;
+        float: left;
+    }
+
+    #menu{
+        width: 20%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        float: right;
+
+        overflow-y: scroll;
+
+        #menu-content{
+            margin: 1rem;
+        }
     }
 }
