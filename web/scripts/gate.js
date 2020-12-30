@@ -59,14 +59,26 @@ var Gate = /** @class */ (function () {
         ctx.fillStyle = "#DDDDDD";
         // Draw box and name
         ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
-        ctx.fillText(this.name, this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + this.transform.height / 2 + offset.y);
+        ctx.fillText(this.name, this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + 20);
         // Draw inputs
         for (var i = 0; i < this.inputs; i++) {
+            if (this.inputSignals[i]) {
+                ctx.fillStyle = "#FF0000";
+            }
+            else {
+                ctx.fillStyle = "#DDDDDD";
+            }
             var inputPosition = this.getInputPosition(i);
             ctx.fillRect(inputPosition.x + offset.x, inputPosition.y + offset.y, this.ioWidth, this.ioHeight);
         }
         // Draw outputs
         for (var i = 0; i < this.outputs; i++) {
+            if (this.getOutput(i)) {
+                ctx.fillStyle = "#FF0000";
+            }
+            else {
+                ctx.fillStyle = "#DDDDDD";
+            }
             var outputPosition = this.getOutputPosition(i);
             ctx.fillRect(outputPosition.x + offset.x, outputPosition.y + offset.y, this.ioWidth, this.ioHeight);
         }

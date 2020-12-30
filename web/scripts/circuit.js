@@ -1,12 +1,12 @@
 var Circuit = /** @class */ (function () {
     function Circuit(grid) {
         if (grid === void 0) { grid = { x: 1, y: 1 }; }
+        this.gates = [];
         this.activeIO = null;
         this.activeOffset = null;
         this.gloabalOffset = { x: 0, y: 0 };
         this.mainCanvasRealWidth = 1000;
         this.mainCanvasRealHeight = 1000;
-        this.gates = [];
         this._zoomFactor = 1;
         this.mainCanvas = document.getElementById("main-canvas");
         this.ctx = this.mainCanvas.getContext("2d");
@@ -28,23 +28,6 @@ var Circuit = /** @class */ (function () {
         this.mainCanvas.addEventListener("touchmove", this.mousemoveEventHandler);
         this.mainCanvas.addEventListener("touchend", this.mouseupEventHandler);
         this.mainCanvas.addEventListener("touchcancel", this.mouseoutEventHandler);
-        this.gates.push(new Gate("OUT", 0, 1, { x: 50, y: 50 }, function (a) { return [true]; }));
-        this.gates.push(new NOT_Gate({ x: 250, y: 50 }));
-        this.gates.push(new NOT_Gate({ x: 250, y: 150 }));
-        this.gates.push(new AND_Gate({ x: 450, y: 50 }));
-        this.gates.push(new AND_Gate({ x: 450, y: 150 }));
-        this.gates.push(new OR_Gate({ x: 650, y: 50 }));
-        this.gates.push(new OR_Gate({ x: 650, y: 150 }));
-        this.gates.push(new NAND_Gate({ x: 850, y: 50 }));
-        this.gates.push(new NAND_Gate({ x: 850, y: 150 }));
-        this.gates.push(new NOR_Gate({ x: 1050, y: 50 }));
-        this.gates.push(new NOR_Gate({ x: 1050, y: 150 }));
-        this.gates.push(new XOR_Gate({ x: 1250, y: 50 }));
-        this.gates.push(new XOR_Gate({ x: 1250, y: 150 }));
-        this.gates.push(new XNOR_Gate({ x: 1450, y: 50 }));
-        this.gates.push(new XNOR_Gate({ x: 1450, y: 150 }));
-        //this.gates[0].connections.push({gate: this.gates[1], outputNr: 0, inputNr: 0});
-        this.refrashCanvas();
     }
     Object.defineProperty(Circuit.prototype, "zoomFactor", {
         get: function () {
@@ -65,7 +48,7 @@ var Circuit = /** @class */ (function () {
         this.ctx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
         // Set style
         this.ctx.lineWidth = 3;
-        this.ctx.font = "20px Arial";
+        this.ctx.font = "17px Courier New";
         this.ctx.textAlign = "center";
         this.ctx.strokeStyle = "#DDDDDD";
         this.ctx.fillStyle = "#DDDDDD";
