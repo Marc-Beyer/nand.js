@@ -31,3 +31,16 @@ mainCircuit.gates.push(new Lamp_Gate({x: 1150, y: 150}));
 //mainCircuit.gates[0].connections.push({gate: mainCircuit.gates[1], outputNr: 0, inputNr: 0});
 
 mainCircuit.refrashCanvas();
+
+let dropContainer = document.getElementsByClassName("drop-container");
+for (let index = 0; index < dropContainer.length; index++) {
+    let element = dropContainer[index];
+    let header = element.getElementsByTagName("H2")[0];
+    header.addEventListener("click", (e)=>{
+        if(element.classList.contains("open")){
+            element.className = element.className.replace(" open", "");
+        }else{
+            element.className += " open";
+        }
+    })
+}

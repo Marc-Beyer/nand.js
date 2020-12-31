@@ -28,13 +28,15 @@ var Circuit = /** @class */ (function () {
         this.mainCanvas.addEventListener("touchmove", this.mousemoveEventHandler);
         this.mainCanvas.addEventListener("touchend", this.mouseupEventHandler);
         this.mainCanvas.addEventListener("touchcancel", this.mouseoutEventHandler);
+        // Add keydown event handler
+        document.addEventListener("keydown", this.keydownEventHandler);
     }
     Object.defineProperty(Circuit.prototype, "zoomFactor", {
         get: function () {
             return this._zoomFactor;
         },
         set: function (value) {
-            console.log("this._zoomFactor", this.zoomFactor);
+            //console.log("this._zoomFactor",this.zoomFactor);
             this.mainCanvas.width = this.mainCanvasRealWidth * value;
             this.mainCanvas.height = this.mainCanvasRealHeight * value;
             this._zoomFactor = value;
@@ -133,23 +135,24 @@ var Circuit = /** @class */ (function () {
     /// Event-Handler ///
     /////////////////////
     Circuit.prototype.mousedownEventHandler = function (e) {
-        //console.log("e", e);
+        ////console.log("e", e);
         // Check if the user clicked on a gate
         mainCircuit.activeGate = mainCircuit.getGateAtPosition(mainCircuit.getMousePositionOnCanvas(e));
         if (mainCircuit.activeGate !== null) {
             mainCircuit.activeOffset = mainCircuit.activeGate.getOffsetPosition(mainCircuit.getMousePositionOnCanvas(e));
+            mainCircuit.activeIO = null;
         }
         else {
             // Check if the user clicked on an input or output
             mainCircuit.activeIO = mainCircuit.getIOAtPosition(mainCircuit.getMousePositionOnCanvas(e));
             if (mainCircuit.activeIO !== null) {
-                console.log(mainCircuit.activeIO.gate.toString() + " " + mainCircuit.activeIO.ioNr + " " + mainCircuit.activeIO.ioType);
+                //console.log(mainCircuit.activeIO.gate.toString() + " " + mainCircuit.activeIO.ioNr + " " + mainCircuit.activeIO.ioType);
             }
         }
         mainCircuit.isMouseDown = true;
     };
     Circuit.prototype.mousemoveEventHandler = function (e) {
-        //console.log("e", e);
+        ////console.log("e", e);
         if (mainCircuit.isMouseDown) {
             if (mainCircuit.activeGate !== null) {
                 // Move activeGate
@@ -180,7 +183,7 @@ var Circuit = /** @class */ (function () {
                 // Change globalOffset
                 mainCircuit.gloabalOffset.x += e.movementX * mainCircuit.zoomFactor;
                 mainCircuit.gloabalOffset.y += e.movementY * mainCircuit.zoomFactor;
-                console.log(" * this.zoomFactor", mainCircuit.zoomFactor, "mainCircuit.gloabalOffset.x", mainCircuit.gloabalOffset.x, "mainCircuit.gloabalOffset.y", mainCircuit.gloabalOffset.y);
+                //console.log(" * this.zoomFactor", mainCircuit.zoomFactor,"mainCircuit.gloabalOffset.x",mainCircuit.gloabalOffset.x,"mainCircuit.gloabalOffset.y",mainCircuit.gloabalOffset.y);
                 mainCircuit.refrashCanvas();
             }
             0;
@@ -207,19 +210,26 @@ var Circuit = /** @class */ (function () {
             }
         }
         mainCircuit.refrashCanvas();
-        mainCircuit.activeGate = null;
-        mainCircuit.activeIO = null;
     };
     Circuit.prototype.mouseoutEventHandler = function (e) {
-        //console.log("e", e);
+        ////console.log("e", e);
         mainCircuit.isMouseDown = false;
-        mainCircuit.activeGate = null;
-        mainCircuit.activeIO = null;
     };
     Circuit.prototype.wheelEventHandler = function (e) {
         e.preventDefault();
         mainCircuit.zoomFactor = mainCircuit.zoomFactor + e.deltaY * 0.01;
         mainCircuit.refrashCanvas();
+    };
+    Circuit.prototype.keydownEventHandler = function (e) {
+        if (e.key === "Backspace" || e.key === "Delete") {
+            if (mainCircuit.activeGate !== null) {
+                var gateIndex = mainCircuit.gates.indexOf(mainCircuit.activeGate);
+                if (gateIndex > -1) {
+                    mainCircuit.gates.splice(gateIndex, 1);
+                    mainCircuit.refrashCanvas();
+                }
+            }
+        }
     };
     return Circuit;
 }());

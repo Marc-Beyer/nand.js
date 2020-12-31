@@ -19,4 +19,20 @@ mainCircuit.gates.push(new Lable_Gate({ x: 1150, y: 50 }, "Outputs"));
 mainCircuit.gates.push(new Lamp_Gate({ x: 1150, y: 150 }));
 //mainCircuit.gates[0].connections.push({gate: mainCircuit.gates[1], outputNr: 0, inputNr: 0});
 mainCircuit.refrashCanvas();
+var dropContainer = document.getElementsByClassName("drop-container");
+var _loop_1 = function (index) {
+    var element = dropContainer[index];
+    var header = element.getElementsByTagName("H2")[0];
+    header.addEventListener("click", function (e) {
+        if (element.classList.contains("open")) {
+            element.className = element.className.replace(" open", "");
+        }
+        else {
+            element.className += " open";
+        }
+    });
+};
+for (var index = 0; index < dropContainer.length; index++) {
+    _loop_1(index);
+}
 //# sourceMappingURL=main.js.map

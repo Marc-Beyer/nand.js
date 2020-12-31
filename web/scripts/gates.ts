@@ -148,7 +148,7 @@ class Switch_Gate extends Gate {
         super.drawGate(ctx, offset);
 
         // Set style
-        ctx.fillStyle = "#000000";
+        ctx.fillStyle = "#222222";
 
         // Draw background
         ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/2, this.transform.height/2);

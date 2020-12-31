@@ -25,10 +25,31 @@ body #menu {
   margin: 0;
   padding: 0;
   float: right;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
-body #menu #menu-content {
-  margin: 1rem;
+body #menu #menu-content .drop-container h2 {
+  background-color: #202020;
+  padding: 0.5rem 1rem;
+  margin-top: 0;
+  cursor: pointer;
+}
+
+body #menu #menu-content .drop-container ul {
+  display: none;
+}
+
+body #menu #menu-content .open ul {
+  display: block;
+}
+
+body #menu #menu-content .open ul li {
+  list-style: none;
+  cursor: pointer;
+}
+
+body #menu #menu-content .open ul li:hover, body #menu #menu-content .open ul li:focus {
+  background-color: #202020;
+  margin-left: 1rem;
 }
 /*# sourceMappingURL=main.css.map */

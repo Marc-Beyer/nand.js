@@ -21,7 +21,7 @@ class Circuit{
         return this._zoomFactor;
     }
     public set zoomFactor(value: number) {
-        console.log("this._zoomFactor",this.zoomFactor);
+        //console.log("this._zoomFactor",this.zoomFactor);
         this.mainCanvas.width = this.mainCanvasRealWidth * value;
         this.mainCanvas.height = this.mainCanvasRealHeight * value;
         this._zoomFactor = value;
@@ -50,6 +50,9 @@ class Circuit{
         this.mainCanvas.addEventListener("touchmove", this.mousemoveEventHandler);
         this.mainCanvas.addEventListener("touchend", this.mouseupEventHandler);
         this.mainCanvas.addEventListener("touchcancel", this.mouseoutEventHandler);
+
+        // Add keydown event handler
+        document.addEventListener("keydown", this.keydownEventHandler);
     }
 
     // Redraw the canvas
@@ -147,23 +150,24 @@ class Circuit{
     /////////////////////
 
     private mousedownEventHandler(e: MouseEvent) {
-        //console.log("e", e);
+        ////console.log("e", e);
         // Check if the user clicked on a gate
         mainCircuit.activeGate = mainCircuit.getGateAtPosition(mainCircuit.getMousePositionOnCanvas(e));
         if(mainCircuit.activeGate !== null){
             mainCircuit.activeOffset = mainCircuit.activeGate.getOffsetPosition(mainCircuit.getMousePositionOnCanvas(e));
+            mainCircuit.activeIO = null;
         }else{
             // Check if the user clicked on an input or output
             mainCircuit.activeIO = mainCircuit.getIOAtPosition(mainCircuit.getMousePositionOnCanvas(e));
             if(mainCircuit.activeIO !== null){
-                console.log(mainCircuit.activeIO.gate.toString() + " " + mainCircuit.activeIO.ioNr + " " + mainCircuit.activeIO.ioType);
+                //console.log(mainCircuit.activeIO.gate.toString() + " " + mainCircuit.activeIO.ioNr + " " + mainCircuit.activeIO.ioType);
             }
         }
         mainCircuit.isMouseDown = true;
     }
 
     private mousemoveEventHandler(e: MouseEvent) {
-        //console.log("e", e);
+        ////console.log("e", e);
         if(mainCircuit.isMouseDown) {
             if(mainCircuit.activeGate !== null){
                 // Move activeGate
@@ -194,7 +198,7 @@ class Circuit{
                 // Change globalOffset
                 mainCircuit.gloabalOffset.x += e.movementX * mainCircuit.zoomFactor;
                 mainCircuit.gloabalOffset.y += e.movementY * mainCircuit.zoomFactor;
-                console.log(" * this.zoomFactor", mainCircuit.zoomFactor,"mainCircuit.gloabalOffset.x",mainCircuit.gloabalOffset.x,"mainCircuit.gloabalOffset.y",mainCircuit.gloabalOffset.y);
+                //console.log(" * this.zoomFactor", mainCircuit.zoomFactor,"mainCircuit.gloabalOffset.x",mainCircuit.gloabalOffset.x,"mainCircuit.gloabalOffset.y",mainCircuit.gloabalOffset.y);
                 mainCircuit.refrashCanvas();
             }0
         }
@@ -221,15 +225,11 @@ class Circuit{
         }
 
         mainCircuit.refrashCanvas();
-        mainCircuit.activeGate = null;
-        mainCircuit.activeIO = null;
     }
 
     private mouseoutEventHandler(e: MouseEvent) {
-        //console.log("e", e);
+        ////console.log("e", e);
         mainCircuit.isMouseDown = false;
-        mainCircuit.activeGate = null;
-        mainCircuit.activeIO = null;
     }
 
     private wheelEventHandler(e: WheelEvent){
@@ -237,5 +237,17 @@ class Circuit{
         
         mainCircuit.zoomFactor = mainCircuit.zoomFactor + e.deltaY * 0.01;
         mainCircuit.refrashCanvas();
+    }
+
+    private keydownEventHandler(e: KeyboardEvent) {
+        if(e.key === "Backspace" || e.key === "Delete"){
+            if(mainCircuit.activeGate !== null){
+                let gateIndex = mainCircuit.gates.indexOf(mainCircuit.activeGate);
+                if (gateIndex > -1) {
+                    mainCircuit.gates.splice(gateIndex, 1);
+                    mainCircuit.refrashCanvas();
+                }
+            }
+        }
     }
 }

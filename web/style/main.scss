@@ -27,10 +27,38 @@ body{
         padding: 0;
         float: right;
 
-        overflow-y: scroll;
+        overflow-y: auto;
 
         #menu-content{
-            margin: 1rem;
+
+            .drop-container{
+                h2{
+                    background-color: rgb(32, 32, 32);
+                    padding: 0.5rem 1rem;
+                    margin-top: 0;
+                    cursor: pointer;
+                }
+
+                ul{
+                    display: none;
+                }
+            }
+
+            .open{
+                ul{
+                    display: block;
+                    li{
+                        list-style: none;
+                        cursor: pointer;
+                    }
+
+                    
+                    li:hover, li:focus{
+                        background-color:  rgb(32, 32, 32);
+                        margin-left: 1rem;
+                    }
+                }
+            }
         }
     }
 }

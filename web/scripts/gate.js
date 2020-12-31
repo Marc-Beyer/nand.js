@@ -16,7 +16,7 @@ var Gate = /** @class */ (function () {
         for (var index = 0; index < inputs; index++) {
             this.inputSignals.push(false);
         }
-        console.log(this.inputSignals);
+        //console.log(this.inputSignals);
     }
     // If the position is within the bounds of the transform return true else return false
     Gate.prototype.isGateInPosition = function (position) {
@@ -27,10 +27,10 @@ var Gate = /** @class */ (function () {
     };
     // If the position is within the bounds of an input return it's nr else return null
     Gate.prototype.gateInputAtPosition = function (position) {
-        //console.log("MousePos", position.x + " " + position.y);
+        ////console.log("MousePos", position.x + " " + position.y);
         for (var i = 0; i < this.inputs; i++) {
             var inputPosition = this.getInputPosition(i);
-            //console.log("gateInputAtPosition", inputPosition.x + " " + inputPosition.y);
+            ////console.log("gateInputAtPosition", inputPosition.x + " " + inputPosition.y);
             if (inputPosition.x < position.x && inputPosition.x + this.ioWidth > position.x &&
                 inputPosition.y - this.ioWidth / 2 < position.y && inputPosition.y + this.ioWidth / 2 > position.y) {
                 return i;
