@@ -25,9 +25,15 @@ class Circuit{
     }
     public set zoomFactor(value: number) {
         //console.log("this._zoomFactor",this.zoomFactor);
+        let oldWidth = this.mainCanvas.width;
+        let oldHeight = this.mainCanvas.height;
         this.mainCanvas.width = this.mainCanvasRealWidth * value;
         this.mainCanvas.height = this.mainCanvasRealHeight * value;
         this._zoomFactor = value;
+        oldWidth -= this.mainCanvas.width;
+        oldHeight -= this.mainCanvas.height;
+        this.gloabalOffset.x -= oldWidth/2;
+        this.gloabalOffset.y -= oldHeight/2;
     }
 
     constructor(grid: Position2D = {x: 1, y: 1}) {
@@ -38,7 +44,6 @@ class Circuit{
         this.mainCanvas.height = rect.height;
         this.mainCanvasRealWidth = this.mainCanvas.width;
         this.mainCanvasRealHeight = this.mainCanvas.height;
-        //TODO resize window event handler
         this.grid = grid;
         this.connectionManager = new ConnectionManager();
     
@@ -57,6 +62,9 @@ class Circuit{
 
         // Add keydown event handler
         document.addEventListener("keydown", this.keydownEventHandler);
+
+        // Add resize event handler
+        window.addEventListener('resize', this.reportWindowSize);
     }
 
     // Redraw the canvas
@@ -263,7 +271,7 @@ class Circuit{
 
     private wheelEventHandler(e: WheelEvent){
         e.preventDefault();
-        
+
         mainCircuit.zoomFactor = mainCircuit.zoomFactor + e.deltaY * 0.01;
         mainCircuit.refrashCanvas();
     }
@@ -284,5 +292,13 @@ class Circuit{
                 mainCircuit.activeConnection = null;
             }
         }
+    }
+
+    
+    private reportWindowSize( e: UIEvent){
+        mainCircuit.mainCanvasRealWidth = mainCircuit.mainCanvas.getBoundingClientRect().width;
+        mainCircuit.mainCanvasRealHeight = mainCircuit.mainCanvas.getBoundingClientRect().height;
+        mainCircuit.zoomFactor = mainCircuit.zoomFactor;
+        mainCircuit.refrashCanvas();
     }
 }

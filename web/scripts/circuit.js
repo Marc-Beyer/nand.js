@@ -16,7 +16,6 @@ var Circuit = /** @class */ (function () {
         this.mainCanvas.height = rect.height;
         this.mainCanvasRealWidth = this.mainCanvas.width;
         this.mainCanvasRealHeight = this.mainCanvas.height;
-        //TODO resize window event handler
         this.grid = grid;
         this.connectionManager = new ConnectionManager();
         // Add mouse event handler
@@ -32,6 +31,8 @@ var Circuit = /** @class */ (function () {
         this.mainCanvas.addEventListener("touchcancel", this.mouseoutEventHandler);
         // Add keydown event handler
         document.addEventListener("keydown", this.keydownEventHandler);
+        // Add resize event handler
+        window.addEventListener('resize', this.reportWindowSize);
     }
     Object.defineProperty(Circuit.prototype, "zoomFactor", {
         get: function () {
@@ -39,9 +40,15 @@ var Circuit = /** @class */ (function () {
         },
         set: function (value) {
             //console.log("this._zoomFactor",this.zoomFactor);
+            var oldWidth = this.mainCanvas.width;
+            var oldHeight = this.mainCanvas.height;
             this.mainCanvas.width = this.mainCanvasRealWidth * value;
             this.mainCanvas.height = this.mainCanvasRealHeight * value;
             this._zoomFactor = value;
+            oldWidth -= this.mainCanvas.width;
+            oldHeight -= this.mainCanvas.height;
+            this.gloabalOffset.x -= oldWidth / 2;
+            this.gloabalOffset.y -= oldHeight / 2;
         },
         enumerable: true,
         configurable: true
@@ -264,6 +271,12 @@ var Circuit = /** @class */ (function () {
                 mainCircuit.activeConnection = null;
             }
         }
+    };
+    Circuit.prototype.reportWindowSize = function (e) {
+        mainCircuit.mainCanvasRealWidth = mainCircuit.mainCanvas.getBoundingClientRect().width;
+        mainCircuit.mainCanvasRealHeight = mainCircuit.mainCanvas.getBoundingClientRect().height;
+        mainCircuit.zoomFactor = mainCircuit.zoomFactor;
+        mainCircuit.refrashCanvas();
     };
     return Circuit;
 }());
