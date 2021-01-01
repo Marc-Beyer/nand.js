@@ -240,6 +240,15 @@ class Circuit{
                         toGate: input.gate,
                         toInputNr: input.ioNr
                     });
+                }else{
+                    let connGate = new Connection_Gate(mainCircuit.getMousePositionOnCanvas(e));
+                    mainCircuit.gates.push(connGate);
+                    mainCircuit.connectionManager.addConnection({
+                        fromGate: mainCircuit.activeIO.gate,
+                        fromOutputNr: mainCircuit.activeIO.ioNr,
+                        toGate: connGate,
+                        toInputNr: 1
+                    });
                 }
             }
         }

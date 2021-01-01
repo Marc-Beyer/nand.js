@@ -28,6 +28,7 @@ class Gate {
             this.transform.position.y < position.y && this.transform.position.y + this.transform.height > position.y){
             return true;
         }
+        return false;
     }
 
     // If the position is within the bounds of an input return it's nr else return null

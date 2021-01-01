@@ -249,3 +249,55 @@ class Lable_Gate extends Gate {
         }
     }
 }
+
+class Connection_Gate extends Gate {
+    constructor(position: Position2D) {
+        super("", 1, 1, position, (inputs: boolean[]) => {return inputs});
+        this.transform.width = this.transform.height = 10;
+        this.ioWidth = this.ioHeight = 1;
+    }
+
+    // Overrite the drawGate()
+    public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        // Set style
+        if(this.inputSignals[1]){
+            ctx.fillStyle = "#FF0000";
+        }else{
+            ctx.fillStyle = "#DDDDDD";
+        }
+
+        // Draw background
+        ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+        
+        // Set style
+        ctx.fillStyle = "#DDDDDD";
+
+        // Draw box and name
+        ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+    }
+
+    // If the position is within the bounds of an output return it's nr else return null
+    public gateOutputAtPosition(position: Position2D): number | null {
+        let outputPosition = this.getOutputPosition(1);
+        if(outputPosition.x - 20 < position.x && outputPosition.x + 20 > position.x &&
+            outputPosition.y - 20 < position.y && outputPosition.y + 20 > position.y){
+                return 1;
+        }
+        return null;
+    }
+
+    // If the position is within the bounds of an input return it's nr else return null
+    public gateInputAtPosition(position: Position2D): number | null {
+        return null;
+    }
+
+    // Get the position of the input with number nr
+    public getInputPosition(nr: number): Position2D | null{
+        return {x: this.transform.position.x + this.transform.width/2, y: this.transform.position.y + this.transform.height/2};
+    }
+
+    // Get the position of the output with number nr
+    public getOutputPosition(nr: number): Position2D | null{
+        return {x: this.transform.position.x + this.transform.width/2, y: this.transform.position.y + this.transform.height/2};
+    }
+}

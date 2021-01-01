@@ -249,4 +249,51 @@ var Lable_Gate = /** @class */ (function (_super) {
     };
     return Lable_Gate;
 }(Gate));
+var Connection_Gate = /** @class */ (function (_super) {
+    __extends(Connection_Gate, _super);
+    function Connection_Gate(position) {
+        var _this = _super.call(this, "", 1, 1, position, function (inputs) { return inputs; }) || this;
+        _this.transform.width = _this.transform.height = 10;
+        _this.ioWidth = _this.ioHeight = 1;
+        return _this;
+    }
+    // Overrite the drawGate()
+    Connection_Gate.prototype.drawGate = function (ctx, offset) {
+        // Set style
+        if (this.inputSignals[1]) {
+            ctx.fillStyle = "#FF0000";
+        }
+        else {
+            ctx.fillStyle = "#DDDDDD";
+        }
+        // Draw background
+        ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+        // Set style
+        ctx.fillStyle = "#DDDDDD";
+        // Draw box and name
+        ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+    };
+    // If the position is within the bounds of an output return it's nr else return null
+    Connection_Gate.prototype.gateOutputAtPosition = function (position) {
+        var outputPosition = this.getOutputPosition(1);
+        if (outputPosition.x - 20 < position.x && outputPosition.x + 20 > position.x &&
+            outputPosition.y - 20 < position.y && outputPosition.y + 20 > position.y) {
+            return 1;
+        }
+        return null;
+    };
+    // If the position is within the bounds of an input return it's nr else return null
+    Connection_Gate.prototype.gateInputAtPosition = function (position) {
+        return null;
+    };
+    // Get the position of the input with number nr
+    Connection_Gate.prototype.getInputPosition = function (nr) {
+        return { x: this.transform.position.x + this.transform.width / 2, y: this.transform.position.y + this.transform.height / 2 };
+    };
+    // Get the position of the output with number nr
+    Connection_Gate.prototype.getOutputPosition = function (nr) {
+        return { x: this.transform.position.x + this.transform.width / 2, y: this.transform.position.y + this.transform.height / 2 };
+    };
+    return Connection_Gate;
+}(Gate));
 //# sourceMappingURL=gates.js.map
