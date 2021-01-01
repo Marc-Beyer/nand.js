@@ -35,4 +35,8 @@ var _loop_1 = function (index) {
 for (var index = 0; index < dropContainer.length; index++) {
     _loop_1(index);
 }
+var errorContainer = document.getElementById("error-container");
+errorContainer.getElementsByTagName("BUTTON")[0].addEventListener("click", function () {
+    errorContainer.className = "hidden";
+});
 //# sourceMappingURL=main.js.map

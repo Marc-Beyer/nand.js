@@ -83,25 +83,6 @@ var Gate = /** @class */ (function () {
             ctx.fillRect(outputPosition.x + offset.x, outputPosition.y + offset.y, this.ioWidth, this.ioHeight);
         }
     };
-    // Draws the connections to the canvas
-    Gate.prototype.drawConnations = function (ctx, offset) {
-        if (this.getOutput()) {
-            ctx.strokeStyle = "#FF0000";
-        }
-        else {
-            ctx.strokeStyle = "#DDDDDD";
-        }
-        for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
-            var connection = _a[_i];
-            var inputPosition = connection.gate.getInputPosition(connection.inputNr);
-            var outputPosition = this.getOutputPosition(connection.outputNr);
-            ctx.beginPath();
-            ctx.moveTo(outputPosition.x + this.ioWidth + offset.x, outputPosition.y + this.ioHeight / 2 + offset.y);
-            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + this.ioHeight / 2 + offset.y);
-            ctx.stroke();
-        }
-        ctx.strokeStyle = "#DDDDDD";
-    };
     // Get the position of the input with number nr
     Gate.prototype.getInputPosition = function (nr) {
         if (nr >= this.inputs) {
@@ -129,16 +110,12 @@ var Gate = /** @class */ (function () {
     };
     // Update signal at input eith the number nr
     Gate.prototype.updateInput = function (nr, bool) {
-        if (this.inputSignals[nr] !== bool) {
-            this.inputSignals[nr] = bool;
-            for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
-                var connection = _a[_i];
-                connection.gate.updateInput(connection.inputNr, this.getOutput());
-            }
-        }
-        else {
-            this.inputSignals[nr] = bool;
-        }
+        /*for (let connection of this.connections) {
+            connection.gate.updateInput(connection.inputNr, this.getOutput());
+        }*/
+        var changed = this.inputSignals[nr] !== bool;
+        this.inputSignals[nr] = bool;
+        return changed;
     };
     // Returns the Gate type and position as string
     Gate.prototype.toString = function () {

@@ -61,4 +61,35 @@ body{
             }
         }
     }
+
+    #error-container{
+        position: fixed;
+        bottom: 1rem;
+        left: 1rem;
+        min-height: 1rem;
+        min-width: 70%;
+        background-color: rgb(49, 0, 0);
+        
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        border-left: 6px solid rgb(255, 0, 0);
+
+        p{
+            margin: 1rem;
+        }
+        
+        button{
+            margin-right: 1rem;
+            border: none;
+            background: none;
+            color: rgb(196, 196, 196);
+            font-size: 1rem;
+        }
+    }
+
+    .hidden{
+        display: none !important;
+    }
 }

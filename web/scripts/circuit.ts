@@ -2,10 +2,12 @@ class Circuit{
     public grid: Position2D;
     
     public gates: Gate[] = [];
+    public connectionManager: ConnectionManager;
 
     private isMouseDown: boolean;
     private activeGate: Gate;
     private activeIO: IO = null;
+    private activeConnection: Connection = null;
     private activeOffset: Position2D = null;
 
     private mainCanvas: HTMLCanvasElement;
@@ -13,6 +15,7 @@ class Circuit{
     private gloabalOffset: Position2D = {x: 0, y: 0};
     private mainCanvasRealWidth = 1000;
     private mainCanvasRealHeight = 1000;
+
 
     
     private _zoomFactor: number = 1;
@@ -37,6 +40,7 @@ class Circuit{
         this.mainCanvasRealHeight = this.mainCanvas.height;
         //TODO resize window event handler
         this.grid = grid;
+        this.connectionManager = new ConnectionManager();
     
         // Add mouse event handler
         this.mainCanvas.addEventListener("mousedown", this.mousedownEventHandler);
@@ -68,9 +72,8 @@ class Circuit{
         this.ctx.fillStyle = "#DDDDDD";
 
         // Darw Gates and Connections
-        for (let gate of this.gates) {
-            gate.drawConnations(this.ctx, this.gloabalOffset);
-        }
+        mainCircuit.connectionManager.drawConnations(this.ctx, this.gloabalOffset);
+        
         for (let gate of this.gates) {
             gate.drawGate(this.ctx, this.gloabalOffset);
         }
@@ -156,11 +159,16 @@ class Circuit{
         if(mainCircuit.activeGate !== null){
             mainCircuit.activeOffset = mainCircuit.activeGate.getOffsetPosition(mainCircuit.getMousePositionOnCanvas(e));
             mainCircuit.activeIO = null;
+            mainCircuit.activeConnection = null;
         }else{
             // Check if the user clicked on an input or output
             mainCircuit.activeIO = mainCircuit.getIOAtPosition(mainCircuit.getMousePositionOnCanvas(e));
             if(mainCircuit.activeIO !== null){
                 //console.log(mainCircuit.activeIO.gate.toString() + " " + mainCircuit.activeIO.ioNr + " " + mainCircuit.activeIO.ioType);
+                mainCircuit.activeConnection = null;
+            }else{
+                // Check if the user clicked on a connection
+                mainCircuit.activeConnection = mainCircuit.connectionManager.getConnectionAtPosition(mainCircuit.getMousePositionOnCanvas(e));
             }
         }
         mainCircuit.isMouseDown = true;
@@ -211,15 +219,27 @@ class Circuit{
                 let output = mainCircuit.getOutputAtPosition(mainCircuit.getMousePositionOnCanvas(e));
                 if(output !== null){
                     // Create a new Connection
-                    output.gate.connections.push({gate: mainCircuit.activeIO.gate, outputNr: output.ioNr, inputNr: mainCircuit.activeIO.ioNr});
-                    mainCircuit.activeIO.gate.updateInput(mainCircuit.activeIO.ioNr, output.gate.getOutput());
+                    //output.gate.connections.push({gate: mainCircuit.activeIO.gate, outputNr: output.ioNr, inputNr: mainCircuit.activeIO.ioNr});
+                    //mainCircuit.activeIO.gate.updateInput(mainCircuit.activeIO.ioNr, output.gate.getOutput());
+                    mainCircuit.connectionManager.addConnection({
+                        fromGate: output.gate,
+                        fromOutputNr: output.ioNr,
+                        toGate: mainCircuit.activeIO.gate,
+                        toInputNr: mainCircuit.activeIO.ioNr
+                    });
                 }
             }else if(mainCircuit.activeIO.ioType === IOType.Output){
                 let input = mainCircuit.getInputAtPosition(mainCircuit.getMousePositionOnCanvas(e));
                 if(input !== null){
                     // Create a new Connection
-                    mainCircuit.activeIO.gate.connections.push({gate: input.gate, outputNr: mainCircuit.activeIO.ioNr, inputNr: input.ioNr});
-                    input.gate.updateInput(input.ioNr, mainCircuit.activeIO.gate.getOutput());
+                    //mainCircuit.activeIO.gate.connections.push({gate: input.gate, outputNr: mainCircuit.activeIO.ioNr, inputNr: input.ioNr});
+                    //input.gate.updateInput(input.ioNr, mainCircuit.activeIO.gate.getOutput());
+                    mainCircuit.connectionManager.addConnection({
+                        fromGate: mainCircuit.activeIO.gate,
+                        fromOutputNr: mainCircuit.activeIO.ioNr,
+                        toGate: input.gate,
+                        toInputNr: input.ioNr
+                    });
                 }
             }
         }
@@ -244,9 +264,15 @@ class Circuit{
             if(mainCircuit.activeGate !== null){
                 let gateIndex = mainCircuit.gates.indexOf(mainCircuit.activeGate);
                 if (gateIndex > -1) {
+                    mainCircuit.connectionManager.deleteAllConnections(mainCircuit.activeGate);
                     mainCircuit.gates.splice(gateIndex, 1);
                     mainCircuit.refrashCanvas();
+                    mainCircuit.activeGate = null;
                 }
+            }else if(mainCircuit.activeConnection !== null){
+                mainCircuit.connectionManager.removeConnection(mainCircuit.activeConnection);
+                mainCircuit.refrashCanvas();
+                mainCircuit.activeConnection = null;
             }
         }
     }

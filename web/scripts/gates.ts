@@ -137,9 +137,10 @@ class Switch_Gate extends Gate {
         if(isInPos){
             this.switchState = !this.switchState;
         }
-        for (let connection of this.connections) {
+        /*for (let connection of this.connections) {
             connection.gate.updateInput(connection.inputNr, this.getOutput());
-        }
+        }*/
+        mainCircuit.connectionManager.updateConnectedGates(this);
         return isInPos;
     }
 

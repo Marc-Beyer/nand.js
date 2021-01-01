@@ -93,24 +93,6 @@ class Gate {
             ctx.fillRect(outputPosition.x + offset.x, outputPosition.y + offset.y, this.ioWidth, this.ioHeight);
         }
     }
-    
-    // Draws the connections to the canvas
-    public drawConnations(ctx: CanvasRenderingContext2D, offset: Position2D) {
-        if(this.getOutput()){
-            ctx.strokeStyle = "#FF0000";
-        }else{
-            ctx.strokeStyle = "#DDDDDD";
-        }
-        for (let connection of this.connections) {
-            let inputPosition = connection.gate.getInputPosition(connection.inputNr);
-            let outputPosition = this.getOutputPosition(connection.outputNr);
-            ctx.beginPath();
-            ctx.moveTo(outputPosition.x + this.ioWidth + offset.x, outputPosition.y + this.ioHeight/2 + offset.y);
-            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + this.ioHeight/2 + offset.y);
-            ctx.stroke();
-        }
-        ctx.strokeStyle = "#DDDDDD";
-    }
 
     // Get the position of the input with number nr
     public getInputPosition(nr: number): Position2D | null{
@@ -141,15 +123,13 @@ class Gate {
     }
 
     // Update signal at input eith the number nr
-    public updateInput(nr: number, bool: boolean){
-        if(this.inputSignals[nr] !== bool){
-            this.inputSignals[nr] = bool;
-            for (let connection of this.connections) {
-                connection.gate.updateInput(connection.inputNr, this.getOutput());
-            }
-        }else{
-            this.inputSignals[nr] = bool;
-        }
+    public updateInput(nr: number, bool: boolean): boolean{
+        /*for (let connection of this.connections) {
+            connection.gate.updateInput(connection.inputNr, this.getOutput());
+        }*/
+        let changed: boolean = this.inputSignals[nr] !== bool;
+        this.inputSignals[nr] = bool;
+        return changed;
     }
 
     // Returns the Gate type and position as string

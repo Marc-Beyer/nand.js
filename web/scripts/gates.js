@@ -147,10 +147,10 @@ var Switch_Gate = /** @class */ (function (_super) {
         if (isInPos) {
             this.switchState = !this.switchState;
         }
-        for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
-            var connection = _a[_i];
+        /*for (let connection of this.connections) {
             connection.gate.updateInput(connection.inputNr, this.getOutput());
-        }
+        }*/
+        mainCircuit.connectionManager.updateConnectedGates(this);
         return isInPos;
     };
     // Overrite the drawGate()

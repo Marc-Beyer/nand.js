@@ -26,13 +26,15 @@ interface Transform{
     height: number
 }
 
+//TODO
 // gate: gate that this gate is connected to
 // outputNr: the outputNr of the output from this gate
 // inputNr: the inputNr of the gate that this gate is connected to
 interface Connection{
-    gate: Gate,
-    outputNr: number,
-    inputNr: number
+    fromGate: Gate,
+    fromOutputNr: number,
+    toGate: Gate,
+    toInputNr: number
 }
 
 interface IO{

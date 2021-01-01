@@ -44,3 +44,8 @@ for (let index = 0; index < dropContainer.length; index++) {
         }
     })
 }
+
+let errorContainer = document.getElementById("error-container");
+errorContainer.getElementsByTagName("BUTTON")[0].addEventListener("click", ()=>{
+    errorContainer.className = "hidden";
+});

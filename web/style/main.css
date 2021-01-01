@@ -52,4 +52,40 @@ body #menu #menu-content .open ul li:hover, body #menu #menu-content .open ul li
   background-color: #202020;
   margin-left: 1rem;
 }
+
+body #error-container {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  min-height: 1rem;
+  min-width: 70%;
+  background-color: #310000;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-left: 6px solid red;
+}
+
+body #error-container p {
+  margin: 1rem;
+}
+
+body #error-container button {
+  margin-right: 1rem;
+  border: none;
+  background: none;
+  color: #c4c4c4;
+  font-size: 1rem;
+}
+
+body .hidden {
+  display: none !important;
+}
 /*# sourceMappingURL=main.css.map */
