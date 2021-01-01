@@ -215,6 +215,32 @@ class Lamp_Gate extends Gate {
     }
 }
 
+class Display_Gate extends Gate {
+    constructor(position: Position2D) {
+        super("", 4, 0, position, (inputs: boolean[]) => {return [false]});
+        this.transform.height = 80;
+    }
+    
+    // Overrite the drawGate()
+    public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        super.drawGate(ctx, offset);
+        ctx.fillStyle = "#DDDDDD";
+        ctx.font = "50px Courier New";
+        ctx.fillText(this.intFromInput().toString(16).toUpperCase(), this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + 50);
+    
+        ctx.font = "17px Courier New";
+    }
+
+    public intFromInput(): number{
+        let value: number = 0;
+        for (let i = this.inputSignals.length-1; i >= 0; i--) {
+            value = (value * 2);
+            value += this.inputSignals[i] ? 1 : 0; 
+        }
+        return value;
+    }
+}
+
 // Other
 
 class Lable_Gate extends Gate {

@@ -218,6 +218,31 @@ var Lamp_Gate = /** @class */ (function (_super) {
     };
     return Lamp_Gate;
 }(Gate));
+var Display_Gate = /** @class */ (function (_super) {
+    __extends(Display_Gate, _super);
+    function Display_Gate(position) {
+        var _this = _super.call(this, "", 4, 0, position, function (inputs) { return [false]; }) || this;
+        _this.transform.height = 80;
+        return _this;
+    }
+    // Overrite the drawGate()
+    Display_Gate.prototype.drawGate = function (ctx, offset) {
+        _super.prototype.drawGate.call(this, ctx, offset);
+        ctx.fillStyle = "#DDDDDD";
+        ctx.font = "50px Courier New";
+        ctx.fillText(this.intFromInput().toString(16).toUpperCase(), this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + 50);
+        ctx.font = "17px Courier New";
+    };
+    Display_Gate.prototype.intFromInput = function () {
+        var value = 0;
+        for (var i = this.inputSignals.length - 1; i >= 0; i--) {
+            value = (value * 2);
+            value += this.inputSignals[i] ? 1 : 0;
+        }
+        return value;
+    };
+    return Display_Gate;
+}(Gate));
 // Other
 var Lable_Gate = /** @class */ (function (_super) {
     __extends(Lable_Gate, _super);

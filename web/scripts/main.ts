@@ -24,8 +24,7 @@ mainCircuit.gates.push(new XNOR_Gate({x: 900, y: 250}));
 
 mainCircuit.gates.push(new Lable_Gate({x: 1150, y: 50}, "Outputs"));
 mainCircuit.gates.push(new Lamp_Gate({x: 1150, y: 150}));
-
-mainCircuit.gates.push(new Connection_Gate({x: 1150, y: 250}));
+mainCircuit.gates.push(new Display_Gate({x: 1150, y: 250}));
 
 
 
