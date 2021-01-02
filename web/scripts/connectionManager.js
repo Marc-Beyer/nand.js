@@ -7,19 +7,19 @@ var ConnectionManager = /** @class */ (function () {
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
             var connection = _a[_i];
             if (connection.fromGate.getOutput(connection.fromOutputNr)) {
-                ctx.strokeStyle = "#FF0000";
+                ctx.strokeStyle = COLOR.active;
             }
             else {
-                ctx.strokeStyle = "#DDDDDD";
+                ctx.strokeStyle = COLOR.main;
             }
             var outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             var inputPosition = connection.toGate.getInputPosition(connection.toInputNr);
             ctx.beginPath();
-            ctx.moveTo(outputPosition.x + connection.fromGate.ioWidth + offset.x, outputPosition.y + connection.fromGate.ioHeight / 2 + offset.y);
-            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + connection.toGate.ioHeight / 2 + offset.y);
+            ctx.moveTo(outputPosition.x + connection.fromGate.ioWidth + offset.x, outputPosition.y + offset.y);
+            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + offset.y);
             ctx.stroke();
         }
-        ctx.strokeStyle = "#DDDDDD";
+        ctx.strokeStyle = COLOR.main;
     };
     ConnectionManager.prototype.addConnection = function (connection) {
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
@@ -58,10 +58,14 @@ var ConnectionManager = /** @class */ (function () {
                 return;
             }
             if (this.connections[index].fromGate == gate) {
+                var connectedGate = this.connections[index].toGate;
                 this.connections[index].toGate.updateInput(this.connections[index].toInputNr, false);
                 this.updateConnectedGates(this.connections[index].toGate);
                 this.connections.splice(index, 1);
                 this.deleteAllConnections(gate);
+                if (connectedGate instanceof Connection_Gate) {
+                    mainCircuit.deleteGate(connectedGate);
+                }
                 return;
             }
         }

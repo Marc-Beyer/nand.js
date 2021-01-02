@@ -3,6 +3,8 @@ class Circuit{
     
     public gates: Gate[] = [];
     public connectionManager: ConnectionManager;
+    public gloabalOffset: Position2D = {x: 0, y: 0};
+    public mainCanvas: HTMLCanvasElement;
 
     private isMouseDown: boolean;
     private activeGate: Gate;
@@ -10,9 +12,7 @@ class Circuit{
     private activeConnection: Connection = null;
     private activeOffset: Position2D = null;
 
-    private mainCanvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
-    private gloabalOffset: Position2D = {x: 0, y: 0};
     private mainCanvasRealWidth = 1000;
     private mainCanvasRealHeight = 1000;
 
@@ -73,7 +73,7 @@ class Circuit{
         this.ctx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
 
         // Set style
-        this.ctx.lineWidth = 3;
+        this.ctx.lineWidth = 2;
         this.ctx.font = "17px Courier New";
         this.ctx.textAlign = "center"; 
         this.ctx.strokeStyle = "#DDDDDD";
@@ -82,8 +82,8 @@ class Circuit{
         // Darw Gates and Connections
         mainCircuit.connectionManager.drawConnations(this.ctx, this.gloabalOffset);
         
-        for (let gate of this.gates) {
-            gate.drawGate(this.ctx, this.gloabalOffset);
+        for (let i = this.gates.length-1; i >= 0; i--) {
+            this.gates[i].drawGate(this.ctx, this.gloabalOffset);
         }
     }
 
@@ -104,7 +104,7 @@ class Circuit{
             // Get the first input at the position and check if there is one 
             let input = gate.gateInputAtPosition(position);
             if(input !== null){
-                return {gate: gate, ioNr: input, ioType: IOType.Input};
+                return {gate: gate, ioNr: input, ioType: IO_TYPE.Input};
             }
         }
         return null;
@@ -116,7 +116,7 @@ class Circuit{
             // Get the first output at the position and check if there is one 
             let output = gate.gateOutputAtPosition(position);
             if(output !== null){
-                return {gate: gate, ioNr: output, ioType: IOType.Output};
+                return {gate: gate, ioNr: output, ioType: IO_TYPE.Output};
             }
         }
         return null;
@@ -128,12 +128,12 @@ class Circuit{
             // Get the first input at the position and check if there is one 
             let input = gate.gateInputAtPosition(position);
             if(input !== null){
-                return {gate: gate, ioNr: input, ioType: IOType.Input};
+                return {gate: gate, ioNr: input, ioType: IO_TYPE.Input};
             }else{
                 // Get the first output at the position and check if there is one 
                 let output = gate.gateOutputAtPosition(position);
                 if(output !== null){
-                    return {gate: gate, ioNr: output, ioType: IOType.Output};
+                    return {gate: gate, ioNr: output, ioType: IO_TYPE.Output};
                 }
             }
         }
@@ -154,6 +154,16 @@ class Circuit{
             x: (event.clientX - rect.left) * this.zoomFactor - this.gloabalOffset.x,
             y: (event.clientY - rect.top) * this.zoomFactor - this.gloabalOffset.y
         };
+    }
+
+    // Delete the gate and all connections
+    public deleteGate(gate: Gate){
+        let gateIndex = this.gates.indexOf(gate);
+        if (gateIndex > -1) {
+            this.connectionManager.deleteAllConnections(gate);
+            this.gates.splice(gateIndex, 1);
+            this.refrashCanvas();
+        }
     }
 
     /////////////////////
@@ -198,18 +208,25 @@ class Circuit{
                 let ioPosition = null;
                 let mousePosition = mainCircuit.getMousePositionOnCanvas(e);
 
+                
                 mainCircuit.ctx.beginPath();
 
-                if(mainCircuit.activeIO.ioType === IOType.Input){
+                if(mainCircuit.activeIO.ioType === IO_TYPE.Input){
                     ioPosition = mainCircuit.activeIO.gate.getInputPosition(mainCircuit.activeIO.ioNr);
-                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.activeIO.gate.ioHeight/2 + mainCircuit.gloabalOffset.y);
+                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.gloabalOffset.y);
                 }else{
+                    if(mainCircuit.activeIO.gate.getOutput(mainCircuit.activeIO.ioNr)){
+                        mainCircuit.ctx.strokeStyle = COLOR.active;
+                    }else{
+                        mainCircuit.ctx.strokeStyle = COLOR.main;
+                    }
                     ioPosition = mainCircuit.activeIO.gate.getOutputPosition(mainCircuit.activeIO.ioNr);
-                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.activeIO.gate.ioWidth + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.activeIO.gate.ioHeight/2 + mainCircuit.gloabalOffset.y);
+                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.activeIO.gate.ioWidth + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.gloabalOffset.y);
                 }
 
                 mainCircuit.ctx.lineTo(mousePosition.x + mainCircuit.gloabalOffset.x, mousePosition.y + mainCircuit.gloabalOffset.y);
                 mainCircuit.ctx.stroke();
+                mainCircuit.ctx.strokeStyle = COLOR.main;
             }else{
                 // Change globalOffset
                 mainCircuit.gloabalOffset.x += e.movementX * mainCircuit.zoomFactor;
@@ -223,7 +240,7 @@ class Circuit{
     private mouseupEventHandler(e: MouseEvent) {
         mainCircuit.isMouseDown = false;
         if(mainCircuit.activeIO !== null){
-            if(mainCircuit.activeIO.ioType === IOType.Input){
+            if(mainCircuit.activeIO.ioType === IO_TYPE.Input){
                 let output = mainCircuit.getOutputAtPosition(mainCircuit.getMousePositionOnCanvas(e));
                 if(output !== null){
                     // Create a new Connection
@@ -236,7 +253,7 @@ class Circuit{
                         toInputNr: mainCircuit.activeIO.ioNr
                     });
                 }
-            }else if(mainCircuit.activeIO.ioType === IOType.Output){
+            }else if(mainCircuit.activeIO.ioType === IO_TYPE.Output){
                 let input = mainCircuit.getInputAtPosition(mainCircuit.getMousePositionOnCanvas(e));
                 if(input !== null){
                     // Create a new Connection
@@ -279,13 +296,8 @@ class Circuit{
     private keydownEventHandler(e: KeyboardEvent) {
         if(e.key === "Backspace" || e.key === "Delete"){
             if(mainCircuit.activeGate !== null){
-                let gateIndex = mainCircuit.gates.indexOf(mainCircuit.activeGate);
-                if (gateIndex > -1) {
-                    mainCircuit.connectionManager.deleteAllConnections(mainCircuit.activeGate);
-                    mainCircuit.gates.splice(gateIndex, 1);
-                    mainCircuit.refrashCanvas();
-                    mainCircuit.activeGate = null;
-                }
+                mainCircuit.deleteGate(mainCircuit.activeGate);
+                mainCircuit.activeGate = null;
             }else if(mainCircuit.activeConnection !== null){
                 mainCircuit.connectionManager.removeConnection(mainCircuit.activeConnection);
                 mainCircuit.refrashCanvas();

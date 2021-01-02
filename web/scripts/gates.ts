@@ -13,16 +13,8 @@ class NOT_Gate extends Gate {
 
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        this.drawNegatedOutputs(ctx, offset);
         super.drawGate(ctx, offset);
-        
-        // Draw outputs
-        for (let i = 0; i < this.outputs; i++) {
-            let outputPosition = this.getOutputPosition(i);
-            ctx.beginPath();
-            ctx.moveTo(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioWidth/2);
-            ctx.lineTo(outputPosition.x + offset.x + this.ioWidth/2, outputPosition.y + offset.y + this.ioHeight/2);
-            ctx.stroke();
-        }
     }
 }
 
@@ -49,16 +41,8 @@ class NAND_Gate extends Gate {
 
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        this.drawNegatedOutputs(ctx, offset);
         super.drawGate(ctx, offset);
-        
-        // Draw outputs
-        for (let i = 0; i < this.outputs; i++) {
-            let outputPosition = this.getOutputPosition(i);
-            ctx.beginPath();
-            ctx.moveTo(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioWidth/2);
-            ctx.lineTo(outputPosition.x + offset.x + this.ioWidth/2, outputPosition.y + offset.y + this.ioHeight/2);
-            ctx.stroke();
-        }
     }
 }
 
@@ -69,16 +53,8 @@ class NOR_Gate extends Gate {
     
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        this.drawNegatedOutputs(ctx, offset);
         super.drawGate(ctx, offset);
-        
-        // Draw outputs
-        for (let i = 0; i < this.outputs; i++) {
-            let outputPosition = this.getOutputPosition(i);
-            ctx.beginPath();
-            ctx.moveTo(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioWidth/2);
-            ctx.lineTo(outputPosition.x + offset.x + this.ioWidth/2, outputPosition.y + offset.y + this.ioHeight/2);
-            ctx.stroke();
-        }
     }
 }
 
@@ -97,16 +73,8 @@ class XNOR_Gate extends Gate {
     
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        this.drawNegatedOutputs(ctx, offset);
         super.drawGate(ctx, offset);
-        
-        // Draw outputs
-        for (let i = 0; i < this.outputs; i++) {
-            let outputPosition = this.getOutputPosition(i);
-            ctx.beginPath();
-            ctx.moveTo(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioWidth/2);
-            ctx.lineTo(outputPosition.x + offset.x + this.ioWidth/2, outputPosition.y + offset.y + this.ioHeight/2);
-            ctx.stroke();
-        }
     }
 }
 
@@ -149,13 +117,13 @@ class Switch_Gate extends Gate {
         super.drawGate(ctx, offset);
 
         // Set style
-        ctx.fillStyle = "#222222";
+        ctx.fillStyle = COLOR.dark;
 
         // Draw background
         ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/2, this.transform.height/2);
         
         // Set style
-        ctx.fillStyle = "#DDDDDD";
+        ctx.fillStyle = COLOR.main;
 
         // Draw background
         if(this.switchState){
@@ -182,9 +150,9 @@ class Lamp_Gate extends Gate {
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
         // Set style
         if(this.inputSignals[0]){
-            ctx.fillStyle = "#FF0000";
+            ctx.fillStyle = COLOR.active;
         }else{
-            ctx.fillStyle = "#3B3B3B";
+            ctx.fillStyle = COLOR.background;
         }
 
         // Draw background
@@ -200,18 +168,10 @@ class Lamp_Gate extends Gate {
         ctx.stroke();
         
         // Set style
-        ctx.fillStyle = "#DDDDDD";
+        ctx.fillStyle = COLOR.main;
 
         // Draw inputs
-        for (let i = 0; i < this.inputs; i++) {
-            if(this.inputSignals[i]){
-                ctx.fillStyle = "#FF0000";
-            }else{
-                ctx.fillStyle = "#DDDDDD";
-            }
-            let inputPosition = this.getInputPosition(i);
-            ctx.fillRect(inputPosition.x + offset.x, inputPosition.y + offset.y, this.ioWidth, this.ioHeight);
-        }
+        this.drawInputs(ctx, offset);
     }
 }
 
@@ -224,7 +184,7 @@ class Display_Gate extends Gate {
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
         super.drawGate(ctx, offset);
-        ctx.fillStyle = "#DDDDDD";
+        ctx.fillStyle = COLOR.main;
         ctx.font = "50px Courier New";
         ctx.fillText(this.intFromInput().toString(16).toUpperCase(), this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + 50);
     
@@ -260,13 +220,13 @@ class Lable_Gate extends Gate {
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
         // Set style
-        ctx.fillStyle = "#3B3B3B";
+        ctx.fillStyle = COLOR.background;
 
         // Draw background
         ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         
         // Set style
-        ctx.fillStyle = "#DDDDDD";
+        ctx.fillStyle = COLOR.main;
 
         // Draw box and name
         ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
@@ -280,26 +240,33 @@ class Connection_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 1, 1, position, (inputs: boolean[]) => {return inputs});
         this.transform.width = this.transform.height = 10;
-        this.ioWidth = this.ioHeight = 1;
+        this.ioWidth = this.ioHeight;
     }
 
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
         // Set style
         if(this.inputSignals[1]){
-            ctx.fillStyle = "#FF0000";
+            ctx.fillStyle = COLOR.active;
         }else{
-            ctx.fillStyle = "#DDDDDD";
+            ctx.fillStyle = COLOR.main;
         }
-
         // Draw background
-        ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
-        
-        // Set style
-        ctx.fillStyle = "#DDDDDD";
+        let radius = this.transform.width/2;
+        ctx.beginPath();
+        ctx.arc(this.transform.position.x + offset.x , this.transform.position.y + offset.y, radius, 0, 2 * Math.PI);
+        ctx.fill();
 
-        // Draw box and name
-        ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+        // Set style
+        ctx.fillStyle = COLOR.main;
+    }
+
+    // If the position is within the bounds of the transform return true else return false
+    public isGateInPosition(position: Position2D): boolean {
+        if(mainCircuit.connectionManager.getDictance(this.transform.position, position) <= this.transform.width/2){
+            return true;
+        }
+        return false;
     }
 
     // If the position is within the bounds of an output return it's nr else return null
@@ -319,11 +286,11 @@ class Connection_Gate extends Gate {
 
     // Get the position of the input with number nr
     public getInputPosition(nr: number): Position2D | null{
-        return {x: this.transform.position.x + this.transform.width/2, y: this.transform.position.y + this.transform.height/2};
+        return {x: this.transform.position.x, y: this.transform.position.y};
     }
 
     // Get the position of the output with number nr
     public getOutputPosition(nr: number): Position2D | null{
-        return {x: this.transform.position.x + this.transform.width/2, y: this.transform.position.y + this.transform.height/2};
+        return {x: this.transform.position.x - this.ioWidth, y: this.transform.position.y};
     }
 }

@@ -1,18 +1,31 @@
-enum GateType{
-    Buffer = "Buffer",
-    NOT = "NOT",
-    AND = "AND",
-    OR = "OR",
-    NAND = "NAND",
-    NOR = "NOR",
-    XOR = "XOR",
-    XNOR = "XNOR"
+enum GATE_TYPE{
+    CONST_HIGH_Gate,
+    CONST_LOW_Gate,
+    Switch,
+    Buffer,
+    NOT,
+    AND,
+    OR,
+    NAND,
+    NOR,
+    XOR,
+    XNOR,
+    Lamp,
+    Display,
+    Lable
 }
 
-enum IOType{
+enum IO_TYPE{
     Input,
     Output
     
+}
+
+enum COLOR{
+    main = "#DDDDDD",
+    active = "#FF0000",
+    background = "#3B3B3B",
+    dark = "#222222"
 }
 
 interface Position2D{
@@ -40,5 +53,5 @@ interface Connection{
 interface IO{
     gate: Gate,
     ioNr: number,
-    ioType: IOType
+    ioType: IO_TYPE
 }

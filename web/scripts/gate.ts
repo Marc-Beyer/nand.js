@@ -7,7 +7,7 @@ class Gate {
     public inputSignals: boolean[];
     public boolFunction: (inputs: boolean[]) => boolean[];
     public ioWidth: number = 20;
-    public ioHeight: number = 3;
+    public ioHeight: number = 2;
 
     constructor(name: string, inputs: number = 0, outputs: number = 0, position: Position2D = {x: 0, y: 0}, boolFunction: (inputs: boolean[]) => boolean[] = (inputs: boolean[]) => {return [false]}) {
         this.name = name;
@@ -60,39 +60,65 @@ class Gate {
     // Draws the Gate to the canvas
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D) {
         // Set style
-        ctx.fillStyle = "#3B3B3B";
+        ctx.fillStyle = COLOR.background;
 
         // Draw background
         ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         
         // Set style
-        ctx.fillStyle = "#DDDDDD";
+        ctx.fillStyle = COLOR.main;
+
+        // Draw inputs
+        this.drawInputs(ctx, offset);
+
+        // Draw outputs
+        this.drawOutputs(ctx, offset);
 
         // Draw box and name
         ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         ctx.fillText(this.name, this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + 20);
+    }
 
-        // Draw inputs
+    public drawInputs(ctx: CanvasRenderingContext2D, offset: Position2D){
         for (let i = 0; i < this.inputs; i++) {
             if(this.inputSignals[i]){
-                ctx.fillStyle = "#FF0000";
+                ctx.fillStyle = COLOR.active;
             }else{
-                ctx.fillStyle = "#DDDDDD";
+                ctx.fillStyle = COLOR.main;
             }
             let inputPosition = this.getInputPosition(i);
-            ctx.fillRect(inputPosition.x + offset.x, inputPosition.y + offset.y, this.ioWidth, this.ioHeight);
+            ctx.fillRect(inputPosition.x + offset.x, inputPosition.y + offset.y - this.ioHeight/2, this.ioWidth, this.ioHeight);
         }
+        ctx.fillStyle = COLOR.main;
+    }
 
-        // Draw outputs
+    public drawOutputs(ctx: CanvasRenderingContext2D, offset: Position2D){
         for (let i = 0; i < this.outputs; i++) {
             if(this.getOutput(i)){
-                ctx.fillStyle = "#FF0000";
+                ctx.fillStyle = COLOR.active;
             }else{
-                ctx.fillStyle = "#DDDDDD";
+                ctx.fillStyle = COLOR.main;
             }
             let outputPosition = this.getOutputPosition(i);
-            ctx.fillRect(outputPosition.x + offset.x, outputPosition.y + offset.y, this.ioWidth, this.ioHeight);
+            ctx.fillRect(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioHeight/2, this.ioWidth, this.ioHeight);
         }
+        ctx.fillStyle = COLOR.main;
+    }
+    
+    public drawNegatedOutputs(ctx: CanvasRenderingContext2D, offset: Position2D){
+        for (let i = 0; i < this.outputs; i++) {
+            if(this.getOutput(i)){
+                ctx.strokeStyle = COLOR.active;
+            }else{
+                ctx.strokeStyle = COLOR.main;
+            }
+            let outputPosition = this.getOutputPosition(i);
+            ctx.beginPath();
+            ctx.moveTo(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioWidth/2);
+            ctx.lineTo(outputPosition.x + offset.x + this.ioWidth/2, outputPosition.y + offset.y + this.ioHeight/2);
+            ctx.stroke();
+        }
+        ctx.strokeStyle = COLOR.main;
     }
 
     // Get the position of the input with number nr

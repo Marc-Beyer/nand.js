@@ -10,18 +10,18 @@ class ConnectionManager {
     public drawConnations(ctx: CanvasRenderingContext2D, offset: Position2D) {
         for (let connection of this.connections) {
             if(connection.fromGate.getOutput(connection.fromOutputNr)){
-                ctx.strokeStyle = "#FF0000";
+                ctx.strokeStyle = COLOR.active;
             }else{
-                ctx.strokeStyle = "#DDDDDD";
+                ctx.strokeStyle = COLOR.main;
             }
             let outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             let inputPosition = connection.toGate.getInputPosition(connection.toInputNr);
             ctx.beginPath();
-            ctx.moveTo(outputPosition.x + connection.fromGate.ioWidth + offset.x, outputPosition.y + connection.fromGate.ioHeight/2 + offset.y);
-            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + connection.toGate.ioHeight/2 + offset.y);
+            ctx.moveTo(outputPosition.x + connection.fromGate.ioWidth + offset.x, outputPosition.y + offset.y);
+            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + offset.y);
             ctx.stroke();
         }
-        ctx.strokeStyle = "#DDDDDD";
+        ctx.strokeStyle = COLOR.main;
     }
 
     public addConnection(connection: Connection): boolean{
@@ -60,10 +60,15 @@ class ConnectionManager {
                 return;
             }
             if(this.connections[index].fromGate == gate){
+                let connectedGate = this.connections[index].toGate;
                 this.connections[index].toGate.updateInput(this.connections[index].toInputNr, false);
                 this.updateConnectedGates(this.connections[index].toGate);
                 this.connections.splice(index, 1);
                 this.deleteAllConnections(gate);
+
+                if(connectedGate instanceof Connection_Gate){
+                    mainCircuit.deleteGate(connectedGate);
+                }
                 return;
             }
         }

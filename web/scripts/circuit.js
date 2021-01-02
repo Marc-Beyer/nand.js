@@ -2,10 +2,10 @@ var Circuit = /** @class */ (function () {
     function Circuit(grid) {
         if (grid === void 0) { grid = { x: 1, y: 1 }; }
         this.gates = [];
+        this.gloabalOffset = { x: 0, y: 0 };
         this.activeIO = null;
         this.activeConnection = null;
         this.activeOffset = null;
-        this.gloabalOffset = { x: 0, y: 0 };
         this.mainCanvasRealWidth = 1000;
         this.mainCanvasRealHeight = 1000;
         this._zoomFactor = 1;
@@ -58,16 +58,15 @@ var Circuit = /** @class */ (function () {
         // Clear canvas
         this.ctx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
         // Set style
-        this.ctx.lineWidth = 3;
+        this.ctx.lineWidth = 2;
         this.ctx.font = "17px Courier New";
         this.ctx.textAlign = "center";
         this.ctx.strokeStyle = "#DDDDDD";
         this.ctx.fillStyle = "#DDDDDD";
         // Darw Gates and Connections
         mainCircuit.connectionManager.drawConnations(this.ctx, this.gloabalOffset);
-        for (var _i = 0, _a = this.gates; _i < _a.length; _i++) {
-            var gate = _a[_i];
-            gate.drawGate(this.ctx, this.gloabalOffset);
+        for (var i = this.gates.length - 1; i >= 0; i--) {
+            this.gates[i].drawGate(this.ctx, this.gloabalOffset);
         }
     };
     // Get the first Gate at the position
@@ -87,7 +86,7 @@ var Circuit = /** @class */ (function () {
             // Get the first input at the position and check if there is one 
             var input = gate.gateInputAtPosition(position);
             if (input !== null) {
-                return { gate: gate, ioNr: input, ioType: IOType.Input };
+                return { gate: gate, ioNr: input, ioType: IO_TYPE.Input };
             }
         }
         return null;
@@ -99,7 +98,7 @@ var Circuit = /** @class */ (function () {
             // Get the first output at the position and check if there is one 
             var output = gate.gateOutputAtPosition(position);
             if (output !== null) {
-                return { gate: gate, ioNr: output, ioType: IOType.Output };
+                return { gate: gate, ioNr: output, ioType: IO_TYPE.Output };
             }
         }
         return null;
@@ -111,13 +110,13 @@ var Circuit = /** @class */ (function () {
             // Get the first input at the position and check if there is one 
             var input = gate.gateInputAtPosition(position);
             if (input !== null) {
-                return { gate: gate, ioNr: input, ioType: IOType.Input };
+                return { gate: gate, ioNr: input, ioType: IO_TYPE.Input };
             }
             else {
                 // Get the first output at the position and check if there is one 
                 var output = gate.gateOutputAtPosition(position);
                 if (output !== null) {
-                    return { gate: gate, ioNr: output, ioType: IOType.Output };
+                    return { gate: gate, ioNr: output, ioType: IO_TYPE.Output };
                 }
             }
         }
@@ -136,6 +135,15 @@ var Circuit = /** @class */ (function () {
             x: (event.clientX - rect.left) * this.zoomFactor - this.gloabalOffset.x,
             y: (event.clientY - rect.top) * this.zoomFactor - this.gloabalOffset.y
         };
+    };
+    // Delete the gate and all connections
+    Circuit.prototype.deleteGate = function (gate) {
+        var gateIndex = this.gates.indexOf(gate);
+        if (gateIndex > -1) {
+            this.connectionManager.deleteAllConnections(gate);
+            this.gates.splice(gateIndex, 1);
+            this.refrashCanvas();
+        }
     };
     /////////////////////
     /// Event-Handler ///
@@ -180,16 +188,23 @@ var Circuit = /** @class */ (function () {
                 var ioPosition = null;
                 var mousePosition = mainCircuit.getMousePositionOnCanvas(e);
                 mainCircuit.ctx.beginPath();
-                if (mainCircuit.activeIO.ioType === IOType.Input) {
+                if (mainCircuit.activeIO.ioType === IO_TYPE.Input) {
                     ioPosition = mainCircuit.activeIO.gate.getInputPosition(mainCircuit.activeIO.ioNr);
-                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.activeIO.gate.ioHeight / 2 + mainCircuit.gloabalOffset.y);
+                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.gloabalOffset.y);
                 }
                 else {
+                    if (mainCircuit.activeIO.gate.getOutput(mainCircuit.activeIO.ioNr)) {
+                        mainCircuit.ctx.strokeStyle = COLOR.active;
+                    }
+                    else {
+                        mainCircuit.ctx.strokeStyle = COLOR.main;
+                    }
                     ioPosition = mainCircuit.activeIO.gate.getOutputPosition(mainCircuit.activeIO.ioNr);
-                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.activeIO.gate.ioWidth + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.activeIO.gate.ioHeight / 2 + mainCircuit.gloabalOffset.y);
+                    mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.activeIO.gate.ioWidth + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.gloabalOffset.y);
                 }
                 mainCircuit.ctx.lineTo(mousePosition.x + mainCircuit.gloabalOffset.x, mousePosition.y + mainCircuit.gloabalOffset.y);
                 mainCircuit.ctx.stroke();
+                mainCircuit.ctx.strokeStyle = COLOR.main;
             }
             else {
                 // Change globalOffset
@@ -204,7 +219,7 @@ var Circuit = /** @class */ (function () {
     Circuit.prototype.mouseupEventHandler = function (e) {
         mainCircuit.isMouseDown = false;
         if (mainCircuit.activeIO !== null) {
-            if (mainCircuit.activeIO.ioType === IOType.Input) {
+            if (mainCircuit.activeIO.ioType === IO_TYPE.Input) {
                 var output = mainCircuit.getOutputAtPosition(mainCircuit.getMousePositionOnCanvas(e));
                 if (output !== null) {
                     // Create a new Connection
@@ -218,7 +233,7 @@ var Circuit = /** @class */ (function () {
                     });
                 }
             }
-            else if (mainCircuit.activeIO.ioType === IOType.Output) {
+            else if (mainCircuit.activeIO.ioType === IO_TYPE.Output) {
                 var input = mainCircuit.getInputAtPosition(mainCircuit.getMousePositionOnCanvas(e));
                 if (input !== null) {
                     // Create a new Connection
@@ -257,13 +272,8 @@ var Circuit = /** @class */ (function () {
     Circuit.prototype.keydownEventHandler = function (e) {
         if (e.key === "Backspace" || e.key === "Delete") {
             if (mainCircuit.activeGate !== null) {
-                var gateIndex = mainCircuit.gates.indexOf(mainCircuit.activeGate);
-                if (gateIndex > -1) {
-                    mainCircuit.connectionManager.deleteAllConnections(mainCircuit.activeGate);
-                    mainCircuit.gates.splice(gateIndex, 1);
-                    mainCircuit.refrashCanvas();
-                    mainCircuit.activeGate = null;
-                }
+                mainCircuit.deleteGate(mainCircuit.activeGate);
+                mainCircuit.activeGate = null;
             }
             else if (mainCircuit.activeConnection !== null) {
                 mainCircuit.connectionManager.removeConnection(mainCircuit.activeConnection);
