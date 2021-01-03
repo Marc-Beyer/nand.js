@@ -142,6 +142,8 @@ class Circuit{
 
     // Return nearest posion on grid
     public stickPositionToGrid(position: Position2D): Position2D {
+        position.x += this.grid.x/2;
+        position.y += this.grid.y/2
         position.x -= position.x % this.grid.x;
         position.y -= position.y % this.grid.y;
         return position;
@@ -206,7 +208,7 @@ class Circuit{
                 // Draw unfinished connection
                 mainCircuit.refrashCanvas();
                 let ioPosition = null;
-                let mousePosition = mainCircuit.getMousePositionOnCanvas(e);
+                let mousePosition = mainCircuit.stickPositionToGrid(mainCircuit.getMousePositionOnCanvas(e));
 
                 
                 mainCircuit.ctx.beginPath();
@@ -266,7 +268,7 @@ class Circuit{
                         toInputNr: input.ioNr
                     });
                 }else{
-                    let connGate = new Connection_Gate(mainCircuit.getMousePositionOnCanvas(e));
+                    let connGate = new Connection_Gate(mainCircuit.stickPositionToGrid(mainCircuit.getMousePositionOnCanvas(e)));
                     mainCircuit.gates.push(connGate);
                     mainCircuit.connectionManager.addConnection({
                         fromGate: mainCircuit.activeIO.gate,

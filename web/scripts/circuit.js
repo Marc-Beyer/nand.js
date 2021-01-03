@@ -124,6 +124,8 @@ var Circuit = /** @class */ (function () {
     };
     // Return nearest posion on grid
     Circuit.prototype.stickPositionToGrid = function (position) {
+        position.x += this.grid.x / 2;
+        position.y += this.grid.y / 2;
         position.x -= position.x % this.grid.x;
         position.y -= position.y % this.grid.y;
         return position;
@@ -186,7 +188,7 @@ var Circuit = /** @class */ (function () {
                 // Draw unfinished connection
                 mainCircuit.refrashCanvas();
                 var ioPosition = null;
-                var mousePosition = mainCircuit.getMousePositionOnCanvas(e);
+                var mousePosition = mainCircuit.stickPositionToGrid(mainCircuit.getMousePositionOnCanvas(e));
                 mainCircuit.ctx.beginPath();
                 if (mainCircuit.activeIO.ioType === IO_TYPE.Input) {
                     ioPosition = mainCircuit.activeIO.gate.getInputPosition(mainCircuit.activeIO.ioNr);
@@ -247,7 +249,7 @@ var Circuit = /** @class */ (function () {
                     });
                 }
                 else {
-                    var connGate = new Connection_Gate(mainCircuit.getMousePositionOnCanvas(e));
+                    var connGate = new Connection_Gate(mainCircuit.stickPositionToGrid(mainCircuit.getMousePositionOnCanvas(e)));
                     mainCircuit.gates.push(connGate);
                     mainCircuit.connectionManager.addConnection({
                         fromGate: mainCircuit.activeIO.gate,
