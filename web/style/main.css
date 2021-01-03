@@ -19,10 +19,51 @@ body canvas {
   float: left;
 }
 
+body #menu-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  background-color: #2b2b2b;
+  border: 1px solid #4d4c4c;
+}
+
+body #menu-bar ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  list-style: none;
+}
+
+body #menu-bar ul li {
+  height: 100%;
+}
+
+body #menu-bar ul li button {
+  border: none;
+  background-color: #202020;
+  color: #c4c4c4;
+  height: 100%;
+  margin-right: 4px;
+}
+
+body #menu-bar ul li button:hover, body #menu-bar ul li button:focus {
+  background-color: #2b2b2b;
+  color: #c4c4c4;
+}
+
 body #menu {
   position: fixed;
-  top: 10px;
-  left: 10px;
+  top: 3rem;
+  left: 1rem;
   width: 15rem;
   margin: 0;
   padding: 0;
@@ -70,8 +111,8 @@ body #error-container {
   position: fixed;
   bottom: 1rem;
   left: 1rem;
+  right: 1rem;
   min-height: 1rem;
-  min-width: 70%;
   background-color: #310000;
   display: -webkit-box;
   display: -ms-flexbox;

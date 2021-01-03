@@ -20,10 +20,48 @@ body{
         float: left;
     }
 
+    #menu-bar{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2rem;
+        
+        background-color: rgb(43, 43, 43);
+        border: 1px solid rgb(77, 76, 76);
+
+        ul{
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+
+            list-style: none;
+
+            li{
+                height: 100%;
+
+                button{
+                    border: none;
+                    background-color: rgb(32, 32, 32);
+                    color: rgb(196, 196, 196);
+                    height: 100%;
+                    margin-right: 4px;
+                }
+
+                button:hover, button:focus{
+                    background-color: rgb(43, 43, 43);
+                    color: rgb(196, 196, 196);
+                }
+            }
+        }
+    }
+
     #menu{
         position: fixed;
-        top: 10px;
-        left: 10px;
+        top: 3rem;
+        left: 1rem;
         width: 15rem;
         margin: 0;
         padding: 0;
@@ -80,8 +118,8 @@ body{
         position: fixed;
         bottom: 1rem;
         left: 1rem;
+        right: 1rem;
         min-height: 1rem;
-        min-width: 70%;
         background-color: rgb(49, 0, 0);
         
         display: flex;
