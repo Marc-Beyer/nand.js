@@ -1,0 +1,26 @@
+{
+  "gates": [
+    { "type": 11, "para": [{ "x": 820, "y": 200 }] },
+    { "type": 2, "para": [{ "x": 390, "y": 210 }] },
+    { "type": 8, "para": [{ "x": 600, "y": 70 }] },
+    { "type": 8, "para": [{ "x": 600, "y": 200 }] },
+    { "type": 11, "para": [{ "x": 820, "y": 70 }] },
+    { "type": 2, "para": [{ "x": 390, "y": 60 }] },
+    { "type": 14, "para": [{ "x": 690, "y": 120 }] },
+    { "type": 14, "para": [{ "x": 580, "y": 190 }] },
+    { "type": 14, "para": [{ "x": 690, "y": 190 }] },
+    { "type": 14, "para": [{ "x": 580, "y": 120 }] }
+  ],
+  "connections": [
+    { "fromGate": 2, "fromOutputNr": 0, "toGate": 6, "toInputNr": 0 },
+    { "fromGate": 6, "fromOutputNr": 0, "toGate": 7, "toInputNr": 0 },
+    { "fromGate": 7, "fromOutputNr": 0, "toGate": 3, "toInputNr": 0 },
+    { "fromGate": 3, "fromOutputNr": 0, "toGate": 8, "toInputNr": 0 },
+    { "fromGate": 8, "fromOutputNr": 0, "toGate": 9, "toInputNr": 0 },
+    { "fromGate": 9, "fromOutputNr": 0, "toGate": 2, "toInputNr": 1 },
+    { "fromGate": 3, "fromOutputNr": 0, "toGate": 0, "toInputNr": 0 },
+    { "fromGate": 2, "fromOutputNr": 0, "toGate": 4, "toInputNr": 0 },
+    { "fromGate": 5, "fromOutputNr": 0, "toGate": 2, "toInputNr": 0 },
+    { "fromGate": 1, "fromOutputNr": 0, "toGate": 3, "toInputNr": 1 }
+  ]
+}
