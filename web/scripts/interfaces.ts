@@ -12,7 +12,8 @@ enum GATE_TYPE{
     XNOR,
     Lamp,
     Display,
-    Lable
+    Lable,
+    Connection
 }
 
 enum IO_TYPE{

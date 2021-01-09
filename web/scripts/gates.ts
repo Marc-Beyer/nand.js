@@ -3,12 +3,14 @@
 class Buffer_Gate extends Gate {
     constructor(position: Position2D) {
         super("1", 1, 1, position, (inputs: boolean[]) => {return inputs});
+        this.type = GATE_TYPE.Buffer;
     }
 }
 
 class NOT_Gate extends Gate {
     constructor(position: Position2D) {
         super("1", 1, 1, position, (inputs: boolean[]) => {return [!inputs[0]]});
+        this.type = GATE_TYPE.NOT;
     }
 
     // Overrite the drawGate()
@@ -23,12 +25,14 @@ class NOT_Gate extends Gate {
 class AND_Gate extends Gate {
     constructor(position: Position2D) {
         super("&", 2, 1, position, (inputs: boolean[]) => {return [inputs[0] && inputs[1]]});
+        this.type = GATE_TYPE.AND;
     }
 }
 
 class OR_Gate extends Gate {
     constructor(position: Position2D) {
         super(String.fromCharCode(8805) + "1", 2, 1, position, (inputs: boolean[]) => {return [inputs[0] || inputs[1]]});
+        this.type = GATE_TYPE.OR;
     }
 }
 
@@ -37,6 +41,7 @@ class OR_Gate extends Gate {
 class NAND_Gate extends Gate {
     constructor(position: Position2D) {
         super("&", 2, 1, position, (inputs: boolean[]) => {return [!(inputs[0] && inputs[1])]});
+        this.type = GATE_TYPE.NAND;
     }
 
     // Overrite the drawGate()
@@ -49,6 +54,7 @@ class NAND_Gate extends Gate {
 class NOR_Gate extends Gate {
     constructor(position: Position2D) {
         super(String.fromCharCode(8805) + "1", 2, 1, position, (inputs: boolean[]) => {return [!(inputs[0] || inputs[1])]});
+        this.type = GATE_TYPE.NOR;
     }
     
     // Overrite the drawGate()
@@ -63,12 +69,14 @@ class NOR_Gate extends Gate {
 class XOR_Gate extends Gate {
     constructor(position: Position2D) {
         super("=1", 2, 1, position, (inputs: boolean[]) => {return [(inputs[0] || inputs[1]) && !(inputs[0] && inputs[1])]});
+        this.type = GATE_TYPE.XOR;
     }
 }
 
 class XNOR_Gate extends Gate {
     constructor(position: Position2D) {
         super("=1", 2, 1, position, (inputs: boolean[]) => {return [!((inputs[0] || inputs[1]) && !(inputs[0] && inputs[1]))]});
+        this.type = GATE_TYPE.XNOR;
     }
     
     // Overrite the drawGate()
@@ -83,12 +91,14 @@ class XNOR_Gate extends Gate {
 class CONST_HIGH_Gate extends Gate {
     constructor(position: Position2D) {
         super("OUT 1", 0, 1, position, (inputs: boolean[]) => {return [true]});
+        this.type = GATE_TYPE.CONST_HIGH_Gate;
     }
 }
 
 class CONST_LOW_Gate extends Gate {
     constructor(position: Position2D) {
         super("OUT 0", 0, 1, position, (inputs: boolean[]) => {return [false]});
+        this.type = GATE_TYPE.CONST_LOW_Gate;
     }
 }
 
@@ -97,6 +107,7 @@ class Switch_Gate extends Gate {
 
     constructor(position: Position2D) {
         super("", 0, 1, position, (inputs: boolean[]) => {return [this.switchState]});
+        this.type = GATE_TYPE.Switch;
     }
 
     // Overrite the isGateInPosition()
@@ -143,6 +154,7 @@ class Switch_Gate extends Gate {
 class Lamp_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 1, 0, position, (inputs: boolean[]) => {return [false]});
+        this.type = GATE_TYPE.Lamp;
         this.transform.width = this.transform.height;
     }
     
@@ -178,6 +190,7 @@ class Lamp_Gate extends Gate {
 class Display_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 4, 0, position, (inputs: boolean[]) => {return [false]});
+        this.type = GATE_TYPE.Display;
         this.transform.height = 80;
     }
     
@@ -207,6 +220,7 @@ class Lable_Gate extends Gate {
     public text: string[];
     constructor(position: Position2D, text: string) {
         super(text, 0, 0, position, (inputs: boolean[]) => {return [false]});
+        this.type = GATE_TYPE.Lable;
         this.text = text.split("\n");
         this.transform.height = this.text.length * 20 + 10;
 
@@ -239,6 +253,7 @@ class Lable_Gate extends Gate {
 class Connection_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 1, 1, position, (inputs: boolean[]) => {return inputs});
+        this.type = GATE_TYPE.Connection;
         this.transform.width = this.transform.height = 10;
         this.ioWidth = this.ioHeight;
     }

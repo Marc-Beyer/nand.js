@@ -1,4 +1,5 @@
 var mainCircuit = new Circuit({ x: 10, y: 10 });
+var saveManager = new SaveManager(mainCircuit);
 mainCircuit.gates.unshift(new Lable_Gate({ x: 350, y: 50 }, "Inputs"));
 mainCircuit.gates.unshift(new CONST_HIGH_Gate({ x: 350, y: 150 }));
 mainCircuit.gates.unshift(new CONST_LOW_Gate({ x: 350, y: 250 }));
@@ -18,7 +19,6 @@ mainCircuit.gates.unshift(new XNOR_Gate({ x: 1200, y: 250 }));
 mainCircuit.gates.unshift(new Lable_Gate({ x: 1450, y: 50 }, "Outputs"));
 mainCircuit.gates.unshift(new Lamp_Gate({ x: 1450, y: 150 }));
 mainCircuit.gates.unshift(new Display_Gate({ x: 1450, y: 250 }));
-//mainCircuit.gates[0].connections.concat({gate: mainCircuit.gates[1], outputNr: 0, inputNr: 0});
 mainCircuit.refrashCanvas();
 var dropContainer = document.getElementsByClassName("drop-container");
 var _loop_1 = function (index) {
@@ -44,52 +44,7 @@ var _loop_2 = function (index) {
             x: mainCircuit.mainCanvas.width / 2 - mainCircuit.gloabalOffset.x,
             y: mainCircuit.mainCanvas.height / 2 - mainCircuit.gloabalOffset.y
         };
-        switch (parseInt(addButton.dataset.value)) {
-            case GATE_TYPE.CONST_HIGH_Gate:
-                mainCircuit.gates.unshift(new CONST_HIGH_Gate(position));
-                break;
-            case GATE_TYPE.CONST_LOW_Gate:
-                mainCircuit.gates.unshift(new CONST_LOW_Gate(position));
-                break;
-            case GATE_TYPE.Switch:
-                mainCircuit.gates.unshift(new Switch_Gate(position));
-                break;
-            case GATE_TYPE.Buffer:
-                mainCircuit.gates.unshift(new Buffer_Gate(position));
-                break;
-            case GATE_TYPE.NOT:
-                mainCircuit.gates.unshift(new NOT_Gate(position));
-                break;
-            case GATE_TYPE.AND:
-                mainCircuit.gates.unshift(new AND_Gate(position));
-                break;
-            case GATE_TYPE.OR:
-                mainCircuit.gates.unshift(new OR_Gate(position));
-                break;
-            case GATE_TYPE.NAND:
-                mainCircuit.gates.unshift(new NAND_Gate(position));
-                break;
-            case GATE_TYPE.NOR:
-                mainCircuit.gates.unshift(new NOR_Gate(position));
-                break;
-            case GATE_TYPE.XOR:
-                mainCircuit.gates.unshift(new XOR_Gate(position));
-                break;
-            case GATE_TYPE.XNOR:
-                mainCircuit.gates.unshift(new XNOR_Gate(position));
-                break;
-            case GATE_TYPE.Lamp:
-                mainCircuit.gates.unshift(new Lamp_Gate(position));
-                break;
-            case GATE_TYPE.Display:
-                mainCircuit.gates.unshift(new Display_Gate(position));
-                break;
-            case GATE_TYPE.Lable:
-                mainCircuit.gates.unshift(new Lable_Gate(position, "Lable"));
-                break;
-        }
-        mainCircuit.refrashCanvas();
-        console.log("WWWWWWWWWW");
+        mainCircuit.addGate(parseInt(addButton.dataset.value), position);
     });
 };
 for (var index = 0; index < addButtons.length; index++) {
@@ -100,7 +55,7 @@ errorContainer.getElementsByTagName("BUTTON")[0].addEventListener("click", funct
     errorContainer.className = "hidden";
 });
 var menu = document.getElementById("menu");
-var dragContainer = document.getElementById("drag-container");
+var dragContainer = document.getElementsByClassName("drag-container")[0];
 var isDraggingMenu = false;
 dragContainer.addEventListener("mousedown", function (e) {
     isDraggingMenu = true;
@@ -113,5 +68,41 @@ document.addEventListener("mousemove", function (e) {
         return;
     menu.style.left = e.clientX - dragContainer.getBoundingClientRect().width / 2 + "px";
     menu.style.top = e.clientY - dragContainer.getBoundingClientRect().height / 2 + "px";
+});
+// 
+document.getElementById("save-btn").addEventListener("click", function (e) {
+    var saveJSON = saveManager.getSaveJSON();
+    // Create a new movable window
+    var menuWindow = new MWindow({
+        position: {
+            x: mainCircuit.mainCanvas.getBoundingClientRect().width / 2 - 200,
+            y: mainCircuit.mainCanvas.getBoundingClientRect().height / 2 - 250
+        },
+        width: 400,
+        height: 500
+    });
+    var textArea = document.createElement("textarea");
+    textArea.value = saveJSON;
+    textArea.className = "grow";
+    menuWindow.append(textArea);
+    // Create Copy and Load Btn
+    var btnContainer = document.createElement("div");
+    btnContainer.className = "flex-row";
+    var loadTextBtn = document.createElement("button");
+    loadTextBtn.textContent = "LOAD TEXT";
+    loadTextBtn.className = "grow";
+    loadTextBtn.addEventListener("click", function () {
+        saveManager.loadJSONString(textArea.value);
+    });
+    var copyAllBtn = document.createElement("button");
+    copyAllBtn.textContent = "COPY ALL";
+    copyAllBtn.className = "grow";
+    copyAllBtn.addEventListener("click", function () {
+        textArea.select();
+        document.execCommand('copy');
+    });
+    btnContainer.append(loadTextBtn);
+    btnContainer.append(copyAllBtn);
+    menuWindow.append(btnContainer);
 });
 //# sourceMappingURL=main.js.map

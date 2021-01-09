@@ -315,4 +315,55 @@ class Circuit{
         mainCircuit.zoomFactor = mainCircuit.zoomFactor;
         mainCircuit.refrashCanvas();
     }
+
+    public addGate(nr: number, position: Position2D, para: any[] = null){
+        switch (nr) {
+            case GATE_TYPE.CONST_HIGH_Gate:
+                mainCircuit.gates.unshift(new CONST_HIGH_Gate(position));
+            break;
+            case GATE_TYPE.CONST_LOW_Gate:
+                mainCircuit.gates.unshift(new CONST_LOW_Gate(position));
+            break;
+            case GATE_TYPE.Switch:
+                mainCircuit.gates.unshift(new Switch_Gate(position));
+            break;
+            case GATE_TYPE.Buffer:
+                mainCircuit.gates.unshift(new Buffer_Gate(position));
+            break;
+            case GATE_TYPE.NOT:
+                mainCircuit.gates.unshift(new NOT_Gate(position));
+            break;
+            case GATE_TYPE.AND:
+                mainCircuit.gates.unshift(new AND_Gate(position));
+            break;
+            case GATE_TYPE.OR:
+                mainCircuit.gates.unshift(new OR_Gate(position));
+            break;
+            case GATE_TYPE.NAND:
+                mainCircuit.gates.unshift(new NAND_Gate(position));
+            break;
+            case GATE_TYPE.NOR:
+                mainCircuit.gates.unshift(new NOR_Gate(position));
+            break;
+            case GATE_TYPE.XOR:
+                mainCircuit.gates.unshift(new XOR_Gate(position));
+            break;
+            case GATE_TYPE.XNOR:
+                mainCircuit.gates.unshift(new XNOR_Gate(position));
+            break;
+            case GATE_TYPE.Lamp:
+                mainCircuit.gates.unshift(new Lamp_Gate(position));
+            break;
+            case GATE_TYPE.Display:
+                mainCircuit.gates.unshift(new Display_Gate(position));
+            break;
+            case GATE_TYPE.Lable:
+                mainCircuit.gates.unshift(new Lable_Gate(position, para[0]));
+            break;
+            case GATE_TYPE.Connection:
+                mainCircuit.gates.unshift(new Connection_Gate(position));
+            break;
+        }
+        mainCircuit.refrashCanvas();
+    }
 }

@@ -1,0 +1,33 @@
+{
+  "gates": [
+    { "type": 12, "para": [{ "x": 1450, "y": 250 }] },
+    { "type": 11, "para": [{ "x": 1450, "y": 150 }] },
+    { "type": 13, "para": [{ "x": 1450, "y": 50 }, "Outputs"] },
+    { "type": 10, "para": [{ "x": 1200, "y": 250 }] },
+    { "type": 9, "para": [{ "x": 1200, "y": 150 }] },
+    {
+      "type": 13,
+      "para": [{ "x": 1200, "y": 50 }, "Exclusive or\nand Biconditional"]
+    },
+    { "type": 8, "para": [{ "x": 950, "y": 250 }] },
+    { "type": 7, "para": [{ "x": 950, "y": 150 }] },
+    {
+      "type": 13,
+      "para": [{ "x": 950, "y": 50 }, "Alternative denial\nand Joint denial"]
+    },
+    { "type": 6, "para": [{ "x": 750, "y": 250 }] },
+    { "type": 5, "para": [{ "x": 750, "y": 150 }] },
+    {
+      "type": 13,
+      "para": [{ "x": 750, "y": 50 }, "Conjunction\nand Disjunction"]
+    },
+    { "type": 4, "para": [{ "x": 550, "y": 250 }] },
+    { "type": 3, "para": [{ "x": 550, "y": 150 }] },
+    { "type": 13, "para": [{ "x": 550, "y": 50 }, "1-Input gates"] },
+    { "type": 2, "para": [{ "x": 350, "y": 350 }] },
+    { "type": 1, "para": [{ "x": 350, "y": 250 }] },
+    { "type": 0, "para": [{ "x": 350, "y": 150 }] },
+    { "type": 13, "para": [{ "x": 350, "y": 50 }, "Inputs"] }
+  ],
+  "connections": null
+}

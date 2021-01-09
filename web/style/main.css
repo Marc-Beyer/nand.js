@@ -2,6 +2,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
 }
 
@@ -72,11 +73,11 @@ body #menu {
   overflow-y: auto;
 }
 
-body #menu #menu-content #drag-container {
+body #menu #menu-content .drag-container {
   padding: 1rem;
 }
 
-body #menu #menu-content #drag-container .box {
+body #menu #menu-content .drag-container .box {
   background-color: #c4c4c4;
   height: .2rem;
 }
@@ -137,6 +138,114 @@ body #error-container button {
   background: none;
   color: #c4c4c4;
   font-size: 1rem;
+}
+
+body .movable-window {
+  position: fixed;
+  top: 3rem;
+  left: 1rem;
+  width: 15rem;
+  padding: 0rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: #2b2b2b;
+  border: 1px solid #4d4c4c;
+}
+
+body .movable-window .header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+body .movable-window .header .drag-container {
+  padding: 1rem;
+  cursor: -webkit-grab;
+  cursor: grab;
+  background-color: #2b2b2b;
+}
+
+body .movable-window .header .drag-container .box {
+  background-color: #c4c4c4;
+  height: .2rem;
+}
+
+body .movable-window .header .close-btn {
+  height: 2.2rem;
+  width: 2.2rem;
+  background-color: #9b0101;
+  color: #c4c4c4;
+  font-weight: bold;
+  border: none;
+}
+
+body .movable-window .content {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: .5rem;
+  background-color: #202020;
+}
+
+body .movable-window .content button {
+  border: none;
+  background-color: #2b2b2b;
+  color: #c4c4c4;
+  padding: .2rem;
+  margin: 0;
+}
+
+body .movable-window .content button:hover, body .movable-window .content button:focus {
+  background-color: #353535;
+  color: #c4c4c4;
+}
+
+body .movable-window .content textarea {
+  border: none;
+  background-color: #2b2b2b;
+  color: #c4c4c4;
+  margin: 0 0 .5rem 0;
+  max-width: 100%;
+}
+
+body .movable-window .content .flex-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+body .movable-window .content .flex-row * {
+  margin-left: .5rem;
+}
+
+body .movable-window .content .flex-row :first-child {
+  margin-left: 0;
+}
+
+body .movable-window .grow {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
 }
 
 body .hidden {

@@ -15,14 +15,18 @@ var __extends = (this && this.__extends) || (function () {
 var Buffer_Gate = /** @class */ (function (_super) {
     __extends(Buffer_Gate, _super);
     function Buffer_Gate(position) {
-        return _super.call(this, "1", 1, 1, position, function (inputs) { return inputs; }) || this;
+        var _this = _super.call(this, "1", 1, 1, position, function (inputs) { return inputs; }) || this;
+        _this.type = GATE_TYPE.Buffer;
+        return _this;
     }
     return Buffer_Gate;
 }(Gate));
 var NOT_Gate = /** @class */ (function (_super) {
     __extends(NOT_Gate, _super);
     function NOT_Gate(position) {
-        return _super.call(this, "1", 1, 1, position, function (inputs) { return [!inputs[0]]; }) || this;
+        var _this = _super.call(this, "1", 1, 1, position, function (inputs) { return [!inputs[0]]; }) || this;
+        _this.type = GATE_TYPE.NOT;
+        return _this;
     }
     // Overrite the drawGate()
     NOT_Gate.prototype.drawGate = function (ctx, offset) {
@@ -35,14 +39,18 @@ var NOT_Gate = /** @class */ (function (_super) {
 var AND_Gate = /** @class */ (function (_super) {
     __extends(AND_Gate, _super);
     function AND_Gate(position) {
-        return _super.call(this, "&", 2, 1, position, function (inputs) { return [inputs[0] && inputs[1]]; }) || this;
+        var _this = _super.call(this, "&", 2, 1, position, function (inputs) { return [inputs[0] && inputs[1]]; }) || this;
+        _this.type = GATE_TYPE.AND;
+        return _this;
     }
     return AND_Gate;
 }(Gate));
 var OR_Gate = /** @class */ (function (_super) {
     __extends(OR_Gate, _super);
     function OR_Gate(position) {
-        return _super.call(this, String.fromCharCode(8805) + "1", 2, 1, position, function (inputs) { return [inputs[0] || inputs[1]]; }) || this;
+        var _this = _super.call(this, String.fromCharCode(8805) + "1", 2, 1, position, function (inputs) { return [inputs[0] || inputs[1]]; }) || this;
+        _this.type = GATE_TYPE.OR;
+        return _this;
     }
     return OR_Gate;
 }(Gate));
@@ -50,7 +58,9 @@ var OR_Gate = /** @class */ (function (_super) {
 var NAND_Gate = /** @class */ (function (_super) {
     __extends(NAND_Gate, _super);
     function NAND_Gate(position) {
-        return _super.call(this, "&", 2, 1, position, function (inputs) { return [!(inputs[0] && inputs[1])]; }) || this;
+        var _this = _super.call(this, "&", 2, 1, position, function (inputs) { return [!(inputs[0] && inputs[1])]; }) || this;
+        _this.type = GATE_TYPE.NAND;
+        return _this;
     }
     // Overrite the drawGate()
     NAND_Gate.prototype.drawGate = function (ctx, offset) {
@@ -62,7 +72,9 @@ var NAND_Gate = /** @class */ (function (_super) {
 var NOR_Gate = /** @class */ (function (_super) {
     __extends(NOR_Gate, _super);
     function NOR_Gate(position) {
-        return _super.call(this, String.fromCharCode(8805) + "1", 2, 1, position, function (inputs) { return [!(inputs[0] || inputs[1])]; }) || this;
+        var _this = _super.call(this, String.fromCharCode(8805) + "1", 2, 1, position, function (inputs) { return [!(inputs[0] || inputs[1])]; }) || this;
+        _this.type = GATE_TYPE.NOR;
+        return _this;
     }
     // Overrite the drawGate()
     NOR_Gate.prototype.drawGate = function (ctx, offset) {
@@ -75,14 +87,18 @@ var NOR_Gate = /** @class */ (function (_super) {
 var XOR_Gate = /** @class */ (function (_super) {
     __extends(XOR_Gate, _super);
     function XOR_Gate(position) {
-        return _super.call(this, "=1", 2, 1, position, function (inputs) { return [(inputs[0] || inputs[1]) && !(inputs[0] && inputs[1])]; }) || this;
+        var _this = _super.call(this, "=1", 2, 1, position, function (inputs) { return [(inputs[0] || inputs[1]) && !(inputs[0] && inputs[1])]; }) || this;
+        _this.type = GATE_TYPE.XOR;
+        return _this;
     }
     return XOR_Gate;
 }(Gate));
 var XNOR_Gate = /** @class */ (function (_super) {
     __extends(XNOR_Gate, _super);
     function XNOR_Gate(position) {
-        return _super.call(this, "=1", 2, 1, position, function (inputs) { return [!((inputs[0] || inputs[1]) && !(inputs[0] && inputs[1]))]; }) || this;
+        var _this = _super.call(this, "=1", 2, 1, position, function (inputs) { return [!((inputs[0] || inputs[1]) && !(inputs[0] && inputs[1]))]; }) || this;
+        _this.type = GATE_TYPE.XNOR;
+        return _this;
     }
     // Overrite the drawGate()
     XNOR_Gate.prototype.drawGate = function (ctx, offset) {
@@ -95,14 +111,18 @@ var XNOR_Gate = /** @class */ (function (_super) {
 var CONST_HIGH_Gate = /** @class */ (function (_super) {
     __extends(CONST_HIGH_Gate, _super);
     function CONST_HIGH_Gate(position) {
-        return _super.call(this, "OUT 1", 0, 1, position, function (inputs) { return [true]; }) || this;
+        var _this = _super.call(this, "OUT 1", 0, 1, position, function (inputs) { return [true]; }) || this;
+        _this.type = GATE_TYPE.CONST_HIGH_Gate;
+        return _this;
     }
     return CONST_HIGH_Gate;
 }(Gate));
 var CONST_LOW_Gate = /** @class */ (function (_super) {
     __extends(CONST_LOW_Gate, _super);
     function CONST_LOW_Gate(position) {
-        return _super.call(this, "OUT 0", 0, 1, position, function (inputs) { return [false]; }) || this;
+        var _this = _super.call(this, "OUT 0", 0, 1, position, function (inputs) { return [false]; }) || this;
+        _this.type = GATE_TYPE.CONST_LOW_Gate;
+        return _this;
     }
     return CONST_LOW_Gate;
 }(Gate));
@@ -111,6 +131,7 @@ var Switch_Gate = /** @class */ (function (_super) {
     function Switch_Gate(position) {
         var _this = _super.call(this, "", 0, 1, position, function (inputs) { return [_this.switchState]; }) || this;
         _this.switchState = true;
+        _this.type = GATE_TYPE.Switch;
         return _this;
     }
     // Overrite the isGateInPosition()
@@ -151,6 +172,7 @@ var Lamp_Gate = /** @class */ (function (_super) {
     __extends(Lamp_Gate, _super);
     function Lamp_Gate(position) {
         var _this = _super.call(this, "", 1, 0, position, function (inputs) { return [false]; }) || this;
+        _this.type = GATE_TYPE.Lamp;
         _this.transform.width = _this.transform.height;
         return _this;
     }
@@ -185,6 +207,7 @@ var Display_Gate = /** @class */ (function (_super) {
     __extends(Display_Gate, _super);
     function Display_Gate(position) {
         var _this = _super.call(this, "", 4, 0, position, function (inputs) { return [false]; }) || this;
+        _this.type = GATE_TYPE.Display;
         _this.transform.height = 80;
         return _this;
     }
@@ -211,6 +234,7 @@ var Lable_Gate = /** @class */ (function (_super) {
     __extends(Lable_Gate, _super);
     function Lable_Gate(position, text) {
         var _this = _super.call(this, text, 0, 0, position, function (inputs) { return [false]; }) || this;
+        _this.type = GATE_TYPE.Lable;
         _this.text = text.split("\n");
         _this.transform.height = _this.text.length * 20 + 10;
         for (var _i = 0, _a = _this.text; _i < _a.length; _i++) {
@@ -241,6 +265,7 @@ var Connection_Gate = /** @class */ (function (_super) {
     __extends(Connection_Gate, _super);
     function Connection_Gate(position) {
         var _this = _super.call(this, "", 1, 1, position, function (inputs) { return inputs; }) || this;
+        _this.type = GATE_TYPE.Connection;
         _this.transform.width = _this.transform.height = 10;
         _this.ioWidth = _this.ioHeight;
         return _this;

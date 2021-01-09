@@ -8,6 +8,7 @@ class Gate {
     public boolFunction: (inputs: boolean[]) => boolean[];
     public ioWidth: number = 20;
     public ioHeight: number = 2;
+    public type: number = 0;
 
     constructor(name: string, inputs: number = 0, outputs: number = 0, position: Position2D = {x: 0, y: 0}, boolFunction: (inputs: boolean[]) => boolean[] = (inputs: boolean[]) => {return [false]}) {
         this.name = name;

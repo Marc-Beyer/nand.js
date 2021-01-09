@@ -7,6 +7,7 @@ var Gate = /** @class */ (function () {
         this.connections = [];
         this.ioWidth = 20;
         this.ioHeight = 2;
+        this.type = 0;
         this.name = name;
         this.inputs = inputs;
         this.outputs = outputs;

@@ -11,13 +11,13 @@
         <canvas id="main-canvas" width="1600" height="900"></canvas>
         <div id="menu-bar">
             <ul>
-                <li><button>Save</button></li>
-                <li><button>Load</button></li>
+                <li><button id="save-btn">Save</button></li>
+                <li><button id="load-btn">Load</button></li>
             </ul>
         </div>
         <div id="menu">
             <div id="menu-content">
-                <div id="drag-container">
+                <div class="drag-container">
                     <div class="box"></div>
                 </div>
                 <div class="drop-container">
@@ -60,11 +60,19 @@
             <p>An error occured!</p>
             <button>X</button>
         </div>
+        <div id="save-container" class="hidden">
+            <textarea>
+
+            </textarea>
+            <button>Copy text</button>
+        </div>
         <script src='./scripts/interfaces.js'></script>
         <script src='./scripts/gate.js'></script>
         <script src='./scripts/gates.js'></script>
         <script src='./scripts/connectionManager.js'></script>
         <script src='./scripts/circuit.js'></script>
+        <script src='./scripts/mWindow.js'></script>
+        <script src='./scripts/saveManager.js'></script>
         <script src='./scripts/main.js'></script>
     </body>
 </html>
