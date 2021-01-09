@@ -6,25 +6,45 @@ class SaveManager {
         this.curcit = curcit;
     }
     
+    // Load gates and connections from JSON string
     public loadJSONString(jsonString: string): boolean{
         try {
             let jsonObj = JSON.parse(jsonString);
-            mainCircuit.connectionManager.connections = [];
-            mainCircuit.gates = [];
+            this.curcit.connectionManager.connections = [];
+            this.curcit.gates = [];
 
+            // Load Gates
             let gates = jsonObj.gates;
-            for (let index = 0; index < gates.length; index++) {
+            for (let index = gates.length-1; index >= 0; index--) {
                 const gate = gates[index];
                 let posion: Position2D = gate.para[0];
                 gate.para.shift();
-                mainCircuit.addGate(gate.type, posion, gate.para);
+                this.curcit.addGate(gate.type, posion, gate.para);
             }
+
+            // Load connections
+            let connections = jsonObj.connections;
+            for (let index = 0; index < connections.length; index++) {
+                const connection = connections[index];
+                let fromGate: Gate = this.curcit.gates[connection.fromGate];
+                let toGate: Gate = this.curcit.gates[connection.toGate];
+                this.curcit.connectionManager.addConnection({
+                    fromGate: fromGate,
+                     fromOutputNr: connection.fromOutputNr,
+                     toGate: toGate,
+                     toInputNr: connection.toInputNr
+                    });
+            }
+
+            this.curcit.refrashCanvas();
         } catch (error) {
+            this.curcit.refrashCanvas();
             return false;
         }
         return true;
     }
 
+    // Return a JSON-string with all Gates and connections
     public getSaveJSON(): string{
         let gates: any[] = [];
         for (let index = 0; index < this.curcit.gates.length; index++) {
@@ -44,23 +64,22 @@ class SaveManager {
             };
         }
 
-        let connections = null;
+        let connections = [];
         for (let index = 0; index < this.curcit.connectionManager.connections.length; index++) {
             let element = this.curcit.connectionManager.connections[index];
-            connections = {
+            connections.push({
                 fromGate: this.curcit.gates.indexOf(element.fromGate),
                 fromOutputNr: element.fromOutputNr,
                 toGate: this.curcit.gates.indexOf(element.toGate),
                 toInputNr: element.toInputNr
-            };
+            });
         }
 
         let saveJSON = {
             gates: gates,
             connections: connections
         }
-        console.log("saveJSON", saveJSON);
-        console.log("saveJSON", JSON.stringify(saveJSON));
+        
         return JSON.stringify(saveJSON);
     }
 }

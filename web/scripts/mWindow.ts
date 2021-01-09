@@ -48,9 +48,8 @@ class MWindow {
 
         dargDiv.addEventListener("mousedown", (e: MouseEvent)=>{
             MWindow.activeWindow  = this;
-            MWindow.activeWindow.dragOffset.x = e.offsetX; // this.htmlElement.getBoundingClientRect().left -
-            MWindow.activeWindow.dragOffset.y = e.offsetY; // his.htmlElement.getBoundingClientRect().top - 
-            console.log("this.htmlElement.getBoundingClientRect()", this.htmlElement.getBoundingClientRect(), e);
+            MWindow.activeWindow.dragOffset.x = e.offsetX;
+            MWindow.activeWindow.dragOffset.y = e.offsetY;
         });
         
         document.addEventListener("mouseup", (e: MouseEvent)=>{
@@ -64,9 +63,7 @@ class MWindow {
             if(MWindow.activeWindow == null)return;
             MWindow.activeWindow.htmlElement.style.left = e.clientX - MWindow.activeWindow.dragOffset.x + "px";
             MWindow.activeWindow.htmlElement.style.top = e.clientY - MWindow.activeWindow.dragOffset.y + "px";
-            console.log("dragOffset", MWindow.activeWindow.dragOffset);
         });
-        console.log("createa a new movable window", this.transform, this.htmlElement);
     }
 
     // Append an HTMLElement to the content-div

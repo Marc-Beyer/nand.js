@@ -273,7 +273,7 @@ var Connection_Gate = /** @class */ (function (_super) {
     // Overrite the drawGate()
     Connection_Gate.prototype.drawGate = function (ctx, offset) {
         // Set style
-        if (this.inputSignals[1]) {
+        if (this.inputSignals[0]) {
             ctx.fillStyle = COLOR.active;
         }
         else {
@@ -299,7 +299,7 @@ var Connection_Gate = /** @class */ (function (_super) {
         var outputPosition = this.getOutputPosition(1);
         if (outputPosition.x - 20 < position.x && outputPosition.x + 20 > position.x &&
             outputPosition.y - 20 < position.y && outputPosition.y + 20 > position.y) {
-            return 1;
+            return 0;
         }
         return null;
     };

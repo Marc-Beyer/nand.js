@@ -261,7 +261,7 @@ class Connection_Gate extends Gate {
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
         // Set style
-        if(this.inputSignals[1]){
+        if(this.inputSignals[0]){
             ctx.fillStyle = COLOR.active;
         }else{
             ctx.fillStyle = COLOR.main;
@@ -289,7 +289,7 @@ class Connection_Gate extends Gate {
         let outputPosition = this.getOutputPosition(1);
         if(outputPosition.x - 20 < position.x && outputPosition.x + 20 > position.x &&
             outputPosition.y - 20 < position.y && outputPosition.y + 20 > position.y){
-                return 1;
+                return 0;
         }
         return null;
     }

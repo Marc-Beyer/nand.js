@@ -255,7 +255,7 @@ var Circuit = /** @class */ (function () {
                         fromGate: mainCircuit.activeIO.gate,
                         fromOutputNr: mainCircuit.activeIO.ioNr,
                         toGate: connGate,
-                        toInputNr: 1
+                        toInputNr: 0
                     });
                 }
             }

@@ -2,24 +2,42 @@ var SaveManager = /** @class */ (function () {
     function SaveManager(curcit) {
         this.curcit = curcit;
     }
+    // Load gates and connections from JSON string
     SaveManager.prototype.loadJSONString = function (jsonString) {
         try {
             var jsonObj = JSON.parse(jsonString);
-            mainCircuit.connectionManager.connections = [];
-            mainCircuit.gates = [];
+            this.curcit.connectionManager.connections = [];
+            this.curcit.gates = [];
+            // Load Gates
             var gates = jsonObj.gates;
-            for (var index = 0; index < gates.length; index++) {
+            for (var index = gates.length - 1; index >= 0; index--) {
                 var gate = gates[index];
                 var posion = gate.para[0];
                 gate.para.shift();
-                mainCircuit.addGate(gate.type, posion, gate.para);
+                this.curcit.addGate(gate.type, posion, gate.para);
             }
+            // Load connections
+            var connections = jsonObj.connections;
+            for (var index = 0; index < connections.length; index++) {
+                var connection = connections[index];
+                var fromGate = this.curcit.gates[connection.fromGate];
+                var toGate = this.curcit.gates[connection.toGate];
+                this.curcit.connectionManager.addConnection({
+                    fromGate: fromGate,
+                    fromOutputNr: connection.fromOutputNr,
+                    toGate: toGate,
+                    toInputNr: connection.toInputNr
+                });
+            }
+            this.curcit.refrashCanvas();
         }
         catch (error) {
+            this.curcit.refrashCanvas();
             return false;
         }
         return true;
     };
+    // Return a JSON-string with all Gates and connections
     SaveManager.prototype.getSaveJSON = function () {
         var gates = [];
         for (var index = 0; index < this.curcit.gates.length; index++) {
@@ -38,22 +56,20 @@ var SaveManager = /** @class */ (function () {
                 para: para
             };
         }
-        var connections = null;
+        var connections = [];
         for (var index = 0; index < this.curcit.connectionManager.connections.length; index++) {
             var element = this.curcit.connectionManager.connections[index];
-            connections = {
+            connections.push({
                 fromGate: this.curcit.gates.indexOf(element.fromGate),
                 fromOutputNr: element.fromOutputNr,
                 toGate: this.curcit.gates.indexOf(element.toGate),
                 toInputNr: element.toInputNr
-            };
+            });
         }
         var saveJSON = {
             gates: gates,
             connections: connections
         };
-        console.log("saveJSON", saveJSON);
-        console.log("saveJSON", JSON.stringify(saveJSON));
         return JSON.stringify(saveJSON);
     };
     return SaveManager;

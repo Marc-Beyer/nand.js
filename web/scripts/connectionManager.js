@@ -27,6 +27,12 @@ var ConnectionManager = /** @class */ (function () {
             if (iterator.toGate == connection.toGate && iterator.toInputNr == connection.toInputNr) {
                 return false;
             }
+            if (connection.toInputNr >= connection.toGate.inputs) {
+                return false;
+            }
+            if (connection.fromOutputNr >= connection.fromGate.outputs) {
+                return false;
+            }
         }
         this.connections.push(connection);
         if (connection.toGate.updateInput(connection.toInputNr, connection.fromGate.getOutput(connection.fromOutputNr))) {
@@ -105,10 +111,6 @@ var ConnectionManager = /** @class */ (function () {
             return false;
         }
         var distanceToLine = b * Math.sin(this.toRadians(A));
-        //console.log("Triangle: (" + pointA.x + "|" + pointA.y + "), (" + pointB.x + "|" + pointB.y + "), (" + pointC.x + "|" + pointC.y + ")");
-        //console.log("Distance: a " + a + ", b " + b + ", c " + c);
-        //console.log("Angles: A " + A + ", B " + B + ", C " + C);
-        //console.log("distanceToLine: A " + distanceToLine);
         if (distanceToLine > 10) {
             return false;
         }
