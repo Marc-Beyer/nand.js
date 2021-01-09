@@ -86,7 +86,7 @@ class XNOR_Gate extends Gate {
     }
 }
 
-// Outputs
+// Inputs
 
 class CONST_HIGH_Gate extends Gate {
     constructor(position: Position2D) {
@@ -99,6 +99,21 @@ class CONST_LOW_Gate extends Gate {
     constructor(position: Position2D) {
         super("OUT 0", 0, 1, position, (inputs: boolean[]) => {return [false]});
         this.type = GATE_TYPE.CONST_LOW_Gate;
+    }
+}
+
+class Clock_Gate extends Gate {
+    public clockState: boolean = true;
+
+    constructor(position: Position2D) {
+        super("", 0, 1, position, (inputs: boolean[]) => {return [this.clockState]});
+        this.type = GATE_TYPE.Clock;
+        let gate = this;
+        setInterval(function(){ 
+            gate.clockState = !gate.clockState; 
+            mainCircuit.connectionManager.updateConnectedGates(gate);
+            mainCircuit.refrashCanvas();
+        }, 1000);
     }
 }
 
@@ -116,9 +131,6 @@ class Switch_Gate extends Gate {
         if(isInPos){
             this.switchState = !this.switchState;
         }
-        /*for (let connection of this.connections) {
-            connection.gate.updateInput(connection.inputNr, this.getOutput());
-        }*/
         mainCircuit.connectionManager.updateConnectedGates(this);
         return isInPos;
     }

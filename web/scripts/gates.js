@@ -107,7 +107,7 @@ var XNOR_Gate = /** @class */ (function (_super) {
     };
     return XNOR_Gate;
 }(Gate));
-// Outputs
+// Inputs
 var CONST_HIGH_Gate = /** @class */ (function (_super) {
     __extends(CONST_HIGH_Gate, _super);
     function CONST_HIGH_Gate(position) {
@@ -126,6 +126,22 @@ var CONST_LOW_Gate = /** @class */ (function (_super) {
     }
     return CONST_LOW_Gate;
 }(Gate));
+var Clock_Gate = /** @class */ (function (_super) {
+    __extends(Clock_Gate, _super);
+    function Clock_Gate(position) {
+        var _this = _super.call(this, "", 0, 1, position, function (inputs) { return [_this.clockState]; }) || this;
+        _this.clockState = true;
+        _this.type = GATE_TYPE.Clock;
+        var gate = _this;
+        setInterval(function () {
+            gate.clockState = !gate.clockState;
+            mainCircuit.connectionManager.updateConnectedGates(gate);
+            mainCircuit.refrashCanvas();
+        }, 1000);
+        return _this;
+    }
+    return Clock_Gate;
+}(Gate));
 var Switch_Gate = /** @class */ (function (_super) {
     __extends(Switch_Gate, _super);
     function Switch_Gate(position) {
@@ -140,9 +156,6 @@ var Switch_Gate = /** @class */ (function (_super) {
         if (isInPos) {
             this.switchState = !this.switchState;
         }
-        /*for (let connection of this.connections) {
-            connection.gate.updateInput(connection.inputNr, this.getOutput());
-        }*/
         mainCircuit.connectionManager.updateConnectedGates(this);
         return isInPos;
     };

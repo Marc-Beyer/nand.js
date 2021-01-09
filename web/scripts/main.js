@@ -4,6 +4,7 @@ mainCircuit.gates.unshift(new Lable_Gate({ x: 350, y: 50 }, "Inputs"));
 mainCircuit.gates.unshift(new CONST_HIGH_Gate({ x: 350, y: 150 }));
 mainCircuit.gates.unshift(new CONST_LOW_Gate({ x: 350, y: 250 }));
 mainCircuit.gates.unshift(new Switch_Gate({ x: 350, y: 350 }));
+mainCircuit.gates.unshift(new Clock_Gate({ x: 350, y: 450 }));
 mainCircuit.gates.unshift(new Lable_Gate({ x: 550, y: 50 }, "1-Input gates"));
 mainCircuit.gates.unshift(new Buffer_Gate({ x: 550, y: 150 }));
 mainCircuit.gates.unshift(new NOT_Gate({ x: 550, y: 250 }));
