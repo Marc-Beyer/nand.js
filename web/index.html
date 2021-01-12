@@ -9,12 +9,7 @@
     </head>
     <body>
         <canvas id="main-canvas" width="1600" height="900"></canvas>
-        <div id="menu-bar">
-            <ul>
-                <li><button id="save-btn">Save</button></li>
-                <li><button id="load-btn">Load</button></li>
-            </ul>
-        </div>
+        
         <div id="menu">
             <div id="menu-content">
                 <div class="drag-container">
@@ -60,18 +55,41 @@
             <p>An error occured!</p>
             <button>X</button>
         </div>
-        <div id="save-container" class="hidden">
-            <textarea>
-
-            </textarea>
-            <button>Copy text</button>
+        
+        <div id="menu-bar">
+            <ul>
+                <li><button id="file-btn">File</button>
+                    <ul class="submenu">
+                        <li><button id="save-as-text-btn">Save as Text...</button></li>
+                        <li><button id="save-as-file-btn">Save as File...</button></li>
+                        <li><button id="save-as-image-btn">Save as Image...</button></li>
+                        <li><button id="load-text-btn">Save as Text...</button></li>
+                        <li><button id="load-file-btn">Save as File...</button></li>
+                    </ul>
+                </li>
+                <li><button id="tools-btn">Tools</button>
+                    <ul class="submenu">
+                        <li><button id="move-to-center-btn">Move to (0,0)</button></li>
+                        <li><button id="open-logic-gate-window-btn">Open LogicGate-window</button></li>
+                    </ul>
+                </li>
+                <li><button id="options-btn">Options</button>
+                    <ul class="submenu">
+                        <li><button id="color-btn">Color schema</button></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
+
         <script src='./scripts/interfaces.js'></script>
         <script src='./scripts/gate.js'></script>
         <script src='./scripts/gates.js'></script>
         <script src='./scripts/connectionManager.js'></script>
         <script src='./scripts/circuit.js'></script>
+        
         <script src='./scripts/mWindow.js'></script>
+        <script src='./scripts/windows/savefileWindow.js'></script>
+
         <script src='./scripts/saveManager.js'></script>
         <script src='./scripts/main.js'></script>
     </body>

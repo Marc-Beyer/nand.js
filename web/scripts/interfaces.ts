@@ -13,7 +13,9 @@ enum GATE_TYPE{
     Lamp,
     Display,
     Lable,
-    Connection
+    Connection,
+    Clock,
+    Button
 }
 
 enum IO_TYPE{

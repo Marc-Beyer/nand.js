@@ -147,6 +147,10 @@ var Gate = /** @class */ (function () {
     Gate.prototype.toString = function () {
         return this.name + " (" + this.transform.position.x + "," + this.transform.position.y + "," + this.transform.width + "," + this.transform.height + ")";
     };
+    // Is called when the gate is destroyed
+    Gate.prototype.onDestroy = function () { };
+    // Is called when the mouse is up on the active gate
+    Gate.prototype.onMouseUp = function () { };
     return Gate;
 }());
 //# sourceMappingURL=gate.js.map

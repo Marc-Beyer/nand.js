@@ -39,6 +39,8 @@ class SaveManager {
             this.curcit.refrashCanvas();
         } catch (error) {
             this.curcit.refrashCanvas();
+            document.getElementById("error-container").getElementsByTagName("P")[0].textContent = "An error occured! Could not parse the date.";
+            document.getElementById("error-container").className = "";
             return false;
         }
         return true;

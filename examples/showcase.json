@@ -29,5 +29,4 @@
     { "type": 0, "para": [{ "x": 350, "y": 150 }] },
     { "type": 13, "para": [{ "x": 350, "y": 50 }, "Inputs"] }
   ],
-  "connections": null
-}
+  "connections":{"fromGate":17,"fromOutputNr":0,"toGate":13,"toInputNr":0}}

@@ -7,6 +7,7 @@ mainCircuit.gates.unshift(new CONST_HIGH_Gate({x: 350, y: 150}));
 mainCircuit.gates.unshift(new CONST_LOW_Gate({x: 350, y: 250}));
 mainCircuit.gates.unshift(new Switch_Gate({x: 350, y: 350}));
 mainCircuit.gates.unshift(new Clock_Gate({x: 350, y: 450}));
+mainCircuit.gates.unshift(new Button_Gate({x: 350, y: 550}));
 
 mainCircuit.gates.unshift(new Lable_Gate({x: 550, y: 50}, "1-Input gates"));
 mainCircuit.gates.unshift(new Buffer_Gate({x: 550, y: 150}));
@@ -40,7 +41,7 @@ for (let index = 0; index < dropContainer.length; index++) {
         }else{
             element.className += " open";
         }
-    })
+    });
 }
 
 let addButtons = document.getElementsByClassName("add");
@@ -79,43 +80,30 @@ document.addEventListener("mousemove", (e: MouseEvent)=>{
     menu.style.top = e.clientY - dragContainer.getBoundingClientRect().height/2 + "px";
 });
 
-// 
-document.getElementById("save-btn").addEventListener("click", (e)=>{
+// Add Listener to save-as-text-btn
+document.getElementById("save-as-text-btn").addEventListener("click", (e)=>{
     let saveJSON = saveManager.getSaveJSON();
     // Create a new movable window
-    let menuWindow = new MWindow({
+    new SavefileWindow({
         position: {
             x: mainCircuit.mainCanvas.getBoundingClientRect().width/2-200,
             y: mainCircuit.mainCanvas.getBoundingClientRect().height/2-250
         },
         width: 400,
         height: 500
-    });
-    let textArea: HTMLTextAreaElement = document.createElement("textarea") as HTMLTextAreaElement;
-    textArea.value = saveJSON;
-    textArea.className = "grow";
-    menuWindow.append(textArea);
-
-    // Create Copy and Load Btn
-    let btnContainer = document.createElement("div");
-    btnContainer.className = "flex-row";
-    let loadTextBtn = document.createElement("button");
-    loadTextBtn.textContent = "LOAD TEXT";
-    loadTextBtn.className = "grow";
-    loadTextBtn.addEventListener("click", ()=>{
-        saveManager.loadJSONString(textArea.value);
-    });
-    let copyAllBtn = document.createElement("button");
-    copyAllBtn.textContent = "COPY ALL";
-    copyAllBtn.className = "grow";
-    copyAllBtn.addEventListener("click", ()=>{
-        textArea.select();
-        document.execCommand('copy');
-    });
-
-    btnContainer.append(loadTextBtn);
-    btnContainer.append(copyAllBtn);
-    menuWindow.append(btnContainer);
-    
+    }, saveJSON);
 });
 
+// Add Listener to load-text-btn
+document.getElementById("load-text-btn").addEventListener("click", (e)=>{
+    let saveJSON = saveManager.getSaveJSON();
+    // Create a new movable window
+    new SavefileWindow({
+        position: {
+            x: mainCircuit.mainCanvas.getBoundingClientRect().width/2-200,
+            y: mainCircuit.mainCanvas.getBoundingClientRect().height/2-250
+        },
+        width: 400,
+        height: 500
+    }, saveJSON);
+});

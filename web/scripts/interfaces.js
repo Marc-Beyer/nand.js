@@ -15,6 +15,8 @@ var GATE_TYPE;
     GATE_TYPE[GATE_TYPE["Display"] = 12] = "Display";
     GATE_TYPE[GATE_TYPE["Lable"] = 13] = "Lable";
     GATE_TYPE[GATE_TYPE["Connection"] = 14] = "Connection";
+    GATE_TYPE[GATE_TYPE["Clock"] = 15] = "Clock";
+    GATE_TYPE[GATE_TYPE["Button"] = 16] = "Button";
 })(GATE_TYPE || (GATE_TYPE = {}));
 var IO_TYPE;
 (function (IO_TYPE) {

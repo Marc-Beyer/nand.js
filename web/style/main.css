@@ -46,9 +46,11 @@ body #menu-bar ul {
 
 body #menu-bar ul li {
   height: 100%;
+  cursor: pointer;
 }
 
 body #menu-bar ul li button {
+  cursor: pointer;
   border: none;
   background-color: #202020;
   color: #c4c4c4;
@@ -59,6 +61,28 @@ body #menu-bar ul li button {
 body #menu-bar ul li button:hover, body #menu-bar ul li button:focus {
   background-color: #2b2b2b;
   color: #c4c4c4;
+}
+
+body #menu-bar ul li .submenu {
+  position: absolute;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  display: none;
+}
+
+body #menu-bar ul li .submenu li {
+  width: 100%;
+}
+
+body #menu-bar ul li .submenu li button {
+  width: 100%;
+  border: 1px solid #4d4c4c;
+}
+
+body #menu-bar ul li:hover .submenu {
+  display: block;
 }
 
 body #menu {

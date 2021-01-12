@@ -5,6 +5,7 @@ mainCircuit.gates.unshift(new CONST_HIGH_Gate({ x: 350, y: 150 }));
 mainCircuit.gates.unshift(new CONST_LOW_Gate({ x: 350, y: 250 }));
 mainCircuit.gates.unshift(new Switch_Gate({ x: 350, y: 350 }));
 mainCircuit.gates.unshift(new Clock_Gate({ x: 350, y: 450 }));
+mainCircuit.gates.unshift(new Button_Gate({ x: 350, y: 550 }));
 mainCircuit.gates.unshift(new Lable_Gate({ x: 550, y: 50 }, "1-Input gates"));
 mainCircuit.gates.unshift(new Buffer_Gate({ x: 550, y: 150 }));
 mainCircuit.gates.unshift(new NOT_Gate({ x: 550, y: 250 }));
@@ -70,40 +71,30 @@ document.addEventListener("mousemove", function (e) {
     menu.style.left = e.clientX - dragContainer.getBoundingClientRect().width / 2 + "px";
     menu.style.top = e.clientY - dragContainer.getBoundingClientRect().height / 2 + "px";
 });
-// 
-document.getElementById("save-btn").addEventListener("click", function (e) {
+// Add Listener to save-as-text-btn
+document.getElementById("save-as-text-btn").addEventListener("click", function (e) {
     var saveJSON = saveManager.getSaveJSON();
     // Create a new movable window
-    var menuWindow = new MWindow({
+    new SavefileWindow({
         position: {
             x: mainCircuit.mainCanvas.getBoundingClientRect().width / 2 - 200,
             y: mainCircuit.mainCanvas.getBoundingClientRect().height / 2 - 250
         },
         width: 400,
         height: 500
-    });
-    var textArea = document.createElement("textarea");
-    textArea.value = saveJSON;
-    textArea.className = "grow";
-    menuWindow.append(textArea);
-    // Create Copy and Load Btn
-    var btnContainer = document.createElement("div");
-    btnContainer.className = "flex-row";
-    var loadTextBtn = document.createElement("button");
-    loadTextBtn.textContent = "LOAD TEXT";
-    loadTextBtn.className = "grow";
-    loadTextBtn.addEventListener("click", function () {
-        saveManager.loadJSONString(textArea.value);
-    });
-    var copyAllBtn = document.createElement("button");
-    copyAllBtn.textContent = "COPY ALL";
-    copyAllBtn.className = "grow";
-    copyAllBtn.addEventListener("click", function () {
-        textArea.select();
-        document.execCommand('copy');
-    });
-    btnContainer.append(loadTextBtn);
-    btnContainer.append(copyAllBtn);
-    menuWindow.append(btnContainer);
+    }, saveJSON);
+});
+// Add Listener to load-text-btn
+document.getElementById("load-text-btn").addEventListener("click", function (e) {
+    var saveJSON = saveManager.getSaveJSON();
+    // Create a new movable window
+    new SavefileWindow({
+        position: {
+            x: mainCircuit.mainCanvas.getBoundingClientRect().width / 2 - 200,
+            y: mainCircuit.mainCanvas.getBoundingClientRect().height / 2 - 250
+        },
+        width: 400,
+        height: 500
+    }, saveJSON);
 });
 //# sourceMappingURL=main.js.map

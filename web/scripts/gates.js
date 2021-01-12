@@ -133,20 +133,73 @@ var Clock_Gate = /** @class */ (function (_super) {
         _this.clockState = true;
         _this.type = GATE_TYPE.Clock;
         var gate = _this;
-        setInterval(function () {
+        _this.interval = setInterval(function () {
             gate.clockState = !gate.clockState;
             mainCircuit.connectionManager.updateConnectedGates(gate);
             mainCircuit.refrashCanvas();
         }, 1000);
         return _this;
     }
+    // Overrite the drawGate()
+    Clock_Gate.prototype.drawGate = function (ctx, offset) {
+        _super.prototype.drawGate.call(this, ctx, offset);
+        ctx.beginPath();
+        ctx.moveTo(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + offset.y + (this.transform.height / 4) * 3);
+        ctx.lineTo(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + offset.y + this.transform.height / 4);
+        ctx.lineTo(this.transform.position.x + offset.x + this.transform.width / 2, this.transform.position.y + offset.y + this.transform.height / 4);
+        ctx.lineTo(this.transform.position.x + offset.x + this.transform.width / 2, this.transform.position.y + offset.y + (this.transform.height / 4) * 3);
+        ctx.lineTo(this.transform.position.x + offset.x + (this.transform.width / 4) * 3, this.transform.position.y + offset.y + (this.transform.height / 4) * 3);
+        ctx.lineTo(this.transform.position.x + offset.x + (this.transform.width / 4) * 3, this.transform.position.y + offset.y + this.transform.height / 4);
+        ctx.stroke();
+    };
+    // Is call when the gate is destroyed
+    Clock_Gate.prototype.onDestroy = function () {
+        clearInterval(this.interval);
+    };
     return Clock_Gate;
+}(Gate));
+var Button_Gate = /** @class */ (function (_super) {
+    __extends(Button_Gate, _super);
+    function Button_Gate(position) {
+        var _this = _super.call(this, "", 0, 1, position, function (inputs) { return [_this.buttonState]; }) || this;
+        _this.buttonState = false;
+        _this.type = GATE_TYPE.Button;
+        return _this;
+    }
+    // Overrite the isGateInPosition()
+    Button_Gate.prototype.isGateInPosition = function (position) {
+        var isInPos = _super.prototype.isGateInPosition.call(this, position);
+        if (isInPos) {
+            this.buttonState = true;
+        }
+        mainCircuit.connectionManager.updateConnectedGates(this);
+        mainCircuit.refrashCanvas();
+        return isInPos;
+    };
+    // Is called when the mouse is up on the active gate
+    Button_Gate.prototype.onMouseUp = function () {
+        this.buttonState = false;
+        mainCircuit.connectionManager.updateConnectedGates(this);
+    };
+    // Overrite the drawGate()
+    Button_Gate.prototype.drawGate = function (ctx, offset) {
+        _super.prototype.drawGate.call(this, ctx, offset);
+        // Draw background
+        ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + offset.y + this.transform.height / 4, this.transform.width / 2, this.transform.height / 2);
+        if (this.buttonState) {
+            // Set style
+            ctx.fillStyle = COLOR.dark;
+            ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4 + 2, this.transform.position.y + offset.y + this.transform.height / 4 + 2, this.transform.width / 2 - 4, this.transform.height / 2 - 4);
+            ctx.fillStyle = COLOR.main;
+        }
+    };
+    return Button_Gate;
 }(Gate));
 var Switch_Gate = /** @class */ (function (_super) {
     __extends(Switch_Gate, _super);
     function Switch_Gate(position) {
         var _this = _super.call(this, "", 0, 1, position, function (inputs) { return [_this.switchState]; }) || this;
-        _this.switchState = true;
+        _this.switchState = false;
         _this.type = GATE_TYPE.Switch;
         return _this;
     }

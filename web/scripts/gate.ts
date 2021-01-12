@@ -164,4 +164,10 @@ class Gate {
     public toString(): string{
         return this.name + " (" + this.transform.position.x + "," + this.transform.position.y + "," + this.transform.width + "," + this.transform.height + ")";
     }
+
+    // Is called when the gate is destroyed
+    public onDestroy(){}
+
+    // Is called when the mouse is up on the active gate
+    onMouseUp(){}
 }

@@ -104,21 +104,82 @@ class CONST_LOW_Gate extends Gate {
 
 class Clock_Gate extends Gate {
     public clockState: boolean = true;
+    public interval: number;
 
     constructor(position: Position2D) {
         super("", 0, 1, position, (inputs: boolean[]) => {return [this.clockState]});
         this.type = GATE_TYPE.Clock;
         let gate = this;
-        setInterval(function(){ 
+        this.interval = setInterval(function(){ 
             gate.clockState = !gate.clockState; 
             mainCircuit.connectionManager.updateConnectedGates(gate);
             mainCircuit.refrashCanvas();
         }, 1000);
     }
+    
+    // Overrite the drawGate()
+    public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        super.drawGate(ctx, offset);
+
+        ctx.beginPath();
+        ctx.moveTo(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + (this.transform.height/4) * 3);
+        ctx.lineTo(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4);
+        ctx.lineTo(this.transform.position.x + offset.x + this.transform.width/2, this.transform.position.y + offset.y + this.transform.height/4);
+        ctx.lineTo(this.transform.position.x + offset.x + this.transform.width/2, this.transform.position.y + offset.y + (this.transform.height/4) * 3);
+        ctx.lineTo(this.transform.position.x + offset.x + (this.transform.width/4)*3, this.transform.position.y + offset.y + (this.transform.height/4) * 3);
+        ctx.lineTo(this.transform.position.x + offset.x + (this.transform.width/4)*3, this.transform.position.y + offset.y + this.transform.height/4);
+        ctx.stroke();
+    }
+
+    // Is call when the gate is destroyed
+    public onDestroy(){
+        clearInterval(this.interval);
+    }
+}
+
+class Button_Gate extends Gate {
+    public buttonState: boolean = false;
+
+    constructor(position: Position2D) {
+        super("", 0, 1, position, (inputs: boolean[]) => {return [this.buttonState]});
+        this.type = GATE_TYPE.Button;
+    }
+
+    // Overrite the isGateInPosition()
+    public isGateInPosition(position: Position2D): boolean {
+        let isInPos: boolean = super.isGateInPosition(position);
+        if(isInPos){
+            this.buttonState = true;
+        }
+        mainCircuit.connectionManager.updateConnectedGates(this);
+        mainCircuit.refrashCanvas();
+        return isInPos;
+    }
+
+    // Is called when the mouse is up on the active gate
+    public onMouseUp(){
+        this.buttonState = false;
+        mainCircuit.connectionManager.updateConnectedGates(this);
+    }
+
+    // Overrite the drawGate()
+    public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        super.drawGate(ctx, offset);
+
+        // Draw background
+        ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/2, this.transform.height/2);
+    
+        if(this.buttonState){
+            // Set style
+            ctx.fillStyle = COLOR.dark;
+            ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4+2, this.transform.position.y + offset.y + this.transform.height/4+2, this.transform.width/2-4, this.transform.height/2-4);
+            ctx.fillStyle = COLOR.main;
+        }
+    }
 }
 
 class Switch_Gate extends Gate {
-    public switchState: boolean = true;
+    public switchState: boolean = false;
 
     constructor(position: Position2D) {
         super("", 0, 1, position, (inputs: boolean[]) => {return [this.switchState]});
