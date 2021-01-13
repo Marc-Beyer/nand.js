@@ -10,9 +10,9 @@ class ConnectionManager {
     public drawConnations(ctx: CanvasRenderingContext2D, offset: Position2D) {
         for (let connection of this.connections) {
             if(connection.fromGate.getOutput(connection.fromOutputNr)){
-                ctx.strokeStyle = COLOR.active;
+                ctx.strokeStyle = OPTIONS.COLOR.active;
             }else{
-                ctx.strokeStyle = COLOR.main;
+                ctx.strokeStyle = OPTIONS.COLOR.main;
             }
             let outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             let inputPosition = connection.toGate.getInputPosition(connection.toInputNr);
@@ -21,7 +21,7 @@ class ConnectionManager {
             ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + offset.y);
             ctx.stroke();
         }
-        ctx.strokeStyle = COLOR.main;
+        ctx.strokeStyle = OPTIONS.COLOR.main;
     }
 
     public addConnection(connection: Connection): boolean{

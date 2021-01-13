@@ -10,50 +10,12 @@
     <body>
         <canvas id="main-canvas" width="1600" height="900"></canvas>
         
-        <div id="menu">
-            <div id="menu-content">
-                <div class="drag-container">
-                    <div class="box"></div>
-                </div>
-                <div class="drop-container">
-                    <h2>Inputs</h2>
-                    <ul>
-                        <li><a class="add" data-value="0">Constand high</a></li>
-                        <li><a class="add" data-value="1">Constand low</a></li>
-                        <li><a class="add" data-value="2">Switch</a></li>
-                    </ul>
-                </div>
-                <div class="drop-container">
-                    <h2>Logic Gates</h2>
-                    <ul>
-                        <li><a class="add" data-value="3">Buffer</a></li>
-                        <li><a class="add" data-value="4">NOT</a></li>
-                        <li><a class="add" data-value="5">AND</a></li>
-                        <li><a class="add" data-value="6">OR</a></li>
-                        <li><a class="add" data-value="7">NAND</a></li>
-                        <li><a class="add" data-value="8">NOR</a></li>
-                        <li><a class="add" data-value="9">XOR</a></li>
-                        <li><a class="add" data-value="10">XNOR</a></li>
-                    </ul>
-                </div>
-                <div class="drop-container">
-                    <h2>Outputs</h2>
-                    <ul>
-                        <li><a class="add" data-value="11">Lamp</a></li>
-                        <li><a class="add" data-value="12">Display</a></li>
-                    </ul>
-                </div>
-                <div class="drop-container">
-                    <h2>Other</h2>
-                    <ul>
-                        <li><a class="add" data-value="13">Lable</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        
+        <div id="window-container"></div>
+
         <div id="error-container" class="hidden">
             <p>An error occured!</p>
-            <button>X</button>
+            <button id="error-container-close-btn">X</button>
         </div>
         
         <div id="menu-bar">
@@ -63,8 +25,8 @@
                         <li><button id="save-as-text-btn">Save as Text...</button></li>
                         <li><button id="save-as-file-btn">Save as File...</button></li>
                         <li><button id="save-as-image-btn">Save as Image...</button></li>
-                        <li><button id="load-text-btn">Save as Text...</button></li>
-                        <li><button id="load-file-btn">Save as File...</button></li>
+                        <li><button id="load-text-btn">Load Text...</button></li>
+                        <li><button id="load-file-btn">Load File...</button></li>
                     </ul>
                 </li>
                 <li><button id="tools-btn">Tools</button>
@@ -81,6 +43,8 @@
             </ul>
         </div>
 
+        <input type="file" id="file-loader-btn" hidden="">
+
         <script src='./scripts/interfaces.js'></script>
         <script src='./scripts/gate.js'></script>
         <script src='./scripts/gates.js'></script>
@@ -89,8 +53,11 @@
         
         <script src='./scripts/mWindow.js'></script>
         <script src='./scripts/windows/savefileWindow.js'></script>
+        <script src='./scripts/windows/gatesWindow.js'></script>
+        <script src='./scripts/windows/optionsWindow.js'></script>
 
         <script src='./scripts/saveManager.js'></script>
+        <script src='./scripts/downloadManager.js'></script>
         <script src='./scripts/main.js'></script>
     </body>
 </html>

@@ -74,7 +74,7 @@ class Circuit{
         this.ctx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
 
         // Set style
-        this.ctx.lineWidth = 2;
+        this.ctx.lineWidth = OPTIONS.strokeSize;
         this.ctx.font = "17px Courier New";
         this.ctx.textAlign = "center"; 
         this.ctx.strokeStyle = "#DDDDDD";
@@ -88,7 +88,7 @@ class Circuit{
         }
 
         // Draw preview-connection
-        if(this.drawPreviewConnection !== null && mainCircuit.activeIO !== null){
+        if(this.drawPreviewConnection != null && mainCircuit.activeIO != null){
             let ioPosition: Position2D = null;
 
             mainCircuit.ctx.beginPath();
@@ -98,17 +98,16 @@ class Circuit{
                 mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.gloabalOffset.y);
             }else{
                 if(mainCircuit.activeIO.gate.getOutput(mainCircuit.activeIO.ioNr)){
-                    mainCircuit.ctx.strokeStyle = COLOR.active;
+                    mainCircuit.ctx.strokeStyle = OPTIONS.COLOR.active;
                 }else{
-                    mainCircuit.ctx.strokeStyle = COLOR.main;
+                    mainCircuit.ctx.strokeStyle = OPTIONS.COLOR.main;
                 }
                 ioPosition = mainCircuit.activeIO.gate.getOutputPosition(mainCircuit.activeIO.ioNr);
                 mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.activeIO.gate.ioWidth + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.gloabalOffset.y);
             }
-
             mainCircuit.ctx.lineTo(this.drawPreviewConnection.x + mainCircuit.gloabalOffset.x, this.drawPreviewConnection.y + mainCircuit.gloabalOffset.y);
             mainCircuit.ctx.stroke();
-            mainCircuit.ctx.strokeStyle = COLOR.main;
+            mainCircuit.ctx.strokeStyle = OPTIONS.COLOR.main;
         }
     }
 
@@ -119,7 +118,6 @@ class Circuit{
                 return gate;
             }
         }
-
         return null;
     }
     
@@ -282,14 +280,16 @@ class Circuit{
             mainCircuit.activeGate.onMouseUp();
         }
 
+        mainCircuit.activeIO = null;
         this.drawPreviewConnection = null;
         mainCircuit.refrashCanvas();
     }
 
     private mouseoutEventHandler(e: MouseEvent) {
-        ////console.log("e", e);
         mainCircuit.isMouseDown = false;
+        mainCircuit.activeIO = null;
         this.drawPreviewConnection = null;
+        mainCircuit.refrashCanvas();
     }
 
     private wheelEventHandler(e: WheelEvent){
@@ -312,7 +312,6 @@ class Circuit{
         }
     }
 
-    
     private reportWindowSize( e: UIEvent){
         mainCircuit.mainCanvasRealWidth = mainCircuit.mainCanvas.getBoundingClientRect().width;
         mainCircuit.mainCanvasRealHeight = mainCircuit.mainCanvas.getBoundingClientRect().height;
@@ -366,6 +365,12 @@ class Circuit{
             break;
             case GATE_TYPE.Connection:
                 mainCircuit.gates.unshift(new Connection_Gate(position));
+            break;
+            case GATE_TYPE.Button:
+                mainCircuit.gates.unshift(new Button_Gate(position));
+            break;
+            case GATE_TYPE.Clock:
+                mainCircuit.gates.unshift(new Clock_Gate(position));
             break;
         }
         mainCircuit.refrashCanvas();

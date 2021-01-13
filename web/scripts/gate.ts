@@ -61,13 +61,13 @@ class Gate {
     // Draws the Gate to the canvas
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D) {
         // Set style
-        ctx.fillStyle = COLOR.background;
+        ctx.fillStyle = OPTIONS.COLOR.background;
 
         // Draw background
         ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         
         // Set style
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
 
         // Draw inputs
         this.drawInputs(ctx, offset);
@@ -83,43 +83,56 @@ class Gate {
     public drawInputs(ctx: CanvasRenderingContext2D, offset: Position2D){
         for (let i = 0; i < this.inputs; i++) {
             if(this.inputSignals[i]){
-                ctx.fillStyle = COLOR.active;
+                ctx.fillStyle = OPTIONS.COLOR.active;
             }else{
-                ctx.fillStyle = COLOR.main;
+                ctx.fillStyle = OPTIONS.COLOR.main;
             }
             let inputPosition = this.getInputPosition(i);
             ctx.fillRect(inputPosition.x + offset.x, inputPosition.y + offset.y - this.ioHeight/2, this.ioWidth, this.ioHeight);
         }
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
     }
 
     public drawOutputs(ctx: CanvasRenderingContext2D, offset: Position2D){
         for (let i = 0; i < this.outputs; i++) {
             if(this.getOutput(i)){
-                ctx.fillStyle = COLOR.active;
+                ctx.fillStyle = OPTIONS.COLOR.active;
             }else{
-                ctx.fillStyle = COLOR.main;
+                ctx.fillStyle = OPTIONS.COLOR.main;
             }
             let outputPosition = this.getOutputPosition(i);
             ctx.fillRect(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioHeight/2, this.ioWidth, this.ioHeight);
         }
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
     }
     
     public drawNegatedOutputs(ctx: CanvasRenderingContext2D, offset: Position2D){
+        ctx.fillStyle = OPTIONS.COLOR.background;
         for (let i = 0; i < this.outputs; i++) {
             if(this.getOutput(i)){
-                ctx.strokeStyle = COLOR.active;
+                ctx.strokeStyle = OPTIONS.COLOR.active;
             }else{
-                ctx.strokeStyle = COLOR.main;
+                ctx.strokeStyle = OPTIONS.COLOR.main;
             }
             let outputPosition = this.getOutputPosition(i);
+            let radius = 4;
             ctx.beginPath();
-            ctx.moveTo(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioWidth/2);
-            ctx.lineTo(outputPosition.x + offset.x + this.ioWidth/2, outputPosition.y + offset.y + this.ioHeight/2);
+            
+            switch (OPTIONS.negatedIOStyle) {
+                case 0:
+                    ctx.moveTo(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioWidth/2);
+                    ctx.lineTo(outputPosition.x + offset.x + this.ioWidth/2, outputPosition.y + offset.y + this.ioHeight/2);
+                    break;
+                case 1:
+                    ctx.arc(outputPosition.x + offset.x + radius + OPTIONS.strokeSize, outputPosition.y  + offset.y, radius, 0, 2 * Math.PI);
+                    break;
+            }
+            
+            ctx.fill();
             ctx.stroke();
         }
-        ctx.strokeStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
+        ctx.strokeStyle = OPTIONS.COLOR.main;
     }
 
     // Get the position of the input with number nr

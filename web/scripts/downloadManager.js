@@ -1,27 +1,33 @@
-{
-    // Function to download data to a file
-    function download(data, filename, type) {
-        var file = new Blob([data], { type: type });
-        if (window.navigator.msSaveOrOpenBlob) // IE10+
-            window.navigator.msSaveOrOpenBlob(file, filename);
-        else { // Others
-            var a = document.createElement("a"), url = URL.createObjectURL(file);
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(function () {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 0);
-        }
+// Function to download data to a file
+function download(data, filename, type) {
+    var file = new Blob([data], { type: type });
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"), url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 0);
     }
-    //////////////////
-    // ADD LISTENER //
-    //////////////////
-    document.getElementById('visibleFileLoaderBtn').addEventListener('click', function () {
-        document.getElementById('fileLoaderBtn').click();
-    });
+}
+function onLoad(event) {
+    var jsonSaveFile = event.target.result;
+    console.log("jsonSaveFile", jsonSaveFile);
+    saveManager.loadJSONString(jsonSaveFile);
+}
+function startRead(event) {
+    var fileLoaderBtn = document.getElementById("file-loader-btn");
+    var file = fileLoaderBtn.files[0];
+    if (file) {
+        var fileReader = new FileReader();
+        fileReader.readAsText(file, "UTF-8");
+        fileReader.onload = onLoad;
+    }
 }
 /*
 function convertRegEx(str, nr){

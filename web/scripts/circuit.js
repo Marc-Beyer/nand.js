@@ -59,7 +59,7 @@ var Circuit = /** @class */ (function () {
         // Clear canvas
         this.ctx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
         // Set style
-        this.ctx.lineWidth = 2;
+        this.ctx.lineWidth = OPTIONS.strokeSize;
         this.ctx.font = "17px Courier New";
         this.ctx.textAlign = "center";
         this.ctx.strokeStyle = "#DDDDDD";
@@ -70,7 +70,7 @@ var Circuit = /** @class */ (function () {
             this.gates[i].drawGate(this.ctx, this.gloabalOffset);
         }
         // Draw preview-connection
-        if (this.drawPreviewConnection !== null && mainCircuit.activeIO !== null) {
+        if (this.drawPreviewConnection != null && mainCircuit.activeIO != null) {
             var ioPosition = null;
             mainCircuit.ctx.beginPath();
             if (mainCircuit.activeIO.ioType === IO_TYPE.Input) {
@@ -79,17 +79,17 @@ var Circuit = /** @class */ (function () {
             }
             else {
                 if (mainCircuit.activeIO.gate.getOutput(mainCircuit.activeIO.ioNr)) {
-                    mainCircuit.ctx.strokeStyle = COLOR.active;
+                    mainCircuit.ctx.strokeStyle = OPTIONS.COLOR.active;
                 }
                 else {
-                    mainCircuit.ctx.strokeStyle = COLOR.main;
+                    mainCircuit.ctx.strokeStyle = OPTIONS.COLOR.main;
                 }
                 ioPosition = mainCircuit.activeIO.gate.getOutputPosition(mainCircuit.activeIO.ioNr);
                 mainCircuit.ctx.moveTo(ioPosition.x + mainCircuit.activeIO.gate.ioWidth + mainCircuit.gloabalOffset.x, ioPosition.y + mainCircuit.gloabalOffset.y);
             }
             mainCircuit.ctx.lineTo(this.drawPreviewConnection.x + mainCircuit.gloabalOffset.x, this.drawPreviewConnection.y + mainCircuit.gloabalOffset.y);
             mainCircuit.ctx.stroke();
-            mainCircuit.ctx.strokeStyle = COLOR.main;
+            mainCircuit.ctx.strokeStyle = OPTIONS.COLOR.main;
         }
     };
     // Get the first Gate at the position
@@ -260,13 +260,15 @@ var Circuit = /** @class */ (function () {
         if (mainCircuit.activeGate !== null) {
             mainCircuit.activeGate.onMouseUp();
         }
+        mainCircuit.activeIO = null;
         this.drawPreviewConnection = null;
         mainCircuit.refrashCanvas();
     };
     Circuit.prototype.mouseoutEventHandler = function (e) {
-        ////console.log("e", e);
         mainCircuit.isMouseDown = false;
+        mainCircuit.activeIO = null;
         this.drawPreviewConnection = null;
+        mainCircuit.refrashCanvas();
     };
     Circuit.prototype.wheelEventHandler = function (e) {
         e.preventDefault();
@@ -339,6 +341,12 @@ var Circuit = /** @class */ (function () {
                 break;
             case GATE_TYPE.Connection:
                 mainCircuit.gates.unshift(new Connection_Gate(position));
+                break;
+            case GATE_TYPE.Button:
+                mainCircuit.gates.unshift(new Button_Gate(position));
+                break;
+            case GATE_TYPE.Clock:
+                mainCircuit.gates.unshift(new Clock_Gate(position));
                 break;
         }
         mainCircuit.refrashCanvas();

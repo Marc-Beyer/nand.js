@@ -7,10 +7,10 @@ var ConnectionManager = /** @class */ (function () {
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
             var connection = _a[_i];
             if (connection.fromGate.getOutput(connection.fromOutputNr)) {
-                ctx.strokeStyle = COLOR.active;
+                ctx.strokeStyle = OPTIONS.COLOR.active;
             }
             else {
-                ctx.strokeStyle = COLOR.main;
+                ctx.strokeStyle = OPTIONS.COLOR.main;
             }
             var outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             var inputPosition = connection.toGate.getInputPosition(connection.toInputNr);
@@ -19,7 +19,7 @@ var ConnectionManager = /** @class */ (function () {
             ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + offset.y);
             ctx.stroke();
         }
-        ctx.strokeStyle = COLOR.main;
+        ctx.strokeStyle = OPTIONS.COLOR.main;
     };
     ConnectionManager.prototype.addConnection = function (connection) {
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {

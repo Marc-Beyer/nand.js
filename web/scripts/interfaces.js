@@ -23,11 +23,4 @@ var IO_TYPE;
     IO_TYPE[IO_TYPE["Input"] = 0] = "Input";
     IO_TYPE[IO_TYPE["Output"] = 1] = "Output";
 })(IO_TYPE || (IO_TYPE = {}));
-var COLOR;
-(function (COLOR) {
-    COLOR["main"] = "#DDDDDD";
-    COLOR["active"] = "#FF0000";
-    COLOR["background"] = "#3B3B3B";
-    COLOR["dark"] = "#222222";
-})(COLOR || (COLOR = {}));
 //# sourceMappingURL=interfaces.js.map

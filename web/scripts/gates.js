@@ -30,8 +30,8 @@ var NOT_Gate = /** @class */ (function (_super) {
     }
     // Overrite the drawGate()
     NOT_Gate.prototype.drawGate = function (ctx, offset) {
-        this.drawNegatedOutputs(ctx, offset);
         _super.prototype.drawGate.call(this, ctx, offset);
+        this.drawNegatedOutputs(ctx, offset);
     };
     return NOT_Gate;
 }(Gate));
@@ -64,8 +64,8 @@ var NAND_Gate = /** @class */ (function (_super) {
     }
     // Overrite the drawGate()
     NAND_Gate.prototype.drawGate = function (ctx, offset) {
-        this.drawNegatedOutputs(ctx, offset);
         _super.prototype.drawGate.call(this, ctx, offset);
+        this.drawNegatedOutputs(ctx, offset);
     };
     return NAND_Gate;
 }(Gate));
@@ -78,8 +78,8 @@ var NOR_Gate = /** @class */ (function (_super) {
     }
     // Overrite the drawGate()
     NOR_Gate.prototype.drawGate = function (ctx, offset) {
-        this.drawNegatedOutputs(ctx, offset);
         _super.prototype.drawGate.call(this, ctx, offset);
+        this.drawNegatedOutputs(ctx, offset);
     };
     return NOR_Gate;
 }(Gate));
@@ -102,8 +102,8 @@ var XNOR_Gate = /** @class */ (function (_super) {
     }
     // Overrite the drawGate()
     XNOR_Gate.prototype.drawGate = function (ctx, offset) {
-        this.drawNegatedOutputs(ctx, offset);
         _super.prototype.drawGate.call(this, ctx, offset);
+        this.drawNegatedOutputs(ctx, offset);
     };
     return XNOR_Gate;
 }(Gate));
@@ -188,9 +188,9 @@ var Button_Gate = /** @class */ (function (_super) {
         ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + offset.y + this.transform.height / 4, this.transform.width / 2, this.transform.height / 2);
         if (this.buttonState) {
             // Set style
-            ctx.fillStyle = COLOR.dark;
+            ctx.fillStyle = OPTIONS.COLOR.dark;
             ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4 + 2, this.transform.position.y + offset.y + this.transform.height / 4 + 2, this.transform.width / 2 - 4, this.transform.height / 2 - 4);
-            ctx.fillStyle = COLOR.main;
+            ctx.fillStyle = OPTIONS.COLOR.main;
         }
     };
     return Button_Gate;
@@ -216,11 +216,11 @@ var Switch_Gate = /** @class */ (function (_super) {
     Switch_Gate.prototype.drawGate = function (ctx, offset) {
         _super.prototype.drawGate.call(this, ctx, offset);
         // Set style
-        ctx.fillStyle = COLOR.dark;
+        ctx.fillStyle = OPTIONS.COLOR.dark;
         // Draw background
         ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + offset.y + this.transform.height / 4, this.transform.width / 2, this.transform.height / 2);
         // Set style
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
         // Draw background
         if (this.switchState) {
             ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + offset.y + this.transform.height / 4, this.transform.width / 4, this.transform.height / 2);
@@ -246,10 +246,10 @@ var Lamp_Gate = /** @class */ (function (_super) {
     Lamp_Gate.prototype.drawGate = function (ctx, offset) {
         // Set style
         if (this.inputSignals[0]) {
-            ctx.fillStyle = COLOR.active;
+            ctx.fillStyle = OPTIONS.COLOR.active;
         }
         else {
-            ctx.fillStyle = COLOR.background;
+            ctx.fillStyle = OPTIONS.COLOR.background;
         }
         // Draw background
         var radius = this.transform.width / 2;
@@ -263,7 +263,7 @@ var Lamp_Gate = /** @class */ (function (_super) {
         ctx.lineTo(this.transform.position.x + offset.x + radius - c, this.transform.position.y + offset.y + radius + c);
         ctx.stroke();
         // Set style
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
         // Draw inputs
         this.drawInputs(ctx, offset);
     };
@@ -280,7 +280,7 @@ var Display_Gate = /** @class */ (function (_super) {
     // Overrite the drawGate()
     Display_Gate.prototype.drawGate = function (ctx, offset) {
         _super.prototype.drawGate.call(this, ctx, offset);
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
         ctx.font = "50px Courier New";
         ctx.fillText(this.intFromInput().toString(16).toUpperCase(), this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + 50);
         ctx.font = "17px Courier New";
@@ -314,11 +314,11 @@ var Lable_Gate = /** @class */ (function (_super) {
     // Overrite the drawGate()
     Lable_Gate.prototype.drawGate = function (ctx, offset) {
         // Set style
-        ctx.fillStyle = COLOR.background;
+        ctx.fillStyle = OPTIONS.COLOR.background;
         // Draw background
         ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         // Set style
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
         // Draw box and name
         ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         for (var i = 0; i < this.text.length; i++) {
@@ -340,10 +340,10 @@ var Connection_Gate = /** @class */ (function (_super) {
     Connection_Gate.prototype.drawGate = function (ctx, offset) {
         // Set style
         if (this.inputSignals[0]) {
-            ctx.fillStyle = COLOR.active;
+            ctx.fillStyle = OPTIONS.COLOR.active;
         }
         else {
-            ctx.fillStyle = COLOR.main;
+            ctx.fillStyle = OPTIONS.COLOR.main;
         }
         // Draw background
         var radius = this.transform.width / 2;
@@ -351,7 +351,7 @@ var Connection_Gate = /** @class */ (function (_super) {
         ctx.arc(this.transform.position.x + offset.x, this.transform.position.y + offset.y, radius, 0, 2 * Math.PI);
         ctx.fill();
         // Set style
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
     };
     // If the position is within the bounds of the transform return true else return false
     Connection_Gate.prototype.isGateInPosition = function (position) {

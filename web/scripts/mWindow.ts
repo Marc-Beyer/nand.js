@@ -57,12 +57,12 @@ class MWindow {
             
         });
 
-        document.body.append(this.htmlElement);
+        document.getElementById("window-container").append(this.htmlElement);
 
         document.addEventListener("mousemove", (e: MouseEvent)=>{
             if(MWindow.activeWindow == null)return;
-            MWindow.activeWindow.htmlElement.style.left = e.clientX - MWindow.activeWindow.dragOffset.x + "px";
-            MWindow.activeWindow.htmlElement.style.top = e.clientY - MWindow.activeWindow.dragOffset.y + "px";
+            MWindow.activeWindow.htmlElement.style.left = MWindow.clampMin(0, e.clientX - MWindow.activeWindow.dragOffset.x) + "px";
+            MWindow.activeWindow.htmlElement.style.top = MWindow.clampMin(0, e.clientY - MWindow.activeWindow.dragOffset.y) + "px";
         });
     }
 
@@ -70,33 +70,42 @@ class MWindow {
     public append(emement: HTMLElement) {
         this.content.append(emement);
     }
+
+    // 
+    public static clampMin(min: number, value: number): number{
+        if(value < min)return min;
+        return value;
+    }
 } 
 
 interface DropItem{
     itemName: string,
-    value: string
+    value: string | number
 }
 
 class DropContainer {
     public htmlElement: HTMLElement;
 
     constructor(name: string, items: DropItem[]) {
-        let htmlElement = document.createElement("div");
-        htmlElement.className = "drop-container";
+        this.htmlElement = document.createElement("div");
+        this.htmlElement.className = "drop-container";
         
         // Create header
         let header: HTMLElement = document.createElement("h2");
         header.textContent = name;
-        htmlElement.append(header);
+        this.htmlElement.append(header);
 
         // Create list
         let list: HTMLElement = document.createElement("ul");
         for (let item of items) {
-            let listItem: HTMLElement = document.createElement("h2");
-            listItem.textContent = item.itemName;
-            listItem.dataset.value = item.value;
+            let listItem: HTMLElement = document.createElement("li");
+            let aItem: HTMLElement = document.createElement("a");
+            aItem.textContent = item.itemName;
+            aItem.className = "add";
+            aItem.dataset.value = "" + item.value;
+            listItem.append(aItem);
             list.append(listItem);
         }
-        htmlElement.append(list);
+        this.htmlElement.append(list);
     }
 }

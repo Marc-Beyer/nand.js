@@ -24,11 +24,17 @@ enum IO_TYPE{
     
 }
 
-enum COLOR{
-    main = "#DDDDDD",
-    active = "#FF0000",
-    background = "#3B3B3B",
-    dark = "#222222"
+interface Color{
+    main: string,
+    active: string,
+    background: string,
+    dark: string
+}
+
+interface Options{
+    strokeSize: number,
+    negatedIOStyle: number,
+    COLOR: Color
 }
 
 interface Position2D{

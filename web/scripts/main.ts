@@ -1,7 +1,20 @@
-
+// Declare Oprions for Project
+var OPTIONS: Options = {
+    strokeSize: 2,
+    negatedIOStyle: 1,
+    COLOR:{
+        main: "#DDDDDD",
+        active: "#FF0000",
+        background: "#3B3B3B",
+        dark: "#222222"
+    }
+}
+// Create a new Circuit
 var mainCircuit = new Circuit({x: 10, y: 10});
+// Create a new SaveManager
 var saveManager = new SaveManager(mainCircuit);
 
+/*
 mainCircuit.gates.unshift(new Lable_Gate({x: 350, y: 50}, "Inputs"));
 mainCircuit.gates.unshift(new CONST_HIGH_Gate({x: 350, y: 150}));
 mainCircuit.gates.unshift(new CONST_LOW_Gate({x: 350, y: 250}));
@@ -30,54 +43,12 @@ mainCircuit.gates.unshift(new Lamp_Gate({x: 1450, y: 150}));
 mainCircuit.gates.unshift(new Display_Gate({x: 1450, y: 250}));
 
 mainCircuit.refrashCanvas();
+*/
 
-let dropContainer = document.getElementsByClassName("drop-container");
-for (let index = 0; index < dropContainer.length; index++) {
-    let element = dropContainer[index];
-    let header = element.getElementsByTagName("H2")[0];
-    header.addEventListener("click", (e)=>{
-        if(element.classList.contains("open")){
-            element.className = element.className.replace(" open", "");
-        }else{
-            element.className += " open";
-        }
-    });
-}
-
-let addButtons = document.getElementsByClassName("add");
-for (let index = 0; index < addButtons.length; index++) {
-    let addButton: HTMLElement = addButtons[index] as HTMLElement;
-    addButton.addEventListener("click", (e)=>{
-        let position: Position2D = {
-            x: mainCircuit.mainCanvas.width/2-mainCircuit.gloabalOffset.x,
-            y: mainCircuit.mainCanvas.height/2-mainCircuit.gloabalOffset.y
-        };
-        mainCircuit.addGate(parseInt(addButton.dataset.value), position);
-    });
-}
-
-let errorContainer = document.getElementById("error-container");
-errorContainer.getElementsByTagName("BUTTON")[0].addEventListener("click", ()=>{
+// Add Listener to error-container
+let errorContainer = document.getElementById("error-container-close-btn");
+errorContainer.addEventListener("click", ()=>{
     errorContainer.className = "hidden";
-});
-
-let menu = document.getElementById("menu") as HTMLElement;
-let dragContainer = document.getElementsByClassName("drag-container")[0] as HTMLElement;
-let isDraggingMenu: boolean = false;
-
-dragContainer.addEventListener("mousedown", (e)=>{
-    isDraggingMenu = true;
-});
-
-document.addEventListener("mouseup", (e: MouseEvent)=>{
-    isDraggingMenu = false;
-    
-});
-
-document.addEventListener("mousemove", (e: MouseEvent)=>{
-    if(!isDraggingMenu)return;
-    menu.style.left = e.clientX - dragContainer.getBoundingClientRect().width/2 + "px";
-    menu.style.top = e.clientY - dragContainer.getBoundingClientRect().height/2 + "px";
 });
 
 // Add Listener to save-as-text-btn
@@ -96,7 +67,6 @@ document.getElementById("save-as-text-btn").addEventListener("click", (e)=>{
 
 // Add Listener to load-text-btn
 document.getElementById("load-text-btn").addEventListener("click", (e)=>{
-    let saveJSON = saveManager.getSaveJSON();
     // Create a new movable window
     new SavefileWindow({
         position: {
@@ -105,5 +75,67 @@ document.getElementById("load-text-btn").addEventListener("click", (e)=>{
         },
         width: 400,
         height: 500
-    }, saveJSON);
+    }, "");
+});
+
+// Add Listener to save-as-file-btn
+document.getElementById("save-as-file-btn").addEventListener("click", () => {
+    download(saveManager.getSaveJSON(), "LogicGates-save.json", "application/json");
+});
+
+// Add Listener to load-file-btn
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+	document.getElementById("file-loader-btn").addEventListener("change", startRead, false);
+} else {
+    document.getElementById("error-container").getElementsByTagName("P")[0].textContent = "The file-APIs are not supported. You are not able to Load-files.";
+    document.getElementById("error-container").className = "";
+}
+
+document.getElementById("load-file-btn").addEventListener('click', () => {
+    document.getElementById("file-loader-btn").click();
+});
+
+//
+// TOOLS
+//
+document.getElementById("move-to-center-btn").addEventListener("click", () => {
+    mainCircuit.gloabalOffset = {x: 0, y: 0};
+    mainCircuit.refrashCanvas();
+});
+
+document.getElementById("open-logic-gate-window-btn").addEventListener("click", () => {
+    new GatesWindow({
+        position: {
+            x: 0,
+            y: 50
+        },
+        width: 200,
+        height: 200
+    });
+});
+
+//
+// Options
+//
+document.getElementById("color-btn").addEventListener("click", () => {
+    new OptionsWindow({
+        position: {
+            x: mainCircuit.mainCanvas.getBoundingClientRect().width/2-200,
+            y: mainCircuit.mainCanvas.getBoundingClientRect().height/2-250
+        },
+        width: 400,
+        height: 500
+    });
+});
+
+//
+// Logic Gate Window
+//
+new GatesWindow({
+    position: {
+        x: 0,
+        y: 50
+    },
+    width: 200,
+    height: 200
 });

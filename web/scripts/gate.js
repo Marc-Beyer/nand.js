@@ -54,11 +54,11 @@ var Gate = /** @class */ (function () {
     // Draws the Gate to the canvas
     Gate.prototype.drawGate = function (ctx, offset) {
         // Set style
-        ctx.fillStyle = COLOR.background;
+        ctx.fillStyle = OPTIONS.COLOR.background;
         // Draw background
         ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         // Set style
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
         // Draw inputs
         this.drawInputs(ctx, offset);
         // Draw outputs
@@ -70,44 +70,55 @@ var Gate = /** @class */ (function () {
     Gate.prototype.drawInputs = function (ctx, offset) {
         for (var i = 0; i < this.inputs; i++) {
             if (this.inputSignals[i]) {
-                ctx.fillStyle = COLOR.active;
+                ctx.fillStyle = OPTIONS.COLOR.active;
             }
             else {
-                ctx.fillStyle = COLOR.main;
+                ctx.fillStyle = OPTIONS.COLOR.main;
             }
             var inputPosition = this.getInputPosition(i);
             ctx.fillRect(inputPosition.x + offset.x, inputPosition.y + offset.y - this.ioHeight / 2, this.ioWidth, this.ioHeight);
         }
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
     };
     Gate.prototype.drawOutputs = function (ctx, offset) {
         for (var i = 0; i < this.outputs; i++) {
             if (this.getOutput(i)) {
-                ctx.fillStyle = COLOR.active;
+                ctx.fillStyle = OPTIONS.COLOR.active;
             }
             else {
-                ctx.fillStyle = COLOR.main;
+                ctx.fillStyle = OPTIONS.COLOR.main;
             }
             var outputPosition = this.getOutputPosition(i);
             ctx.fillRect(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioHeight / 2, this.ioWidth, this.ioHeight);
         }
-        ctx.fillStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
     };
     Gate.prototype.drawNegatedOutputs = function (ctx, offset) {
+        ctx.fillStyle = OPTIONS.COLOR.background;
         for (var i = 0; i < this.outputs; i++) {
             if (this.getOutput(i)) {
-                ctx.strokeStyle = COLOR.active;
+                ctx.strokeStyle = OPTIONS.COLOR.active;
             }
             else {
-                ctx.strokeStyle = COLOR.main;
+                ctx.strokeStyle = OPTIONS.COLOR.main;
             }
             var outputPosition = this.getOutputPosition(i);
+            var radius = 4;
             ctx.beginPath();
-            ctx.moveTo(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioWidth / 2);
-            ctx.lineTo(outputPosition.x + offset.x + this.ioWidth / 2, outputPosition.y + offset.y + this.ioHeight / 2);
+            switch (OPTIONS.negatedIOStyle) {
+                case 0:
+                    ctx.moveTo(outputPosition.x + offset.x, outputPosition.y + offset.y - this.ioWidth / 2);
+                    ctx.lineTo(outputPosition.x + offset.x + this.ioWidth / 2, outputPosition.y + offset.y + this.ioHeight / 2);
+                    break;
+                case 1:
+                    ctx.arc(outputPosition.x + offset.x + radius + OPTIONS.strokeSize, outputPosition.y + offset.y, radius, 0, 2 * Math.PI);
+                    break;
+            }
+            ctx.fill();
             ctx.stroke();
         }
-        ctx.strokeStyle = COLOR.main;
+        ctx.fillStyle = OPTIONS.COLOR.main;
+        ctx.strokeStyle = OPTIONS.COLOR.main;
     };
     // Get the position of the input with number nr
     Gate.prototype.getInputPosition = function (nr) {
