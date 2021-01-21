@@ -3,11 +3,18 @@ var OPTIONS: Options = {
     strokeSize: 2,
     negatedIOStyle: 1,
     COLOR:{
+        main: "#000000",
+        active: "#FF0000",
+        background: "#DDDDDD",
+        dark: "#AAAAAA"
+    }
+    /*COLOR:{
         main: "#DDDDDD",
         active: "#FF0000",
         background: "#3B3B3B",
         dark: "#222222"
     }
+    */
 }
 // Create a new Circuit
 var mainCircuit = new Circuit({x: 10, y: 10});

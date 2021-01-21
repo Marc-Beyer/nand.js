@@ -1,3 +1,12 @@
+/*
+$main-background-color: rgb(43, 43, 43);
+$shade-background-color: rgb(32, 32, 32);
+$dark-background-color: rgb(53, 53, 53);
+
+$main-color: rgb(196, 196, 196);
+
+$main-border-color: rgb(77, 76, 76);
+*/
 html, body {
   height: 100%;
   margin: 0;
@@ -7,12 +16,12 @@ html, body {
 }
 
 body {
-  background-color: #2b2b2b;
-  color: #c4c4c4;
+  background-color: white;
+  color: black;
 }
 
 body canvas {
-  background-color: #323232;
+  background-color: white;
   width: 100%;
   height: 100%;
   margin: 0;
@@ -26,8 +35,8 @@ body #menu-bar {
   left: 0;
   right: 0;
   height: 2rem;
-  background-color: #2b2b2b;
-  border: 1px solid #4d4c4c;
+  background-color: white;
+  border: 1px solid #818181;
 }
 
 body #menu-bar ul {
@@ -52,15 +61,15 @@ body #menu-bar ul li {
 body #menu-bar ul li button {
   cursor: pointer;
   border: none;
-  background-color: #202020;
-  color: #c4c4c4;
+  background-color: #cecece;
+  color: black;
   height: 100%;
   margin-right: 4px;
 }
 
 body #menu-bar ul li button:hover, body #menu-bar ul li button:focus {
-  background-color: #2b2b2b;
-  color: #c4c4c4;
+  background-color: white;
+  color: black;
 }
 
 body #menu-bar ul li .submenu {
@@ -78,58 +87,11 @@ body #menu-bar ul li .submenu li {
 
 body #menu-bar ul li .submenu li button {
   width: 100%;
-  border: 1px solid #4d4c4c;
+  border: 1px solid #818181;
 }
 
 body #menu-bar ul li:hover .submenu {
   display: block;
-}
-
-body #menu {
-  position: fixed;
-  top: 3rem;
-  left: 1rem;
-  width: 15rem;
-  margin: 0;
-  padding: 0;
-  background-color: #2b2b2b;
-  border: 1px solid #4d4c4c;
-  overflow-y: auto;
-}
-
-body #menu #menu-content .drag-container {
-  padding: 1rem;
-}
-
-body #menu #menu-content .drag-container .box {
-  background-color: #c4c4c4;
-  height: .2rem;
-}
-
-body #menu #menu-content .drop-container h2 {
-  background-color: #202020;
-  padding: 0.5rem 1rem;
-  margin-top: 4px;
-  margin-bottom: 0;
-  cursor: pointer;
-}
-
-body #menu #menu-content .drop-container ul {
-  display: none;
-}
-
-body #menu #menu-content .open ul {
-  display: block;
-}
-
-body #menu #menu-content .open ul li {
-  list-style: none;
-  cursor: pointer;
-}
-
-body #menu #menu-content .open ul li:hover, body #menu #menu-content .open ul li:focus {
-  background-color: #202020;
-  margin-left: 1rem;
 }
 
 body #error-container {
@@ -160,7 +122,7 @@ body #error-container button {
   margin-right: 1rem;
   border: none;
   background: none;
-  color: #c4c4c4;
+  color: black;
   font-size: 1rem;
 }
 
@@ -177,8 +139,8 @@ body .movable-window {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  background-color: #2b2b2b;
-  border: 1px solid #4d4c4c;
+  background-color: white;
+  border: 1px solid #818181;
 }
 
 body .movable-window .header {
@@ -195,11 +157,11 @@ body .movable-window .header .drag-container {
   padding: 1rem;
   cursor: -webkit-grab;
   cursor: grab;
-  background-color: #2b2b2b;
+  background-color: white;
 }
 
 body .movable-window .header .drag-container .box {
-  background-color: #c4c4c4;
+  background-color: black;
   height: .2rem;
 }
 
@@ -207,7 +169,7 @@ body .movable-window .header .close-btn {
   height: 2.2rem;
   width: 2.2rem;
   background-color: #9b0101;
-  color: #c4c4c4;
+  color: black;
   font-weight: bold;
   border: none;
 }
@@ -224,26 +186,26 @@ body .movable-window .content {
       -ms-flex-direction: column;
           flex-direction: column;
   padding: .5rem;
-  background-color: #202020;
+  background-color: #cecece;
 }
 
 body .movable-window .content button {
   border: none;
-  background-color: #2b2b2b;
-  color: #c4c4c4;
+  background-color: white;
+  color: black;
   padding: .2rem;
   margin: 0;
 }
 
 body .movable-window .content button:hover, body .movable-window .content button:focus {
-  background-color: #353535;
-  color: #c4c4c4;
+  background-color: #d1d1d1;
+  color: black;
 }
 
 body .movable-window .content textarea {
   border: none;
-  background-color: #2b2b2b;
-  color: #c4c4c4;
+  background-color: white;
+  color: black;
   margin: 0 0 .5rem 0;
   max-width: 100%;
 }
@@ -272,7 +234,7 @@ body .movable-window .content .flex-row :first-child {
 }
 
 body .movable-window .content .drop-container h2 {
-  background-color: #202020;
+  background-color: #cecece;
   padding: 0.5rem 1rem;
   margin-top: 4px;
   margin-bottom: 0;
@@ -281,7 +243,7 @@ body .movable-window .content .drop-container h2 {
 
 body .movable-window .content .drop-container ul {
   display: none;
-  background-color: #2a2a2a;
+  background-color: white;
   padding: .2rem 0 .2rem .5rem;
   margin: 0;
 }
@@ -292,12 +254,16 @@ body .movable-window .content .open ul {
 
 body .movable-window .content .open ul li {
   list-style: none;
-  cursor: pointer;
 }
 
-body .movable-window .content .open ul li:hover, body .movable-window .content .open ul li:focus {
-  background-color: #202020;
-  margin-left: 1rem;
+body .movable-window .content .open ul li a {
+  display: block;
+  cursor: pointer;
+  width: 100%;
+}
+
+body .movable-window .content .open ul li a:hover, body .movable-window .content .open ul li a:focus {
+  background-color: #cecece;
 }
 
 body .movable-window .grow {

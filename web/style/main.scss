@@ -1,3 +1,5 @@
+@import 'variables';
+
 html, body {
     height: 100%;
     margin: 0;
@@ -10,11 +12,11 @@ html, body {
 }
 
 body{
-    background-color: rgb(43, 43, 43);
-    color: rgb(196, 196, 196);
+    background-color: $main-background-color;
+    color: $main-color;
 
     canvas{
-        background-color: rgb(50, 50, 50);
+        background-color:$main-background-color;
         width: 100%;
         height: 100%;
         margin: 0;
@@ -29,8 +31,8 @@ body{
         right: 0;
         height: 2rem;
         
-        background-color: rgb(43, 43, 43);
-        border: 1px solid rgb(77, 76, 76);
+        background-color: $main-background-color;
+        border: 1px solid $main-border-color;
 
         ul{
             display: flex;
@@ -48,15 +50,15 @@ body{
                 button{
                     cursor: pointer;
                     border: none;
-                    background-color: rgb(32, 32, 32);
-                    color: rgb(196, 196, 196);
+                    background-color: $shade-background-color;
+                    color: $main-color;
                     height: 100%;
                     margin-right: 4px;
                 }
 
                 button:hover, button:focus{
-                    background-color: rgb(43, 43, 43);
-                    color: rgb(196, 196, 196);
+                    background-color: $main-background-color;
+                    color: $main-color;
                 }
 
                 .submenu{
@@ -69,7 +71,7 @@ body{
 
                         button{
                             width: 100%;
-                            border: 1px solid rgb(77, 76, 76);
+                            border: 1px solid $main-border-color;
                         }
                     }
                 }
@@ -78,62 +80,6 @@ body{
             li:hover{
                 .submenu{
                     display: block;
-                }
-            }
-        }
-    }
-
-    #menu{
-        position: fixed;
-        top: 3rem;
-        left: 1rem;
-        width: 15rem;
-        margin: 0;
-        padding: 0;
-
-        background-color: rgb(43, 43, 43);
-        border: 1px solid rgb(77, 76, 76);
-
-        overflow-y: auto;
-
-        #menu-content{
-
-            .drag-container{
-                padding: 1rem;
-
-                .box{
-                    background-color: rgb(196, 196, 196);
-                    height: .2rem;
-                }
-            }
-
-            .drop-container{
-                h2{
-                    background-color: rgb(32, 32, 32);
-                    padding: 0.5rem 1rem;
-                    margin-top: 4px;
-                    margin-bottom: 0;
-                    cursor: pointer;
-                }
-
-                ul{
-                    display: none;
-                }
-            }
-
-            .open{
-                ul{
-                    display: block;
-                    li{
-                        list-style: none;
-                        cursor: pointer;
-                    }
-
-                    
-                    li:hover, li:focus{
-                        background-color:  rgb(32, 32, 32);
-                        margin-left: 1rem;
-                    }
                 }
             }
         }
@@ -161,7 +107,7 @@ body{
             margin-right: 1rem;
             border: none;
             background: none;
-            color: rgb(196, 196, 196);
+            color: $main-color;
             font-size: 1rem;
         }
     }
@@ -176,8 +122,8 @@ body{
         display: flex;
         flex-direction: column;
 
-        background-color: rgb(43, 43, 43);
-        border: 1px solid rgb(77, 76, 76);
+        background-color: $main-background-color;
+        border: 1px solid $main-border-color;
 
         .header{
             display: flex;
@@ -186,10 +132,10 @@ body{
             .drag-container{
                 padding: 1rem;
                 cursor: grab;
-                background-color: rgb(43, 43, 43);
+                background-color: $main-background-color;
     
                 .box{
-                    background-color: rgb(196, 196, 196);
+                    background-color: $main-color;
                     height: .2rem;
                 }
             }
@@ -199,7 +145,7 @@ body{
                 width: 2.2rem;
     
                 background-color: rgb(155, 1, 1);
-                color:rgb(196, 196, 196);
+                color:$main-color;
                 font-weight: bold;
                 border: none;
             }
@@ -211,25 +157,25 @@ body{
             flex-direction: column;
 
             padding: .5rem;
-            background-color: rgb(32, 32, 32);
+            background-color: $shade-background-color;
 
             button{
                 border: none;
-                background-color: rgb(43, 43, 43);
-                color: rgb(196, 196, 196);
+                background-color: $main-background-color;
+                color: $main-color;
                 padding: .2rem;
                 margin: 0;
             }
 
             button:hover, button:focus{
-                background-color: rgb(53, 53, 53);
-                color: rgb(196, 196, 196);
+                background-color: $dark-background-color;
+                color: $main-color;
             }
 
             textarea{
                 border: none;
-                background-color: rgb(43, 43, 43);
-                color: rgb(196, 196, 196);
+                background-color: $main-background-color;
+                color: $main-color;
                 margin: 0 0 .5rem 0;
                 max-width: 100%;
             }
@@ -254,7 +200,7 @@ body{
 
             .drop-container{
                 h2{
-                    background-color: rgb(32, 32, 32);
+                    background-color: $shade-background-color;
                     padding: 0.5rem 1rem;
                     margin-top: 4px;
                     margin-bottom: 0;
@@ -263,7 +209,7 @@ body{
 
                 ul{
                     display: none;
-                    background-color: rgb(42, 42, 42);
+                    background-color: $main-background-color;
                     padding: .2rem 0 .2rem .5rem;
                     margin: 0;
                 }
@@ -274,14 +220,20 @@ body{
                     display: block;
                     li{
                         list-style: none;
-                        cursor: pointer;
+
+                        a{
+                            display: block;
+                            cursor: pointer;
+                            width: 100%;
+                        }
+
+                        a:hover, a:focus{
+                            background-color:  $shade-background-color;
+
+                        }
                     }
 
                     
-                    li:hover, li:focus{
-                        background-color:  rgb(32, 32, 32);
-                        margin-left: 1rem;
-                    }
                 }
             }
         }
