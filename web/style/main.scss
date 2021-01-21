@@ -22,6 +22,7 @@ body{
         margin: 0;
         padding: 0;
         float: left;
+        background-color: $canvas-background-color;
     }
 
     #menu-bar{
@@ -53,7 +54,8 @@ body{
                     background-color: $shade-background-color;
                     color: $main-color;
                     height: 100%;
-                    margin-right: 4px;
+                    min-width: 4rem;
+                    border-right: 1px solid $main-border-color;
                 }
 
                 button:hover, button:focus{
@@ -65,6 +67,7 @@ body{
                     position: absolute;
                     flex-direction: column;
                     display: none;
+                    border-top: 1px solid $main-border-color;
 
                     li{
                         width: 100%;
@@ -72,6 +75,7 @@ body{
                         button{
                             width: 100%;
                             border: 1px solid $main-border-color;
+                            border-top: none;
                         }
                     }
                 }
@@ -92,7 +96,8 @@ body{
         right: 1rem;
         min-height: 1rem;
         background-color: rgb(49, 0, 0);
-        
+        color: #ffffff;
+
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -107,8 +112,9 @@ body{
             margin-right: 1rem;
             border: none;
             background: none;
-            color: $main-color;
             font-size: 1rem;
+            color: #ffffff;
+            cursor: pointer;
         }
     }
 
@@ -145,9 +151,14 @@ body{
                 width: 2.2rem;
     
                 background-color: rgb(155, 1, 1);
-                color:$main-color;
+                color:#ffffff;
                 font-weight: bold;
                 border: none;
+                cursor: pointer;
+            }
+            .close-btn:hover{
+                background-color: rgb(131, 2, 2);
+                color:#cccccc;
             }
         }
 

@@ -177,6 +177,7 @@ var Circuit = /** @class */ (function () {
     Circuit.prototype.mousedownEventHandler = function (e) {
         // Check if the user clicked on a gate
         mainCircuit.activeGate = mainCircuit.getGateAtPosition(mainCircuit.getMousePositionOnCanvas(e));
+        activeInfoWindow.setActive(mainCircuit.activeGate);
         if (mainCircuit.activeGate !== null) {
             mainCircuit.activeOffset = mainCircuit.activeGate.getOffsetPosition(mainCircuit.getMousePositionOnCanvas(e));
             mainCircuit.activeIO = null;
@@ -254,6 +255,7 @@ var Circuit = /** @class */ (function () {
                         toInputNr: 0
                     });
                     mainCircuit.activeGate = connGate;
+                    activeInfoWindow.setActive(mainCircuit.activeGate);
                 }
             }
         }
@@ -280,6 +282,7 @@ var Circuit = /** @class */ (function () {
             if (mainCircuit.activeGate !== null) {
                 mainCircuit.deleteGate(mainCircuit.activeGate);
                 mainCircuit.activeGate = null;
+                activeInfoWindow.setActive(null);
             }
             else if (mainCircuit.activeConnection !== null) {
                 mainCircuit.connectionManager.removeConnection(mainCircuit.activeConnection);

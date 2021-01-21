@@ -17,6 +17,7 @@ var Buffer_Gate = /** @class */ (function (_super) {
     function Buffer_Gate(position) {
         var _this = _super.call(this, "1", 1, 1, position, function (inputs) { return inputs; }) || this;
         _this.type = GATE_TYPE.Buffer;
+        _this.name = "Buffer";
         return _this;
     }
     return Buffer_Gate;
@@ -26,6 +27,7 @@ var NOT_Gate = /** @class */ (function (_super) {
     function NOT_Gate(position) {
         var _this = _super.call(this, "1", 1, 1, position, function (inputs) { return [!inputs[0]]; }) || this;
         _this.type = GATE_TYPE.NOT;
+        _this.name = "NOT";
         return _this;
     }
     // Overrite the drawGate()
@@ -41,6 +43,7 @@ var AND_Gate = /** @class */ (function (_super) {
     function AND_Gate(position) {
         var _this = _super.call(this, "&", 2, 1, position, function (inputs) { return [inputs[0] && inputs[1]]; }) || this;
         _this.type = GATE_TYPE.AND;
+        _this.name = "AND";
         return _this;
     }
     return AND_Gate;
@@ -50,6 +53,7 @@ var OR_Gate = /** @class */ (function (_super) {
     function OR_Gate(position) {
         var _this = _super.call(this, String.fromCharCode(8805) + "1", 2, 1, position, function (inputs) { return [inputs[0] || inputs[1]]; }) || this;
         _this.type = GATE_TYPE.OR;
+        _this.name = "OR";
         return _this;
     }
     return OR_Gate;
@@ -60,6 +64,7 @@ var NAND_Gate = /** @class */ (function (_super) {
     function NAND_Gate(position) {
         var _this = _super.call(this, "&", 2, 1, position, function (inputs) { return [!(inputs[0] && inputs[1])]; }) || this;
         _this.type = GATE_TYPE.NAND;
+        _this.name = "NAND";
         return _this;
     }
     // Overrite the drawGate()
@@ -74,6 +79,7 @@ var NOR_Gate = /** @class */ (function (_super) {
     function NOR_Gate(position) {
         var _this = _super.call(this, String.fromCharCode(8805) + "1", 2, 1, position, function (inputs) { return [!(inputs[0] || inputs[1])]; }) || this;
         _this.type = GATE_TYPE.NOR;
+        _this.name = "NOR";
         return _this;
     }
     // Overrite the drawGate()
@@ -89,6 +95,7 @@ var XOR_Gate = /** @class */ (function (_super) {
     function XOR_Gate(position) {
         var _this = _super.call(this, "=1", 2, 1, position, function (inputs) { return [(inputs[0] || inputs[1]) && !(inputs[0] && inputs[1])]; }) || this;
         _this.type = GATE_TYPE.XOR;
+        _this.name = "XOR";
         return _this;
     }
     return XOR_Gate;
@@ -98,6 +105,7 @@ var XNOR_Gate = /** @class */ (function (_super) {
     function XNOR_Gate(position) {
         var _this = _super.call(this, "=1", 2, 1, position, function (inputs) { return [!((inputs[0] || inputs[1]) && !(inputs[0] && inputs[1]))]; }) || this;
         _this.type = GATE_TYPE.XNOR;
+        _this.name = "XNOR";
         return _this;
     }
     // Overrite the drawGate()
@@ -113,6 +121,7 @@ var CONST_HIGH_Gate = /** @class */ (function (_super) {
     function CONST_HIGH_Gate(position) {
         var _this = _super.call(this, "OUT 1", 0, 1, position, function (inputs) { return [true]; }) || this;
         _this.type = GATE_TYPE.CONST_HIGH_Gate;
+        _this.name = "CONST_HIGH_Gate";
         return _this;
     }
     return CONST_HIGH_Gate;
@@ -122,6 +131,7 @@ var CONST_LOW_Gate = /** @class */ (function (_super) {
     function CONST_LOW_Gate(position) {
         var _this = _super.call(this, "OUT 0", 0, 1, position, function (inputs) { return [false]; }) || this;
         _this.type = GATE_TYPE.CONST_LOW_Gate;
+        _this.name = "CONST_LOW_Gate";
         return _this;
     }
     return CONST_LOW_Gate;
@@ -132,6 +142,7 @@ var Clock_Gate = /** @class */ (function (_super) {
         var _this = _super.call(this, "", 0, 1, position, function (inputs) { return [_this.clockState]; }) || this;
         _this.clockState = true;
         _this.type = GATE_TYPE.Clock;
+        _this.name = "Clock";
         var gate = _this;
         _this.interval = setInterval(function () {
             gate.clockState = !gate.clockState;
@@ -164,6 +175,7 @@ var Button_Gate = /** @class */ (function (_super) {
         var _this = _super.call(this, "", 0, 1, position, function (inputs) { return [_this.buttonState]; }) || this;
         _this.buttonState = false;
         _this.type = GATE_TYPE.Button;
+        _this.name = "Button";
         return _this;
     }
     // Overrite the isGateInPosition()
@@ -201,6 +213,7 @@ var Switch_Gate = /** @class */ (function (_super) {
         var _this = _super.call(this, "", 0, 1, position, function (inputs) { return [_this.switchState]; }) || this;
         _this.switchState = false;
         _this.type = GATE_TYPE.Switch;
+        _this.name = "Switch";
         return _this;
     }
     // Overrite the isGateInPosition()
@@ -218,18 +231,27 @@ var Switch_Gate = /** @class */ (function (_super) {
         // Set style
         ctx.fillStyle = OPTIONS.COLOR.dark;
         // Draw background
-        ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + offset.y + this.transform.height / 4, this.transform.width / 2, this.transform.height / 2);
+        //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/2, this.transform.height/2);
         // Set style
         ctx.fillStyle = OPTIONS.COLOR.main;
         // Draw background
         if (this.switchState) {
-            ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + offset.y + this.transform.height / 4, this.transform.width / 4, this.transform.height / 2);
+            ctx.beginPath();
+            ctx.moveTo(this.transform.position.x + this.transform.width - this.transform.width / 8 + offset.x, this.transform.position.y + this.transform.height / 2 + offset.y);
+            ctx.lineTo(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + this.transform.height / 16 * 4 + offset.y);
+            ctx.stroke();
+            //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
         }
         else {
-            ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 2, this.transform.position.y + offset.y + this.transform.height / 4, this.transform.width / 4, this.transform.height / 2);
+            ctx.beginPath();
+            ctx.moveTo(this.transform.position.x + this.transform.width - this.transform.width / 8 + offset.x, this.transform.position.y + this.transform.height / 2 + offset.y);
+            ctx.lineTo(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + this.transform.height / 4 * 3 + offset.y);
+            ctx.stroke();
+            //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/2, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
         }
-        ctx.fillText("|", this.transform.position.x + offset.x + this.transform.width / 8, this.transform.position.y + this.transform.height / 16 * 10 + offset.y);
-        ctx.fillText("0", this.transform.position.x + this.transform.width - this.transform.width / 8 + offset.x, this.transform.position.y + this.transform.height / 16 * 10 + offset.y);
+        ctx.fillText("1", this.transform.position.x + offset.x + this.transform.width / 8, this.transform.position.y + this.transform.height / 16 * 5 + offset.y);
+        ctx.fillText("0", this.transform.position.x + offset.x + this.transform.width / 8, this.transform.position.y + this.transform.height / 16 * 15 + offset.y);
+        //ctx.fillText("0", this.transform.position.x + this.transform.width - this.transform.width/8 + offset.x, this.transform.position.y + this.transform.height/16*10  + offset.y);
     };
     return Switch_Gate;
 }(Gate));
@@ -239,6 +261,7 @@ var Lamp_Gate = /** @class */ (function (_super) {
     function Lamp_Gate(position) {
         var _this = _super.call(this, "", 1, 0, position, function (inputs) { return [false]; }) || this;
         _this.type = GATE_TYPE.Lamp;
+        _this.name = "Lamp";
         _this.transform.width = _this.transform.height;
         return _this;
     }
@@ -274,6 +297,7 @@ var Display_Gate = /** @class */ (function (_super) {
     function Display_Gate(position) {
         var _this = _super.call(this, "", 4, 0, position, function (inputs) { return [false]; }) || this;
         _this.type = GATE_TYPE.Display;
+        _this.name = "Display";
         _this.transform.height = 80;
         return _this;
     }
@@ -301,6 +325,7 @@ var Lable_Gate = /** @class */ (function (_super) {
     function Lable_Gate(position, text) {
         var _this = _super.call(this, text, 0, 0, position, function (inputs) { return [false]; }) || this;
         _this.type = GATE_TYPE.Lable;
+        _this.name = "Lable";
         _this.text = text.split("\n");
         _this.transform.height = _this.text.length * 20 + 10;
         for (var _i = 0, _a = _this.text; _i < _a.length; _i++) {
@@ -332,6 +357,7 @@ var Connection_Gate = /** @class */ (function (_super) {
     function Connection_Gate(position) {
         var _this = _super.call(this, "", 1, 1, position, function (inputs) { return inputs; }) || this;
         _this.type = GATE_TYPE.Connection;
+        _this.name = "Connection";
         _this.transform.width = _this.transform.height = 10;
         _this.ioWidth = _this.ioHeight;
         return _this;

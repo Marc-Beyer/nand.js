@@ -4,6 +4,7 @@ class Buffer_Gate extends Gate {
     constructor(position: Position2D) {
         super("1", 1, 1, position, (inputs: boolean[]) => {return inputs});
         this.type = GATE_TYPE.Buffer;
+        this.name = "Buffer";
     }
 }
 
@@ -11,6 +12,7 @@ class NOT_Gate extends Gate {
     constructor(position: Position2D) {
         super("1", 1, 1, position, (inputs: boolean[]) => {return [!inputs[0]]});
         this.type = GATE_TYPE.NOT;
+        this.name = "NOT";
     }
 
     // Overrite the drawGate()
@@ -26,6 +28,7 @@ class AND_Gate extends Gate {
     constructor(position: Position2D) {
         super("&", 2, 1, position, (inputs: boolean[]) => {return [inputs[0] && inputs[1]]});
         this.type = GATE_TYPE.AND;
+        this.name = "AND";
     }
 }
 
@@ -33,6 +36,7 @@ class OR_Gate extends Gate {
     constructor(position: Position2D) {
         super(String.fromCharCode(8805) + "1", 2, 1, position, (inputs: boolean[]) => {return [inputs[0] || inputs[1]]});
         this.type = GATE_TYPE.OR;
+        this.name = "OR";
     }
 }
 
@@ -42,6 +46,7 @@ class NAND_Gate extends Gate {
     constructor(position: Position2D) {
         super("&", 2, 1, position, (inputs: boolean[]) => {return [!(inputs[0] && inputs[1])]});
         this.type = GATE_TYPE.NAND;
+        this.name = "NAND";
     }
 
     // Overrite the drawGate()
@@ -55,6 +60,7 @@ class NOR_Gate extends Gate {
     constructor(position: Position2D) {
         super(String.fromCharCode(8805) + "1", 2, 1, position, (inputs: boolean[]) => {return [!(inputs[0] || inputs[1])]});
         this.type = GATE_TYPE.NOR;
+        this.name = "NOR";
     }
     
     // Overrite the drawGate()
@@ -70,6 +76,7 @@ class XOR_Gate extends Gate {
     constructor(position: Position2D) {
         super("=1", 2, 1, position, (inputs: boolean[]) => {return [(inputs[0] || inputs[1]) && !(inputs[0] && inputs[1])]});
         this.type = GATE_TYPE.XOR;
+        this.name = "XOR";
     }
 }
 
@@ -77,6 +84,7 @@ class XNOR_Gate extends Gate {
     constructor(position: Position2D) {
         super("=1", 2, 1, position, (inputs: boolean[]) => {return [!((inputs[0] || inputs[1]) && !(inputs[0] && inputs[1]))]});
         this.type = GATE_TYPE.XNOR;
+        this.name = "XNOR";
     }
     
     // Overrite the drawGate()
@@ -92,6 +100,7 @@ class CONST_HIGH_Gate extends Gate {
     constructor(position: Position2D) {
         super("OUT 1", 0, 1, position, (inputs: boolean[]) => {return [true]});
         this.type = GATE_TYPE.CONST_HIGH_Gate;
+        this.name = "CONST_HIGH_Gate";
     }
 }
 
@@ -99,6 +108,7 @@ class CONST_LOW_Gate extends Gate {
     constructor(position: Position2D) {
         super("OUT 0", 0, 1, position, (inputs: boolean[]) => {return [false]});
         this.type = GATE_TYPE.CONST_LOW_Gate;
+        this.name = "CONST_LOW_Gate";
     }
 }
 
@@ -109,6 +119,7 @@ class Clock_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 0, 1, position, (inputs: boolean[]) => {return [this.clockState]});
         this.type = GATE_TYPE.Clock;
+        this.name = "Clock";
         let gate = this;
         this.interval = setInterval(function(){ 
             gate.clockState = !gate.clockState; 
@@ -143,6 +154,7 @@ class Button_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 0, 1, position, (inputs: boolean[]) => {return [this.buttonState]});
         this.type = GATE_TYPE.Button;
+        this.name = "Button";
     }
 
     // Overrite the isGateInPosition()
@@ -184,6 +196,7 @@ class Switch_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 0, 1, position, (inputs: boolean[]) => {return [this.switchState]});
         this.type = GATE_TYPE.Switch;
+        this.name = "Switch";
     }
 
     // Overrite the isGateInPosition()
@@ -204,20 +217,29 @@ class Switch_Gate extends Gate {
         ctx.fillStyle = OPTIONS.COLOR.dark;
 
         // Draw background
-        ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/2, this.transform.height/2);
+        //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/2, this.transform.height/2);
         
         // Set style
         ctx.fillStyle = OPTIONS.COLOR.main;
 
         // Draw background
         if(this.switchState){
-            ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
+            ctx.beginPath();
+            ctx.moveTo(this.transform.position.x + this.transform.width - this.transform.width/8 + offset.x, this.transform.position.y + this.transform.height/2 + offset.y);
+            ctx.lineTo(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + this.transform.height/16*4 + offset.y);
+            ctx.stroke();
+            //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
         }else{
-            ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/2, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
+            ctx.beginPath();
+            ctx.moveTo(this.transform.position.x + this.transform.width - this.transform.width/8 + offset.x, this.transform.position.y + this.transform.height/2 + offset.y);
+            ctx.lineTo(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + this.transform.height/4*3 + offset.y);
+            ctx.stroke();
+            //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/2, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
         }
         
-        ctx.fillText("|", this.transform.position.x + offset.x + this.transform.width/8, this.transform.position.y + this.transform.height/16*10 + offset.y);
-        ctx.fillText("0", this.transform.position.x + this.transform.width - this.transform.width/8 + offset.x, this.transform.position.y + this.transform.height/16*10  + offset.y);
+        ctx.fillText("1", this.transform.position.x + offset.x + this.transform.width/8, this.transform.position.y + this.transform.height/16*5 + offset.y);
+        ctx.fillText("0", this.transform.position.x + offset.x + this.transform.width/8, this.transform.position.y + this.transform.height/16*15 + offset.y);
+        //ctx.fillText("0", this.transform.position.x + this.transform.width - this.transform.width/8 + offset.x, this.transform.position.y + this.transform.height/16*10  + offset.y);
 
     }
 }
@@ -228,6 +250,7 @@ class Lamp_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 1, 0, position, (inputs: boolean[]) => {return [false]});
         this.type = GATE_TYPE.Lamp;
+        this.name = "Lamp";
         this.transform.width = this.transform.height;
     }
     
@@ -264,6 +287,7 @@ class Display_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 4, 0, position, (inputs: boolean[]) => {return [false]});
         this.type = GATE_TYPE.Display;
+        this.name = "Display";
         this.transform.height = 80;
     }
     
@@ -294,6 +318,7 @@ class Lable_Gate extends Gate {
     constructor(position: Position2D, text: string) {
         super(text, 0, 0, position, (inputs: boolean[]) => {return [false]});
         this.type = GATE_TYPE.Lable;
+        this.name = "Lable";
         this.text = text.split("\n");
         this.transform.height = this.text.length * 20 + 10;
 
@@ -327,6 +352,7 @@ class Connection_Gate extends Gate {
     constructor(position: Position2D) {
         super("", 1, 1, position, (inputs: boolean[]) => {return inputs});
         this.type = GATE_TYPE.Connection;
+        this.name = "Connection";
         this.transform.width = this.transform.height = 10;
         this.ioWidth = this.ioHeight;
     }

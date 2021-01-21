@@ -1,5 +1,6 @@
 class Gate {
-    public name: string;
+    public name: string = "Not yet set";
+    public lable: string;
     public transform: Transform;
     public inputs: number;
     public outputs: number;
@@ -10,8 +11,8 @@ class Gate {
     public ioHeight: number = 2;
     public type: number = 0;
 
-    constructor(name: string, inputs: number = 0, outputs: number = 0, position: Position2D = {x: 0, y: 0}, boolFunction: (inputs: boolean[]) => boolean[] = (inputs: boolean[]) => {return [false]}) {
-        this.name = name;
+    constructor(lable: string, inputs: number = 0, outputs: number = 0, position: Position2D = {x: 0, y: 0}, boolFunction: (inputs: boolean[]) => boolean[] = (inputs: boolean[]) => {return [false]}) {
+        this.lable = lable;
         this.inputs = inputs;
         this.outputs = outputs;
         this.transform = {position: position, width: 70, height: 40};
@@ -75,9 +76,9 @@ class Gate {
         // Draw outputs
         this.drawOutputs(ctx, offset);
 
-        // Draw box and name
+        // Draw box and lable
         ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
-        ctx.fillText(this.name, this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + 20);
+        ctx.fillText(this.lable, this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + 20);
     }
 
     public drawInputs(ctx: CanvasRenderingContext2D, offset: Position2D){

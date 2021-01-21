@@ -5,7 +5,7 @@ var OPTIONS = {
     COLOR: {
         main: "#000000",
         active: "#FF0000",
-        background: "#DDDDDD",
+        background: "#FFFFFF",
         dark: "#AAAAAA"
     }
     /*COLOR:{
@@ -16,44 +16,16 @@ var OPTIONS = {
     }
     */
 };
+// Set activeInfoWindow
+var activeInfoWindow = null;
 // Create a new Circuit
 var mainCircuit = new Circuit({ x: 10, y: 10 });
 // Create a new SaveManager
 var saveManager = new SaveManager(mainCircuit);
-/*
-mainCircuit.gates.unshift(new Lable_Gate({x: 350, y: 50}, "Inputs"));
-mainCircuit.gates.unshift(new CONST_HIGH_Gate({x: 350, y: 150}));
-mainCircuit.gates.unshift(new CONST_LOW_Gate({x: 350, y: 250}));
-mainCircuit.gates.unshift(new Switch_Gate({x: 350, y: 350}));
-mainCircuit.gates.unshift(new Clock_Gate({x: 350, y: 450}));
-mainCircuit.gates.unshift(new Button_Gate({x: 350, y: 550}));
-
-mainCircuit.gates.unshift(new Lable_Gate({x: 550, y: 50}, "1-Input gates"));
-mainCircuit.gates.unshift(new Buffer_Gate({x: 550, y: 150}));
-mainCircuit.gates.unshift(new NOT_Gate({x: 550, y: 250}));
-
-mainCircuit.gates.unshift(new Lable_Gate({x: 750, y: 50}, "Conjunction\nand Disjunction"));
-mainCircuit.gates.unshift(new AND_Gate({x: 750, y: 150}));
-mainCircuit.gates.unshift(new OR_Gate({x: 750, y: 250}));
-
-mainCircuit.gates.unshift(new Lable_Gate({x: 950, y: 50}, "Alternative denial\nand Joint denial"));
-mainCircuit.gates.unshift(new NAND_Gate({x: 950, y: 150}));
-mainCircuit.gates.unshift(new NOR_Gate({x: 950, y: 250}));
-
-mainCircuit.gates.unshift(new Lable_Gate({x: 1200, y: 50}, "Exclusive or\nand Biconditional"));
-mainCircuit.gates.unshift(new XOR_Gate({x: 1200, y: 150}));
-mainCircuit.gates.unshift(new XNOR_Gate({x: 1200, y: 250}));
-
-mainCircuit.gates.unshift(new Lable_Gate({x: 1450, y: 50}, "Outputs"));
-mainCircuit.gates.unshift(new Lamp_Gate({x: 1450, y: 150}));
-mainCircuit.gates.unshift(new Display_Gate({x: 1450, y: 250}));
-
-mainCircuit.refrashCanvas();
-*/
 // Add Listener to error-container
 var errorContainer = document.getElementById("error-container-close-btn");
 errorContainer.addEventListener("click", function () {
-    errorContainer.className = "hidden";
+    document.getElementById("error-container").className = "hidden";
 });
 // Add Listener to save-as-text-btn
 document.getElementById("save-as-text-btn").addEventListener("click", function (e) {
@@ -130,7 +102,18 @@ document.getElementById("color-btn").addEventListener("click", function () {
 //
 new GatesWindow({
     position: {
-        x: 0,
+        x: 20,
+        y: 50
+    },
+    width: 200,
+    height: 200
+});
+//
+// Active Info Window
+//
+activeInfoWindow = new ActiveInfoWindow({
+    position: {
+        x: mainCircuit.mainCanvas.getBoundingClientRect().width - 220,
         y: 50
     },
     width: 200,

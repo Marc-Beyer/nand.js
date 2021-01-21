@@ -1,5 +1,6 @@
 /*
 $main-background-color: rgb(43, 43, 43);
+$canvas-background-color: rgb(43, 43, 43);
 $shade-background-color: rgb(32, 32, 32);
 $dark-background-color: rgb(53, 53, 53);
 
@@ -16,17 +17,18 @@ html, body {
 }
 
 body {
-  background-color: white;
+  background-color: #77b2d4;
   color: black;
 }
 
 body canvas {
-  background-color: white;
+  background-color: #77b2d4;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
   float: left;
+  background-color: white;
 }
 
 body #menu-bar {
@@ -35,8 +37,8 @@ body #menu-bar {
   left: 0;
   right: 0;
   height: 2rem;
-  background-color: white;
-  border: 1px solid #818181;
+  background-color: #77b2d4;
+  border: 1px solid black;
 }
 
 body #menu-bar ul {
@@ -61,14 +63,15 @@ body #menu-bar ul li {
 body #menu-bar ul li button {
   cursor: pointer;
   border: none;
-  background-color: #cecece;
+  background-color: #cae7f8;
   color: black;
   height: 100%;
-  margin-right: 4px;
+  min-width: 4rem;
+  border-right: 1px solid black;
 }
 
 body #menu-bar ul li button:hover, body #menu-bar ul li button:focus {
-  background-color: white;
+  background-color: #77b2d4;
   color: black;
 }
 
@@ -79,6 +82,7 @@ body #menu-bar ul li .submenu {
       -ms-flex-direction: column;
           flex-direction: column;
   display: none;
+  border-top: 1px solid black;
 }
 
 body #menu-bar ul li .submenu li {
@@ -87,7 +91,8 @@ body #menu-bar ul li .submenu li {
 
 body #menu-bar ul li .submenu li button {
   width: 100%;
-  border: 1px solid #818181;
+  border: 1px solid black;
+  border-top: none;
 }
 
 body #menu-bar ul li:hover .submenu {
@@ -101,6 +106,7 @@ body #error-container {
   right: 1rem;
   min-height: 1rem;
   background-color: #310000;
+  color: #ffffff;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -122,8 +128,9 @@ body #error-container button {
   margin-right: 1rem;
   border: none;
   background: none;
-  color: black;
   font-size: 1rem;
+  color: #ffffff;
+  cursor: pointer;
 }
 
 body .movable-window {
@@ -139,8 +146,8 @@ body .movable-window {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  background-color: white;
-  border: 1px solid #818181;
+  background-color: #77b2d4;
+  border: 1px solid black;
 }
 
 body .movable-window .header {
@@ -157,7 +164,7 @@ body .movable-window .header .drag-container {
   padding: 1rem;
   cursor: -webkit-grab;
   cursor: grab;
-  background-color: white;
+  background-color: #77b2d4;
 }
 
 body .movable-window .header .drag-container .box {
@@ -169,9 +176,15 @@ body .movable-window .header .close-btn {
   height: 2.2rem;
   width: 2.2rem;
   background-color: #9b0101;
-  color: black;
+  color: #ffffff;
   font-weight: bold;
   border: none;
+  cursor: pointer;
+}
+
+body .movable-window .header .close-btn:hover {
+  background-color: #830202;
+  color: #cccccc;
 }
 
 body .movable-window .content {
@@ -186,25 +199,25 @@ body .movable-window .content {
       -ms-flex-direction: column;
           flex-direction: column;
   padding: .5rem;
-  background-color: #cecece;
+  background-color: #cae7f8;
 }
 
 body .movable-window .content button {
   border: none;
-  background-color: white;
+  background-color: #77b2d4;
   color: black;
   padding: .2rem;
   margin: 0;
 }
 
 body .movable-window .content button:hover, body .movable-window .content button:focus {
-  background-color: #d1d1d1;
+  background-color: black;
   color: black;
 }
 
 body .movable-window .content textarea {
   border: none;
-  background-color: white;
+  background-color: #77b2d4;
   color: black;
   margin: 0 0 .5rem 0;
   max-width: 100%;
@@ -234,7 +247,7 @@ body .movable-window .content .flex-row :first-child {
 }
 
 body .movable-window .content .drop-container h2 {
-  background-color: #cecece;
+  background-color: #cae7f8;
   padding: 0.5rem 1rem;
   margin-top: 4px;
   margin-bottom: 0;
@@ -243,7 +256,7 @@ body .movable-window .content .drop-container h2 {
 
 body .movable-window .content .drop-container ul {
   display: none;
-  background-color: white;
+  background-color: #77b2d4;
   padding: .2rem 0 .2rem .5rem;
   margin: 0;
 }
@@ -263,7 +276,7 @@ body .movable-window .content .open ul li a {
 }
 
 body .movable-window .content .open ul li a:hover, body .movable-window .content .open ul li a:focus {
-  background-color: #cecece;
+  background-color: #cae7f8;
 }
 
 body .movable-window .grow {

@@ -1,14 +1,15 @@
 var Gate = /** @class */ (function () {
-    function Gate(name, inputs, outputs, position, boolFunction) {
+    function Gate(lable, inputs, outputs, position, boolFunction) {
         if (inputs === void 0) { inputs = 0; }
         if (outputs === void 0) { outputs = 0; }
         if (position === void 0) { position = { x: 0, y: 0 }; }
         if (boolFunction === void 0) { boolFunction = function (inputs) { return [false]; }; }
+        this.name = "Not yet set";
         this.connections = [];
         this.ioWidth = 20;
         this.ioHeight = 2;
         this.type = 0;
-        this.name = name;
+        this.lable = lable;
         this.inputs = inputs;
         this.outputs = outputs;
         this.transform = { position: position, width: 70, height: 40 };
@@ -63,9 +64,9 @@ var Gate = /** @class */ (function () {
         this.drawInputs(ctx, offset);
         // Draw outputs
         this.drawOutputs(ctx, offset);
-        // Draw box and name
+        // Draw box and lable
         ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
-        ctx.fillText(this.name, this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + 20);
+        ctx.fillText(this.lable, this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + 20);
     };
     Gate.prototype.drawInputs = function (ctx, offset) {
         for (var i = 0; i < this.inputs; i++) {
