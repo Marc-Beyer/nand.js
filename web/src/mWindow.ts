@@ -12,7 +12,7 @@ class MWindow {
         // Create outer div
         this.htmlElement = document.createElement("div");
         this.htmlElement.style.width = this.transform.width + "px";
-        this.htmlElement.style.height = this.transform.height + "px";
+        this.htmlElement.style.minHeight = this.transform.height + "px";
         this.htmlElement.style.top = this.transform.position.y + "px";
         this.htmlElement.style.left = this.transform.position.x + "px";
         this.htmlElement.className = "movable-window";

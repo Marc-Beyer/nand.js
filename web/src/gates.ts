@@ -311,14 +311,72 @@ class Display_Gate extends Gate {
     }
 }
 
+class Segment_Display_Gate extends Gate {
+    constructor(position: Position2D) {
+        super("", 7, 0, position, (inputs: boolean[]) => {return [false]});
+        this.type = GATE_TYPE.Segment_Display;
+        this.name = "7 segment display";
+        this.transform.height = 140;
+        this.transform.width = 80;
+    }
+    
+    // Overrite the drawGate()
+    public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        super.drawGate(ctx, offset);
+        ctx.fillStyle = OPTIONS.COLOR.active;
+
+        let x = this.transform.position.x + offset.x;
+        let y = this.transform.position.y + offset.y;
+        let width = this.transform.width;
+        let height = this.transform.height;
+        
+        this.inputSignals[0] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width/8 + 10, y + height/8-5, this.transform.width/4*3 - 20, 10);
+
+        this.inputSignals[1] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width/8*7-10, y + height/8 + 5, 10, height/8*3 - 10);
+
+        this.inputSignals[2] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width/8*7-10, y + height/8*4 + 5, 10, height/8*3 - 10);
+
+        this.inputSignals[3] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width/8 + 10, y + height/8*7-5, this.transform.width/4*3 - 20, 10);
+
+        this.inputSignals[4] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width/8, y + height/8 + 5, 10, height/8*3 - 10);
+
+        this.inputSignals[5] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width/8, y + height/8*4 + 5, 10, height/8*3 - 10);
+        
+        this.inputSignals[6] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width/8 + 10, y + height/8*4-5, this.transform.width/4*3 - 20, 10);
+
+        ctx.fillStyle = OPTIONS.COLOR.main;
+    }
+
+    public intFromInput(): number{
+        let value: number = 0;
+        for (let i = this.inputSignals.length-1; i >= 0; i--) {
+            value = (value * 2);
+            value += this.inputSignals[i] ? 1 : 0; 
+        }
+        return value;
+    }
+}
+
 // Other
 
 class Lable_Gate extends Gate {
     public text: string[];
-    constructor(position: Position2D, text: string) {
+    constructor(position: Position2D, text: string = "Lable") {
         super(text, 0, 0, position, (inputs: boolean[]) => {return [false]});
         this.type = GATE_TYPE.Lable;
         this.name = "Lable";
+        this.setText(text);
+    }
+
+    // Set the Text and rezize the gate
+    public setText(text: string){
         this.text = text.split("\n");
         this.transform.height = this.text.length * 20 + 10;
 
@@ -332,19 +390,26 @@ class Lable_Gate extends Gate {
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
         // Set style
-        ctx.fillStyle = OPTIONS.COLOR.background;
-
-        // Draw background
-        ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
-        
-        // Set style
         ctx.fillStyle = OPTIONS.COLOR.main;
 
         // Draw box and name
         ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+
+        // Set style
+        ctx.fillStyle = OPTIONS.COLOR.background;
+
+        // Draw background
+        ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+
+        // Set style
+        ctx.fillStyle = OPTIONS.COLOR.main;
+        ctx.font = "17px 900 Courier New";
+
         for (let i = 0; i < this.text.length; i++) {
             ctx.fillText(this.text[i], this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + i * 20 + 20);
         }
+        
+        //ctx.font = "17px bold Courier New";
     }
 }
 

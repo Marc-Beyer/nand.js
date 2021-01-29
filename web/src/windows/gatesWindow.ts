@@ -21,7 +21,8 @@ class GatesWindow extends MWindow {
         ]);
         let outputsDropContainer: DropContainer = new DropContainer("Outputs", [
             {itemName: "Lamp", value: GATE_TYPE.Lamp},
-            {itemName: "Display", value: GATE_TYPE.Display}
+            {itemName: "Display", value: GATE_TYPE.Display},
+            {itemName: "7 segment display", value: GATE_TYPE.Segment_Display}
         ]);
         let otherDropContainer: DropContainer = new DropContainer("Other", [
             {itemName: "Lable", value: GATE_TYPE.Lable}

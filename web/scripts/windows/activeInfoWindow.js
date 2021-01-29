@@ -25,15 +25,49 @@ var ActiveInfoWindow = /** @class */ (function (_super) {
         _this.nameElement = document.createElement("h3");
         _this.nameElement.textContent = "None";
         _this.append(_this.nameElement);
+        _this.createTextArea("text:", "");
         return _this;
     }
     ActiveInfoWindow.prototype.setActive = function (gate) {
-        if (gate != null) {
-            this.nameElement.textContent = gate.name;
-        }
-        else {
+        if (gate == null) {
             this.nameElement.textContent = "None";
+            this.textarea.parentElement.hidden = true;
+            return;
         }
+        this.nameElement.textContent = gate.name;
+        switch (gate.type) {
+            case GATE_TYPE.Lable:
+                var lable = gate;
+                var text = "";
+                for (var index = 0; index < lable.text.length; index++) {
+                    var element = lable.text[index];
+                    text += element + "\n";
+                }
+                this.textarea.value = text;
+                this.textarea.parentElement.hidden = false;
+                break;
+            default:
+                this.textarea.parentElement.hidden = true;
+                break;
+        }
+    };
+    ActiveInfoWindow.prototype.createTextArea = function (name, value) {
+        var _this = this;
+        var text = document.createElement("div");
+        text.textContent = name;
+        this.textarea = document.createElement("textarea");
+        this.textarea.value = value;
+        this.textarea.addEventListener("keydown", function (e) {
+            e.stopPropagation();
+        });
+        this.textarea.addEventListener("keyup", function (e) {
+            var lable = mainCircuit.activeGate;
+            lable.setText(_this.textarea.value);
+            mainCircuit.refrashCanvas();
+        });
+        text.append(this.textarea);
+        this.append(text);
+        text.hidden = true;
     };
     return ActiveInfoWindow;
 }(MWindow));

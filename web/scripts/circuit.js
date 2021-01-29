@@ -60,7 +60,7 @@ var Circuit = /** @class */ (function () {
         this.ctx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
         // Set style
         this.ctx.lineWidth = OPTIONS.strokeSize;
-        this.ctx.font = "17px Courier New";
+        this.ctx.font = "17px bold Courier New";
         this.ctx.textAlign = "center";
         this.ctx.strokeStyle = "#DDDDDD";
         this.ctx.fillStyle = "#DDDDDD";
@@ -340,7 +340,8 @@ var Circuit = /** @class */ (function () {
                 mainCircuit.gates.unshift(new Display_Gate(position));
                 break;
             case GATE_TYPE.Lable:
-                mainCircuit.gates.unshift(new Lable_Gate(position, para[0]));
+                console.log("ADD LABLE");
+                mainCircuit.gates.unshift(new Lable_Gate(position, (para != null && para[0] != null) ? para[0] : "Lable"));
                 break;
             case GATE_TYPE.Connection:
                 mainCircuit.gates.unshift(new Connection_Gate(position));
@@ -350,6 +351,9 @@ var Circuit = /** @class */ (function () {
                 break;
             case GATE_TYPE.Clock:
                 mainCircuit.gates.unshift(new Clock_Gate(position));
+                break;
+            case GATE_TYPE.Segment_Display:
+                mainCircuit.gates.unshift(new Segment_Display_Gate(position));
                 break;
         }
         mainCircuit.refrashCanvas();

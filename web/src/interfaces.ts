@@ -15,7 +15,8 @@ enum GATE_TYPE{
     Lable,
     Connection,
     Clock,
-    Button
+    Button,
+    Segment_Display
 }
 
 enum IO_TYPE{

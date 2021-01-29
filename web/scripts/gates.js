@@ -319,36 +319,89 @@ var Display_Gate = /** @class */ (function (_super) {
     };
     return Display_Gate;
 }(Gate));
+var Segment_Display_Gate = /** @class */ (function (_super) {
+    __extends(Segment_Display_Gate, _super);
+    function Segment_Display_Gate(position) {
+        var _this = _super.call(this, "", 7, 0, position, function (inputs) { return [false]; }) || this;
+        _this.type = GATE_TYPE.Segment_Display;
+        _this.name = "7 segment display";
+        _this.transform.height = 140;
+        _this.transform.width = 80;
+        return _this;
+    }
+    // Overrite the drawGate()
+    Segment_Display_Gate.prototype.drawGate = function (ctx, offset) {
+        _super.prototype.drawGate.call(this, ctx, offset);
+        ctx.fillStyle = OPTIONS.COLOR.active;
+        var x = this.transform.position.x + offset.x;
+        var y = this.transform.position.y + offset.y;
+        var width = this.transform.width;
+        var height = this.transform.height;
+        this.inputSignals[0] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width / 8 + 10, y + height / 8 - 5, this.transform.width / 4 * 3 - 20, 10);
+        this.inputSignals[1] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width / 8 * 7 - 10, y + height / 8 + 5, 10, height / 8 * 3 - 10);
+        this.inputSignals[2] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width / 8 * 7 - 10, y + height / 8 * 4 + 5, 10, height / 8 * 3 - 10);
+        this.inputSignals[3] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width / 8 + 10, y + height / 8 * 7 - 5, this.transform.width / 4 * 3 - 20, 10);
+        this.inputSignals[4] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width / 8, y + height / 8 + 5, 10, height / 8 * 3 - 10);
+        this.inputSignals[5] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width / 8, y + height / 8 * 4 + 5, 10, height / 8 * 3 - 10);
+        this.inputSignals[6] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width / 8 + 10, y + height / 8 * 4 - 5, this.transform.width / 4 * 3 - 20, 10);
+        ctx.fillStyle = OPTIONS.COLOR.main;
+    };
+    Segment_Display_Gate.prototype.intFromInput = function () {
+        var value = 0;
+        for (var i = this.inputSignals.length - 1; i >= 0; i--) {
+            value = (value * 2);
+            value += this.inputSignals[i] ? 1 : 0;
+        }
+        return value;
+    };
+    return Segment_Display_Gate;
+}(Gate));
 // Other
 var Lable_Gate = /** @class */ (function (_super) {
     __extends(Lable_Gate, _super);
     function Lable_Gate(position, text) {
+        if (text === void 0) { text = "Lable"; }
         var _this = _super.call(this, text, 0, 0, position, function (inputs) { return [false]; }) || this;
         _this.type = GATE_TYPE.Lable;
         _this.name = "Lable";
-        _this.text = text.split("\n");
-        _this.transform.height = _this.text.length * 20 + 10;
-        for (var _i = 0, _a = _this.text; _i < _a.length; _i++) {
-            var line = _a[_i];
-            if (line.length * 10 + 20 > _this.transform.width) {
-                _this.transform.width = line.length * 10 + 20;
-            }
-        }
+        _this.setText(text);
         return _this;
     }
+    // Set the Text and rezize the gate
+    Lable_Gate.prototype.setText = function (text) {
+        this.text = text.split("\n");
+        this.transform.height = this.text.length * 20 + 10;
+        for (var _i = 0, _a = this.text; _i < _a.length; _i++) {
+            var line = _a[_i];
+            if (line.length * 10 + 20 > this.transform.width) {
+                this.transform.width = line.length * 10 + 20;
+            }
+        }
+    };
     // Overrite the drawGate()
     Lable_Gate.prototype.drawGate = function (ctx, offset) {
+        // Set style
+        ctx.fillStyle = OPTIONS.COLOR.main;
+        // Draw box and name
+        ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         // Set style
         ctx.fillStyle = OPTIONS.COLOR.background;
         // Draw background
         ctx.fillRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
         // Set style
         ctx.fillStyle = OPTIONS.COLOR.main;
-        // Draw box and name
-        ctx.strokeRect(this.transform.position.x + offset.x, this.transform.position.y + offset.y, this.transform.width, this.transform.height);
+        ctx.font = "17px 900 Courier New";
         for (var i = 0; i < this.text.length; i++) {
             ctx.fillText(this.text[i], this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + i * 20 + 20);
         }
+        //ctx.font = "17px bold Courier New";
     };
     return Lable_Gate;
 }(Gate));
