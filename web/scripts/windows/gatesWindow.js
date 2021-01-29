@@ -16,8 +16,8 @@ var GatesWindow = /** @class */ (function (_super) {
     function GatesWindow(transform) {
         var _this = _super.call(this, transform) || this;
         var inputsDropContainer = new DropContainer("Inputs", [
-            { itemName: "Constand high", value: GATE_TYPE.CONST_HIGH_Gate },
-            { itemName: "Constand low", value: GATE_TYPE.CONST_LOW_Gate },
+            { itemName: "Constant high", value: GATE_TYPE.CONST_HIGH_Gate },
+            { itemName: "Constant low", value: GATE_TYPE.CONST_LOW_Gate },
             { itemName: "Clock", value: GATE_TYPE.Clock },
             { itemName: "Button", value: GATE_TYPE.Button },
             { itemName: "Switch", value: GATE_TYPE.Switch }

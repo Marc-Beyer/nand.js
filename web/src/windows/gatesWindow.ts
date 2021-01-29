@@ -3,8 +3,8 @@ class GatesWindow extends MWindow {
         super(transform);
 
         let inputsDropContainer: DropContainer = new DropContainer("Inputs", [
-            {itemName: "Constand high", value: GATE_TYPE.CONST_HIGH_Gate},
-            {itemName: "Constand low", value: GATE_TYPE.CONST_LOW_Gate},
+            {itemName: "Constant high", value: GATE_TYPE.CONST_HIGH_Gate},
+            {itemName: "Constant low", value: GATE_TYPE.CONST_LOW_Gate},
             {itemName: "Clock", value: GATE_TYPE.Clock},
             {itemName: "Button", value: GATE_TYPE.Button},
             {itemName: "Switch", value: GATE_TYPE.Switch}
