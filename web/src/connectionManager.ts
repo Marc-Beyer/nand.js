@@ -2,6 +2,8 @@ class ConnectionManager {
 
     public connections: Connection[] = [];
 
+    public drawType: number = 0;
+
     constructor() {
         
     }
@@ -16,10 +18,43 @@ class ConnectionManager {
             }
             let outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             let inputPosition = connection.toGate.getInputPosition(connection.toInputNr);
-            ctx.beginPath();
-            ctx.moveTo(outputPosition.x + connection.fromGate.ioWidth + offset.x, outputPosition.y + offset.y);
-            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + offset.y);
-            ctx.stroke();
+            switch (this.drawType) {
+                case 1:
+                    ctx.beginPath();
+                    ctx.moveTo(outputPosition.x + connection.fromGate.ioWidth + offset.x, outputPosition.y + offset.y);
+                    ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + offset.y);
+                    ctx.stroke();
+                    break;
+                case 0:
+                    let outX = outputPosition.x + connection.fromGate.ioWidth + offset.x;
+                    let outY = outputPosition.y + offset.y;
+                    let inX = inputPosition.x + offset.x;
+                    let inY = inputPosition.y + offset.y;
+
+                    ctx.beginPath();
+                    ctx.moveTo(outX, outY);
+
+                    // if the x of input is less ?TODO
+                    if(outX > inX){
+                        if(outY > inY){
+                            ctx.lineTo(outX, outY - (outY - inY)/2);
+                            ctx.lineTo(inX, inY + (outY - inY)/2);
+                        }else{
+                            ctx.lineTo(outX, outY + (inY - outY)/2);
+                            ctx.lineTo(inX, inY - (inY - outY)/2);
+                        }
+                    }else{
+                        ctx.lineTo(outX + (inX - outX)/2, outY);
+                        ctx.lineTo(outX + (inX - outX)/2, inY);
+                    }
+
+                    ctx.lineTo(inX, inY);
+                    ctx.stroke();
+                    break;
+            
+                default:
+                    break;
+            }
         }
         ctx.strokeStyle = OPTIONS.COLOR.main;
     }

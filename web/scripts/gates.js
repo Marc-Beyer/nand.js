@@ -345,9 +345,9 @@ var Segment_Display_Gate = /** @class */ (function (_super) {
         ctx.fillRect(x + width / 8 * 7 - 10, y + height / 8 * 4 + 5, 10, height / 8 * 3 - 10);
         this.inputSignals[3] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
         ctx.fillRect(x + width / 8 + 10, y + height / 8 * 7 - 5, this.transform.width / 4 * 3 - 20, 10);
-        this.inputSignals[4] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
-        ctx.fillRect(x + width / 8, y + height / 8 + 5, 10, height / 8 * 3 - 10);
         this.inputSignals[5] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        ctx.fillRect(x + width / 8, y + height / 8 + 5, 10, height / 8 * 3 - 10);
+        this.inputSignals[4] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
         ctx.fillRect(x + width / 8, y + height / 8 * 4 + 5, 10, height / 8 * 3 - 10);
         this.inputSignals[6] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
         ctx.fillRect(x + width / 8 + 10, y + height / 8 * 4 - 5, this.transform.width / 4 * 3 - 20, 10);
@@ -378,6 +378,7 @@ var Lable_Gate = /** @class */ (function (_super) {
     Lable_Gate.prototype.setText = function (text) {
         this.text = text.split("\n");
         this.transform.height = this.text.length * 20 + 10;
+        this.transform.width = 20;
         for (var _i = 0, _a = this.text; _i < _a.length; _i++) {
             var line = _a[_i];
             if (line.length * 10 + 20 > this.transform.width) {

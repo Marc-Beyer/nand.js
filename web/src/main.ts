@@ -132,3 +132,15 @@ activeInfoWindow = new ActiveInfoWindow({
     width: 200,
     height: 200
 });
+
+//
+// Line style
+//
+document.getElementById("direct-lines-btn").addEventListener("click", ()=>{
+    mainCircuit.connectionManager.drawType = 1;
+    mainCircuit.refrashCanvas();
+});
+document.getElementById("straight-lines-btn").addEventListener("click", ()=>{
+    mainCircuit.connectionManager.drawType = 0;
+    mainCircuit.refrashCanvas();
+});

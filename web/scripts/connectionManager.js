@@ -1,6 +1,7 @@
 var ConnectionManager = /** @class */ (function () {
     function ConnectionManager() {
         this.connections = [];
+        this.drawType = 0;
     }
     // Draw all connections
     ConnectionManager.prototype.drawConnations = function (ctx, offset) {
@@ -14,10 +15,41 @@ var ConnectionManager = /** @class */ (function () {
             }
             var outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             var inputPosition = connection.toGate.getInputPosition(connection.toInputNr);
-            ctx.beginPath();
-            ctx.moveTo(outputPosition.x + connection.fromGate.ioWidth + offset.x, outputPosition.y + offset.y);
-            ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + offset.y);
-            ctx.stroke();
+            switch (this.drawType) {
+                case 1:
+                    ctx.beginPath();
+                    ctx.moveTo(outputPosition.x + connection.fromGate.ioWidth + offset.x, outputPosition.y + offset.y);
+                    ctx.lineTo(inputPosition.x + offset.x, inputPosition.y + offset.y);
+                    ctx.stroke();
+                    break;
+                case 0:
+                    var outX = outputPosition.x + connection.fromGate.ioWidth + offset.x;
+                    var outY = outputPosition.y + offset.y;
+                    var inX = inputPosition.x + offset.x;
+                    var inY = inputPosition.y + offset.y;
+                    ctx.beginPath();
+                    ctx.moveTo(outX, outY);
+                    // if the x of input is less ?TODO
+                    if (outX > inX) {
+                        if (outY > inY) {
+                            ctx.lineTo(outX, outY - (outY - inY) / 2);
+                            ctx.lineTo(inX, inY + (outY - inY) / 2);
+                        }
+                        else {
+                            ctx.lineTo(outX, outY + (inY - outY) / 2);
+                            ctx.lineTo(inX, inY - (inY - outY) / 2);
+                        }
+                    }
+                    else {
+                        ctx.lineTo(outX + (inX - outX) / 2, outY);
+                        ctx.lineTo(outX + (inX - outX) / 2, inY);
+                    }
+                    ctx.lineTo(inX, inY);
+                    ctx.stroke();
+                    break;
+                default:
+                    break;
+            }
         }
         ctx.strokeStyle = OPTIONS.COLOR.main;
     };

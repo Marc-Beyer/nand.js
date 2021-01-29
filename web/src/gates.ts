@@ -342,10 +342,10 @@ class Segment_Display_Gate extends Gate {
         this.inputSignals[3] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
         ctx.fillRect(x + width/8 + 10, y + height/8*7-5, this.transform.width/4*3 - 20, 10);
 
-        this.inputSignals[4] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        this.inputSignals[5] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
         ctx.fillRect(x + width/8, y + height/8 + 5, 10, height/8*3 - 10);
 
-        this.inputSignals[5] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
+        this.inputSignals[4] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
         ctx.fillRect(x + width/8, y + height/8*4 + 5, 10, height/8*3 - 10);
         
         this.inputSignals[6] ? ctx.fillStyle = OPTIONS.COLOR.active : ctx.fillStyle = OPTIONS.COLOR.dark;
@@ -380,6 +380,7 @@ class Lable_Gate extends Gate {
         this.text = text.split("\n");
         this.transform.height = this.text.length * 20 + 10;
 
+        this.transform.width = 20;
         for (let line of  this.text) {
             if(line.length * 10 + 20 >  this.transform.width){
                 this.transform.width = line.length * 10 + 20;
