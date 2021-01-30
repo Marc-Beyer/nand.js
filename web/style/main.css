@@ -70,8 +70,22 @@ body #menu-bar ul li button {
   border-right: 1px solid #999999;
 }
 
+body #menu-bar ul li .img-btn {
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  padding: 6px;
+}
+
+body #menu-bar ul li .img-btn img {
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body #menu-bar ul li button:hover, body #menu-bar ul li button:focus {
-  background-color: #77b2d4;
+  background-color: #bbbbbb;
   color: black;
 }
 

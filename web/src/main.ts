@@ -59,6 +59,15 @@ document.getElementById("load-text-btn").addEventListener("click", (e)=>{
     }, "");
 });
 
+// Add Listener to save-as-image-btn
+document.getElementById("save-as-image-btn").addEventListener("click", () => {
+    let dataURL = mainCircuit.mainCanvas.toDataURL("image/png");
+    let link = document.createElement('a');
+    link.download = "nand-js-save.png";
+    link.href = dataURL;
+    link.click();
+});
+
 // Add Listener to save-as-file-btn
 document.getElementById("save-as-file-btn").addEventListener("click", () => {
     download(saveManager.getSaveJSON(), "LogicGates-save.json", "application/json");
