@@ -20,13 +20,13 @@ var OptionsWindow = /** @class */ (function (_super) {
         header.textContent = "Colors";
         header.style.marginTop = "0";
         _this.append(header);
-        _this.createTextInput("main-color", "#DDDDDD");
-        _this.createTextInput("active-color", "#FF0000");
-        _this.createTextInput("background-color", "#3B3B3B");
-        _this.createTextInput("dark-color", "#222222");
+        _this.createColorInput("main-color", OPTIONS.COLOR.main);
+        _this.createColorInput("active-color", OPTIONS.COLOR.active);
+        _this.createColorInput("background-color", OPTIONS.COLOR.background);
+        _this.createColorInput("dark-color", OPTIONS.COLOR.dark);
         return _this;
     }
-    OptionsWindow.prototype.createTextInput = function (name, value) {
+    OptionsWindow.prototype.createColorInput = function (name, value) {
         var div = document.createElement("div");
         div.className = "flex-row";
         var text = document.createElement("div");
@@ -36,6 +36,11 @@ var OptionsWindow = /** @class */ (function (_super) {
         input.className = "grow color-picker";
         input.value = value;
         input.type = "color";
+        var str = name.substr(0, name.length - 6);
+        input.addEventListener("change", function () {
+            OPTIONS.COLOR[str] = input.value;
+            mainCircuit.refrashCanvas();
+        });
         div.append(text);
         div.append(input);
         this.append(div);

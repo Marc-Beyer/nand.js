@@ -7,7 +7,8 @@ var OPTIONS = {
         active: "#FF0000",
         background: "#FFFFFF",
         dark: "#AAAAAA"
-    }
+    },
+    gateStyle: 0
     /*COLOR:{
         main: "#DDDDDD",
         active: "#FF0000",
@@ -23,6 +24,7 @@ var mainCircuit = new Circuit({ x: 10, y: 10 });
 // Create a new SaveManager
 var saveManager = new SaveManager(mainCircuit);
 //mainCircuit.addGate(GATE_TYPE.Segment_Display, {x: 700, y: 300}, []);
+//mainCircuit.addGate(GATE_TYPE.RS_Latch, {x: 700, y: 300}, []);
 // Add Listener to error-container
 var errorContainer = document.getElementById("error-container-close-btn");
 errorContainer.addEventListener("click", function () {
@@ -81,6 +83,7 @@ document.getElementById("load-file-btn").addEventListener('click', function () {
 //
 document.getElementById("move-to-center-btn").addEventListener("click", function () {
     mainCircuit.gloabalOffset = { x: 0, y: 0 };
+    mainCircuit.zoomFactor = 1;
     mainCircuit.refrashCanvas();
 });
 document.getElementById("open-logic-gate-window-btn").addEventListener("click", function () {

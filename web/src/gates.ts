@@ -51,7 +51,40 @@ class NAND_Gate extends Gate {
 
     // Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
-        super.drawGate(ctx, offset);
+        switch (OPTIONS.gateStyle) {
+            case 0:
+                super.drawGate(ctx, offset);
+                break;
+            case 1:
+                // Set style
+                ctx.fillStyle = OPTIONS.COLOR.background;
+
+                // Set style
+                ctx.fillStyle = OPTIONS.COLOR.main;
+
+                // Draw inputs
+                this.drawInputs(ctx, offset);
+
+                // Draw outputs
+                this.drawOutputs(ctx, offset);
+
+                let radius = this.transform.height / 2;
+
+                ctx.beginPath();
+                ctx.arc(this.transform.position.x + offset.x + this.transform.width - radius,  this.transform.position.y + offset.y + radius, radius, 1.5 * Math.PI, 0.5 * Math.PI);
+                ctx.lineTo(this.transform.position.x + offset.x, this.transform.position.y + offset.y + this.transform.height);
+                ctx.lineTo(this.transform.position.x + offset.x, this.transform.position.y + offset.y);
+                ctx.lineTo(this.transform.position.x + offset.x + this.transform.width - radius, this.transform.position.y + offset.y);
+                
+
+                ctx.fillStyle = OPTIONS.COLOR.active;
+                ctx.fill();
+
+                ctx.fillStyle = OPTIONS.COLOR.main;
+                ctx.stroke();
+
+                break;
+        }
         this.drawNegatedOutputs(ctx, offset);
     }
 }
@@ -472,5 +505,35 @@ class Connection_Gate extends Gate {
     // Get the position of the output with number nr
     public getOutputPosition(nr: number): Position2D | null{
         return {x: this.transform.position.x - this.ioWidth, y: this.transform.position.y};
+    }
+}
+
+
+
+class RS_Latch_Gate extends Gate {
+    public savedInput: boolean = false;
+
+    constructor(position: Position2D) {
+        super("S         Q", 2, 2, position, (inputs: boolean[]) => {
+            if(inputs[0])this.savedInput = true;
+            if(inputs[1])this.savedInput = false;
+            if(this.savedInput){
+                return [false, true];
+            }else{
+                return [true, false];
+            }
+            
+        });
+        this.type = GATE_TYPE.RS_Latch;
+        this.name = "RS_Latch";
+        this.transform.height = 80;
+    }
+    
+    // Overrite the drawGate()
+    public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        super.drawGate(ctx, offset);
+        // Set style
+        ctx.fillText("R         Q", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + this.transform.height- 10);
+        ctx.fillText("            _", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + this.transform.height- 28);
     }
 }

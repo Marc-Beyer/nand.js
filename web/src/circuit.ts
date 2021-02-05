@@ -379,6 +379,9 @@ class Circuit{
             case GATE_TYPE.Segment_Display:
                 mainCircuit.gates.unshift(new Segment_Display_Gate(position));
             break;
+            case GATE_TYPE.RS_Latch:
+                mainCircuit.gates.unshift(new RS_Latch_Gate(position));
+            break;
         }
         mainCircuit.refrashCanvas();
     }

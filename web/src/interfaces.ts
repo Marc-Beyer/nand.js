@@ -16,7 +16,8 @@ enum GATE_TYPE{
     Connection,
     Clock,
     Button,
-    Segment_Display
+    Segment_Display,
+    RS_Latch
 }
 
 enum IO_TYPE{
@@ -35,7 +36,8 @@ interface Color{
 interface Options{
     strokeSize: number,
     negatedIOStyle: number,
-    COLOR: Color
+    COLOR: Color,
+    gateStyle: number
 }
 
 interface Position2D{

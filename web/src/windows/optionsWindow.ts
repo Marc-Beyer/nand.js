@@ -7,13 +7,13 @@ class OptionsWindow extends MWindow {
         header.textContent = "Colors";
         header.style.marginTop = "0";
         this.append(header);
-        this.createTextInput("main-color", "#DDDDDD");
-        this.createTextInput("active-color", "#FF0000");
-        this.createTextInput("background-color", "#3B3B3B");
-        this.createTextInput("dark-color", "#222222");
+        this.createColorInput("main-color", OPTIONS.COLOR.main);
+        this.createColorInput("active-color", OPTIONS.COLOR.active);
+        this.createColorInput("background-color", OPTIONS.COLOR.background);
+        this.createColorInput("dark-color", OPTIONS.COLOR.dark);
     }
 
-    public createTextInput(name: string, value: string) {
+    public createColorInput(name: string, value: string) {
         let div = document.createElement("div");
         div.className = "flex-row";
         let text = document.createElement("div");
@@ -23,6 +23,12 @@ class OptionsWindow extends MWindow {
         input.className = "grow color-picker";
         input.value = value;
         input.type = "color";
+
+        let str = name.substr(0, name.length - 6);
+        input.addEventListener("change", ()=>{
+            OPTIONS.COLOR[str] = input.value;
+            mainCircuit.refrashCanvas();
+        });
 
         div.append(text);
         div.append(input);

@@ -69,7 +69,31 @@ var NAND_Gate = /** @class */ (function (_super) {
     }
     // Overrite the drawGate()
     NAND_Gate.prototype.drawGate = function (ctx, offset) {
-        _super.prototype.drawGate.call(this, ctx, offset);
+        switch (OPTIONS.gateStyle) {
+            case 0:
+                _super.prototype.drawGate.call(this, ctx, offset);
+                break;
+            case 1:
+                // Set style
+                ctx.fillStyle = OPTIONS.COLOR.background;
+                // Set style
+                ctx.fillStyle = OPTIONS.COLOR.main;
+                // Draw inputs
+                this.drawInputs(ctx, offset);
+                // Draw outputs
+                this.drawOutputs(ctx, offset);
+                var radius = this.transform.height / 2;
+                ctx.beginPath();
+                ctx.arc(this.transform.position.x + offset.x + this.transform.width - radius, this.transform.position.y + offset.y + radius, radius, 1.5 * Math.PI, 0.5 * Math.PI);
+                ctx.lineTo(this.transform.position.x + offset.x, this.transform.position.y + offset.y + this.transform.height);
+                ctx.lineTo(this.transform.position.x + offset.x, this.transform.position.y + offset.y);
+                ctx.lineTo(this.transform.position.x + offset.x + this.transform.width - radius, this.transform.position.y + offset.y);
+                ctx.fillStyle = OPTIONS.COLOR.active;
+                ctx.fill();
+                ctx.fillStyle = OPTIONS.COLOR.main;
+                ctx.stroke();
+                break;
+        }
         this.drawNegatedOutputs(ctx, offset);
     };
     return NAND_Gate;
@@ -462,5 +486,35 @@ var Connection_Gate = /** @class */ (function (_super) {
         return { x: this.transform.position.x - this.ioWidth, y: this.transform.position.y };
     };
     return Connection_Gate;
+}(Gate));
+var RS_Latch_Gate = /** @class */ (function (_super) {
+    __extends(RS_Latch_Gate, _super);
+    function RS_Latch_Gate(position) {
+        var _this = _super.call(this, "S         Q", 2, 2, position, function (inputs) {
+            if (inputs[0])
+                _this.savedInput = true;
+            if (inputs[1])
+                _this.savedInput = false;
+            if (_this.savedInput) {
+                return [false, true];
+            }
+            else {
+                return [true, false];
+            }
+        }) || this;
+        _this.savedInput = false;
+        _this.type = GATE_TYPE.RS_Latch;
+        _this.name = "RS_Latch";
+        _this.transform.height = 80;
+        return _this;
+    }
+    // Overrite the drawGate()
+    RS_Latch_Gate.prototype.drawGate = function (ctx, offset) {
+        _super.prototype.drawGate.call(this, ctx, offset);
+        // Set style
+        ctx.fillText("R         Q", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + this.transform.height - 10);
+        ctx.fillText("            _", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + this.transform.height - 28);
+    };
+    return RS_Latch_Gate;
 }(Gate));
 //# sourceMappingURL=gates.js.map

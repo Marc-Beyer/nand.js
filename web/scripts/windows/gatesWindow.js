@@ -38,7 +38,8 @@ var GatesWindow = /** @class */ (function (_super) {
             { itemName: "7 segment display", value: GATE_TYPE.Segment_Display }
         ]);
         var otherDropContainer = new DropContainer("Other", [
-            { itemName: "Lable", value: GATE_TYPE.Lable }
+            { itemName: "Lable", value: GATE_TYPE.Lable },
+            { itemName: "RS FlipFlop/Latch", value: GATE_TYPE.RS_Latch }
         ]);
         _this.append(inputsDropContainer.htmlElement);
         _this.append(logicGatesDropContainer.htmlElement);

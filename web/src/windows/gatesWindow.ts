@@ -26,6 +26,7 @@ class GatesWindow extends MWindow {
         ]);
         let otherDropContainer: DropContainer = new DropContainer("Other", [
             {itemName: "Lable", value: GATE_TYPE.Lable}
+            {itemName: "RS FlipFlop/Latch", value: GATE_TYPE.RS_Latch}
         ]);
         
         this.append(inputsDropContainer.htmlElement);
