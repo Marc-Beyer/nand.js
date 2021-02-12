@@ -496,10 +496,10 @@ var RS_Latch_Gate = /** @class */ (function (_super) {
             if (inputs[1])
                 _this.savedInput = false;
             if (_this.savedInput) {
-                return [false, true];
+                return [true, false];
             }
             else {
-                return [true, false];
+                return [false, true];
             }
         }) || this;
         _this.savedInput = false;
@@ -513,7 +513,7 @@ var RS_Latch_Gate = /** @class */ (function (_super) {
         _super.prototype.drawGate.call(this, ctx, offset);
         // Set style
         ctx.fillText("R         Q", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + this.transform.height - 10);
-        ctx.fillText("            _", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + 3);
+        ctx.fillText("            _", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + this.transform.height - 27);
     };
     return RS_Latch_Gate;
 }(Gate));

@@ -534,6 +534,6 @@ class RS_Latch_Gate extends Gate {
         super.drawGate(ctx, offset);
         // Set style
         ctx.fillText("R         Q", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + this.transform.height- 10);
-        ctx.fillText("            _", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + 3);
+        ctx.fillText("            _", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + this.transform.height- 27);
     }
 }
