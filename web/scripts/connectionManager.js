@@ -7,7 +7,11 @@ var ConnectionManager = /** @class */ (function () {
     ConnectionManager.prototype.drawConnations = function (ctx, offset) {
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
             var connection = _a[_i];
-            if (connection.fromGate.getOutput(connection.fromOutputNr)) {
+            if (mainCircuit.activeConnection == connection) {
+                //ctx.strokeStyle = OPTIONS.COLOR.highlight;
+                ctx.lineWidth = OPTIONS.strokeSize + 2;
+            }
+            else if (connection.fromGate.getOutput(connection.fromOutputNr)) {
                 ctx.strokeStyle = OPTIONS.COLOR.active;
             }
             else {
@@ -27,24 +31,13 @@ var ConnectionManager = /** @class */ (function () {
                     var outY = outputPosition.y + offset.y;
                     var inX = inputPosition.x + offset.x;
                     var inY = inputPosition.y + offset.y;
+                    var path = this.getConnectionPath(outX, outY, inX, inY);
                     ctx.beginPath();
-                    ctx.moveTo(outX, outY);
-                    // if the x of input is less ?TODO
-                    if (outX > inX) {
-                        if (outY > inY) {
-                            ctx.lineTo(outX, outY - (outY - inY) / 2);
-                            ctx.lineTo(inX, inY + (outY - inY) / 2);
-                        }
-                        else {
-                            ctx.lineTo(outX, outY + (inY - outY) / 2);
-                            ctx.lineTo(inX, inY - (inY - outY) / 2);
-                        }
+                    ctx.moveTo(path[0].x, path[0].y);
+                    for (var index = 1; index < path.length; index++) {
+                        var pos = path[index];
+                        ctx.lineTo(pos.x, pos.y);
                     }
-                    else {
-                        ctx.lineTo(outX + (inX - outX) / 2, outY);
-                        ctx.lineTo(outX + (inX - outX) / 2, inY);
-                    }
-                    ctx.lineTo(inX, inY);
                     ctx.stroke();
                     break;
                 default:
@@ -52,6 +45,7 @@ var ConnectionManager = /** @class */ (function () {
             }
         }
         ctx.strokeStyle = OPTIONS.COLOR.main;
+        ctx.lineWidth = OPTIONS.strokeSize;
     };
     ConnectionManager.prototype.addConnection = function (connection) {
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
@@ -126,11 +120,42 @@ var ConnectionManager = /** @class */ (function () {
             outputPosition = { x: outputPosition.x + connection.fromGate.ioWidth, y: outputPosition.y + connection.fromGate.ioHeight / 2 };
             var inputPosition = connection.toGate.getInputPosition(connection.toInputNr);
             inputPosition = { x: inputPosition.x, y: inputPosition.y + connection.toGate.ioHeight / 2 };
-            if (this.isPosAtLine(outputPosition, inputPosition, pos)) {
-                return connection;
+            switch (this.drawType) {
+                case 1:
+                    if (this.isPosAtLine(outputPosition, inputPosition, pos)) {
+                        return connection;
+                    }
+                    break;
+                case 0:
+                    var path = this.getConnectionPath(outputPosition.x, outputPosition.y, inputPosition.x, inputPosition.y);
+                    for (var index = 1; index < path.length; index++) {
+                        if (this.isPosAtLine(path[index - 1], path[index], pos)) {
+                            return connection;
+                        }
+                    }
+                    break;
             }
         }
         return null;
+    };
+    ConnectionManager.prototype.getConnectionPath = function (outX, outY, inX, inY) {
+        var middlePoint1 = { x: 0, y: 0 };
+        var middlePoint2 = { x: 0, y: 0 };
+        if (outX > inX) {
+            if (outY > inY) {
+                middlePoint1 = { x: outX, y: outY - (outY - inY) / 2 };
+                middlePoint2 = { x: inX, y: inY + (outY - inY) / 2 };
+            }
+            else {
+                middlePoint1 = { x: outX, y: outY + (inY - outY) / 2 };
+                middlePoint2 = { x: inX, y: inY - (inY - outY) / 2 };
+            }
+        }
+        else {
+            middlePoint1 = { x: outX + (inX - outX) / 2, y: outY };
+            middlePoint2 = { x: outX + (inX - outX) / 2, y: inY };
+        }
+        return [{ x: outX, y: outY }, middlePoint1, middlePoint2, { x: inX, y: inY }];
     };
     // Check if pointC is near line AB
     ConnectionManager.prototype.isPosAtLine = function (pointA, pointB, pointC) {

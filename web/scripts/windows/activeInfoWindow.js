@@ -38,10 +38,10 @@ var ActiveInfoWindow = /** @class */ (function (_super) {
         switch (gate.type) {
             case GATE_TYPE.Lable:
                 var lable = gate;
-                var text = "";
-                for (var index = 0; index < lable.text.length; index++) {
+                var text = lable.text[0];
+                for (var index = 1; index < lable.text.length; index++) {
                     var element = lable.text[index];
-                    text += element + "\n";
+                    text += "\n" + element;
                 }
                 this.textarea.value = text;
                 this.textarea.parentElement.hidden = false;

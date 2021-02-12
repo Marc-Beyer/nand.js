@@ -11,6 +11,7 @@ class OptionsWindow extends MWindow {
         this.createColorInput("active-color", OPTIONS.COLOR.active);
         this.createColorInput("background-color", OPTIONS.COLOR.background);
         this.createColorInput("dark-color", OPTIONS.COLOR.dark);
+        //this.createColorInput("highlight-color", OPTIONS.COLOR.highlight);
     }
 
     public createColorInput(name: string, value: string) {

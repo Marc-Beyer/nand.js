@@ -7,10 +7,10 @@ class Circuit{
     public mainCanvas: HTMLCanvasElement;
     public activeGate: Gate;
     public activeIO: IO = null;
+    public activeConnection: Connection = null;
 
     private isMouseDown: boolean;
     private drawPreviewConnection: Position2D = null;
-    private activeConnection: Connection = null;
     private activeOffset: Position2D = null;
 
     private ctx: CanvasRenderingContext2D;
@@ -84,7 +84,11 @@ class Circuit{
         mainCircuit.connectionManager.drawConnations(this.ctx, this.gloabalOffset);
         
         for (let i = this.gates.length-1; i >= 0; i--) {
+            if(this.activeGate == this.gates[i]){
+                this.ctx.lineWidth = OPTIONS.strokeSize +2;
+            }
             this.gates[i].drawGate(this.ctx, this.gloabalOffset);
+            this.ctx.lineWidth = OPTIONS.strokeSize;
         }
 
         // Draw preview-connection

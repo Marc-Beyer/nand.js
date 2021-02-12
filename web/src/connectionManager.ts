@@ -11,7 +11,10 @@ class ConnectionManager {
     // Draw all connections
     public drawConnations(ctx: CanvasRenderingContext2D, offset: Position2D) {
         for (let connection of this.connections) {
-            if(connection.fromGate.getOutput(connection.fromOutputNr)){
+            if(mainCircuit.activeConnection == connection){
+                //ctx.strokeStyle = OPTIONS.COLOR.highlight;
+                ctx.lineWidth = OPTIONS.strokeSize + 2;
+            }else if(connection.fromGate.getOutput(connection.fromOutputNr)){
                 ctx.strokeStyle = OPTIONS.COLOR.active;
             }else{
                 ctx.strokeStyle = OPTIONS.COLOR.main;
@@ -31,24 +34,14 @@ class ConnectionManager {
                     let inX = inputPosition.x + offset.x;
                     let inY = inputPosition.y + offset.y;
 
+                    let path: Position2D[] = this.getConnectionPath(outX, outY, inX, inY);
+
                     ctx.beginPath();
-                    ctx.moveTo(outX, outY);
-
-                    // if the x of input is less ?TODO
-                    if(outX > inX){
-                        if(outY > inY){
-                            ctx.lineTo(outX, outY - (outY - inY)/2);
-                            ctx.lineTo(inX, inY + (outY - inY)/2);
-                        }else{
-                            ctx.lineTo(outX, outY + (inY - outY)/2);
-                            ctx.lineTo(inX, inY - (inY - outY)/2);
-                        }
-                    }else{
-                        ctx.lineTo(outX + (inX - outX)/2, outY);
-                        ctx.lineTo(outX + (inX - outX)/2, inY);
+                    ctx.moveTo(path[0].x, path[0].y);
+                    for (let index = 1; index < path.length; index++) {
+                        const pos: Position2D = path[index];
+                        ctx.lineTo(pos.x, pos.y);
                     }
-
-                    ctx.lineTo(inX, inY);
                     ctx.stroke();
                     break;
             
@@ -57,6 +50,7 @@ class ConnectionManager {
             }
         }
         ctx.strokeStyle = OPTIONS.COLOR.main;
+        ctx.lineWidth = OPTIONS.strokeSize;
     }
 
     public addConnection(connection: Connection): boolean{
@@ -125,7 +119,7 @@ class ConnectionManager {
             this.updateConnectedGates(gate);
         }
     }
-
+    
     // Get the connection at pos
     public getConnectionAtPosition(pos: Position2D): Connection | null{
         for (let connection of this.connections) {
@@ -133,11 +127,45 @@ class ConnectionManager {
             outputPosition = {x: outputPosition.x + connection.fromGate.ioWidth, y: outputPosition.y + connection.fromGate.ioHeight/2};
             let inputPosition = connection.toGate.getInputPosition(connection.toInputNr);
             inputPosition = {x: inputPosition.x , y: inputPosition.y + connection.toGate.ioHeight/2};
-            if(this.isPosAtLine(outputPosition, inputPosition, pos)){
-                return connection;
+            switch (this.drawType) {
+                case 1:
+                    if(this.isPosAtLine(outputPosition, inputPosition, pos)){
+                        return connection;
+                    }
+                    break;
+            
+                case 0:
+                    let path: Position2D[] = this.getConnectionPath(outputPosition.x, outputPosition.y, inputPosition.x, inputPosition.y);
+
+                    for (let index = 1; index < path.length; index++) {
+                        if(this.isPosAtLine(path[index-1], path[index], pos)){
+                            return connection;
+                        }
+                    }
+                    break;
             }
         }
         return null;
+    }
+
+    public getConnectionPath(outX: number, outY: number, inX: number, inY: number): Position2D[]{
+        let middlePoint1: Position2D = {x: 0, y: 0};
+        let middlePoint2: Position2D = {x: 0, y: 0};
+
+        if(outX > inX){
+            if(outY > inY){
+                middlePoint1 = {x: outX, y: outY - (outY - inY)/2};
+                middlePoint2 = {x: inX, y: inY + (outY - inY)/2};
+            }else{
+                middlePoint1 = {x: outX, y: outY + (inY - outY)/2};
+                middlePoint2 = {x: inX, y: inY - (inY - outY)/2};
+            }
+        }else{
+            middlePoint1 = {x: outX + (inX - outX)/2, y: outY};
+            middlePoint2 = {x: outX + (inX - outX)/2, y: inY};
+        }
+
+        return [{x: outX, y: outY}, middlePoint1, middlePoint2, {x: inX, y: inY}];
     }
 
     // Check if pointC is near line AB

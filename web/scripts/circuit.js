@@ -4,8 +4,8 @@ var Circuit = /** @class */ (function () {
         this.gates = [];
         this.gloabalOffset = { x: 0, y: 0 };
         this.activeIO = null;
-        this.drawPreviewConnection = null;
         this.activeConnection = null;
+        this.drawPreviewConnection = null;
         this.activeOffset = null;
         this.mainCanvasRealWidth = 1000;
         this.mainCanvasRealHeight = 1000;
@@ -67,7 +67,11 @@ var Circuit = /** @class */ (function () {
         // Darw Gates and Connections
         mainCircuit.connectionManager.drawConnations(this.ctx, this.gloabalOffset);
         for (var i = this.gates.length - 1; i >= 0; i--) {
+            if (this.activeGate == this.gates[i]) {
+                this.ctx.lineWidth = OPTIONS.strokeSize + 2;
+            }
             this.gates[i].drawGate(this.ctx, this.gloabalOffset);
+            this.ctx.lineWidth = OPTIONS.strokeSize;
         }
         // Draw preview-connection
         if (this.drawPreviewConnection != null && mainCircuit.activeIO != null) {

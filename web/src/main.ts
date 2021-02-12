@@ -6,7 +6,8 @@ var OPTIONS: Options = {
         main: "#000000",
         active: "#FF0000",
         background: "#FFFFFF",
-        dark: "#AAAAAA"
+        dark: "#AAAAAA",
+        highlight: "#0000FF",
     }, 
     gateStyle: 0
     /*COLOR:{

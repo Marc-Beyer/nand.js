@@ -30,7 +30,8 @@ interface Color{
     main: string,
     active: string,
     background: string,
-    dark: string
+    dark: string,
+    highlight: string
 }
 
 interface Options{

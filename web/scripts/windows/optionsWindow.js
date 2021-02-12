@@ -25,6 +25,7 @@ var OptionsWindow = /** @class */ (function (_super) {
         _this.createColorInput("background-color", OPTIONS.COLOR.background);
         _this.createColorInput("dark-color", OPTIONS.COLOR.dark);
         return _this;
+        //this.createColorInput("highlight-color", OPTIONS.COLOR.highlight);
     }
     OptionsWindow.prototype.createColorInput = function (name, value) {
         var div = document.createElement("div");

@@ -30,10 +30,10 @@ class ActiveInfoWindow extends MWindow {
         switch (gate.type) {
             case GATE_TYPE.Lable:
                 let lable = gate as Lable_Gate;
-                let text = "";
-                for (let index = 0; index < lable.text.length; index++) {
+                let text = lable.text[0];
+                for (let index = 1; index < lable.text.length; index++) {
                     const element = lable.text[index];
-                    text += element + "\n";
+                    text += "\n" + element;
                 }
                 this.textarea.value = text;
                 this.textarea.parentElement.hidden = false;
