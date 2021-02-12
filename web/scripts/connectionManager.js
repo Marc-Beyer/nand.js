@@ -7,15 +7,15 @@ var ConnectionManager = /** @class */ (function () {
     ConnectionManager.prototype.drawConnations = function (ctx, offset) {
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
             var connection = _a[_i];
-            if (mainCircuit.activeConnection == connection) {
-                //ctx.strokeStyle = OPTIONS.COLOR.highlight;
-                ctx.lineWidth = OPTIONS.strokeSize + 2;
-            }
-            else if (connection.fromGate.getOutput(connection.fromOutputNr)) {
+            if (connection.fromGate.getOutput(connection.fromOutputNr)) {
                 ctx.strokeStyle = OPTIONS.COLOR.active;
             }
             else {
                 ctx.strokeStyle = OPTIONS.COLOR.main;
+            }
+            if (mainCircuit.activeConnection == connection) {
+                //ctx.strokeStyle = OPTIONS.COLOR.highlight;
+                ctx.lineWidth = OPTIONS.strokeSize + 2;
             }
             var outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             var inputPosition = connection.toGate.getInputPosition(connection.toInputNr);

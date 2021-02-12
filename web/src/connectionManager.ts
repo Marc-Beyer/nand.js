@@ -11,13 +11,14 @@ class ConnectionManager {
     // Draw all connections
     public drawConnations(ctx: CanvasRenderingContext2D, offset: Position2D) {
         for (let connection of this.connections) {
-            if(mainCircuit.activeConnection == connection){
-                //ctx.strokeStyle = OPTIONS.COLOR.highlight;
-                ctx.lineWidth = OPTIONS.strokeSize + 2;
-            }else if(connection.fromGate.getOutput(connection.fromOutputNr)){
+            if(connection.fromGate.getOutput(connection.fromOutputNr)){
                 ctx.strokeStyle = OPTIONS.COLOR.active;
             }else{
                 ctx.strokeStyle = OPTIONS.COLOR.main;
+            }
+            if(mainCircuit.activeConnection == connection){
+                //ctx.strokeStyle = OPTIONS.COLOR.highlight;
+                ctx.lineWidth = OPTIONS.strokeSize + 2;
             }
             let outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             let inputPosition = connection.toGate.getInputPosition(connection.toInputNr);
