@@ -513,7 +513,7 @@ var RS_Latch_Gate = /** @class */ (function (_super) {
         _super.prototype.drawGate.call(this, ctx, offset);
         // Set style
         ctx.fillText("R         Q", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + this.transform.height - 10);
-        ctx.fillText("            _", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + this.transform.height - 28);
+        ctx.fillText("            _", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + 3);
     };
     return RS_Latch_Gate;
 }(Gate));
