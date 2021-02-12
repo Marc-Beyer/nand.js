@@ -49,9 +49,9 @@ class ConnectionManager {
                 default:
                     break;
             }
+            ctx.lineWidth = OPTIONS.strokeSize;
         }
         ctx.strokeStyle = OPTIONS.COLOR.main;
-        ctx.lineWidth = OPTIONS.strokeSize;
     }
 
     public addConnection(connection: Connection): boolean{

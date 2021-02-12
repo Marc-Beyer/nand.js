@@ -43,9 +43,9 @@ var ConnectionManager = /** @class */ (function () {
                 default:
                     break;
             }
+            ctx.lineWidth = OPTIONS.strokeSize;
         }
         ctx.strokeStyle = OPTIONS.COLOR.main;
-        ctx.lineWidth = OPTIONS.strokeSize;
     };
     ConnectionManager.prototype.addConnection = function (connection) {
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
