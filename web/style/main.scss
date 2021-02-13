@@ -1,4 +1,31 @@
-@import 'variables';
+$vars: (
+    main-background-color: rgb(14, 90, 134),
+    canvas-background-color: rgb(255, 255, 255),
+    shade-background-color: rgb(4, 107, 167),
+    close-btn-background-color: rgb(167, 4, 58),
+
+    dark-background-color: rgb(0, 0, 0),
+
+    main-color: rgb(228, 228, 228),
+
+    main-border-color: rgb(36, 152, 219)
+);
+
+@mixin var ($key, $variable){
+    #{$key}: var(--#{$variable});
+}
+
+:root{
+    @each $key, $value in $vars {
+        --#{$key}: #{$value};
+    }
+}
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 html, body {
     height: 100%;
@@ -7,22 +34,20 @@ html, body {
     
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-    //TODO margin collapse shifts the body and adds a scrollbar
     overflow: hidden;
 }
 
 body{
-    background-color: $main-background-color;
-    color: $main-color;
+    @include var(background, main-background-color);
+    @include var(color, main-color);
 
     canvas{
-        background-color:$main-background-color;
+        @include var(background, canvas-background-color);
         width: 100%;
         height: 100%;
         margin: 0;
         padding: 0;
         float: left;
-        background-color: $canvas-background-color;
     }
 
     #menu-bar{
@@ -32,8 +57,9 @@ body{
         right: 0;
         height: 2rem;
         
-        background-color: $main-background-color;
-        border: 1px solid $main-border-color;
+        @include var(background, main-background-color);
+        border: 1px solid black;
+        @include var(border-color, main-border-color);
 
         ul{
             display: flex;
@@ -48,15 +74,22 @@ body{
                 height: 100%;
                 cursor: pointer;
 
-                button{
+                button,
+                a{
+                    display: block;
                     cursor: pointer;
                     border: none;
-                    background-color: $shade-background-color;
-                    color: $main-color;
+                    background: none;
+                    @include var(color, main-color);
+                    font-weight: bold;
                     height: 100%;
                     min-width: 4rem;
-                    border-right: 1px solid $main-border-color;
+                    border-right: 1px solid black;
+                    @include var(border-color, main-border-color);
+                }
 
+                a{
+                    padding: .2em;
                 }
 
                 .img-btn{
@@ -74,22 +107,24 @@ body{
                 }
 
                 button:hover, button:focus{
-                    background-color: $shade-background-color-2;
-                    color: $main-color;
+                    @include var(background, main-background-color);
+                    @include var(color, main-color);
                 }
 
                 .submenu{
                     position: absolute;
                     flex-direction: column;
                     display: none;
-                    border-top: 1px solid $main-border-color;
+                    border-top: 1px solid black;
+                    @include var(border-color, main-border-color);
 
                     li{
                         width: 100%;
 
                         button{
                             width: 100%;
-                            border: 1px solid $main-border-color;
+                            border: 1px solid black;
+                            @include var(border-color, main-border-color);
                             border-top: none;
                         }
                     }
@@ -143,8 +178,9 @@ body{
         display: flex;
         flex-direction: column;
 
-        background-color: $main-background-color;
-        border: 1px solid $main-border-color;
+        @include var(background, main-background-color);
+        border: 1px solid black;
+        @include var(border-color, main-border-color);
 
         .header{
             display: flex;
@@ -153,10 +189,10 @@ body{
             .drag-container{
                 padding: 1rem;
                 cursor: grab;
-                background-color: $main-background-color;
+                @include var(background, main-background-color);
     
                 .box{
-                    background-color: $main-color;
+                    @include var(background, main-background-color);
                     height: .2rem;
                 }
             }
@@ -165,7 +201,7 @@ body{
                 height: 2.2rem;
                 width: 2.2rem;
     
-                background-color: rgb(155, 1, 1);
+                @include var(background, close-btn-background-color);
                 color:#ffffff;
                 font-weight: bold;
                 border: none;
@@ -183,25 +219,25 @@ body{
             flex-direction: column;
 
             padding: .5rem;
-            background-color: $shade-background-color;
+            @include var(background, shade-background-color);
 
             button{
                 border: none;
-                background-color: $main-background-color;
-                color: $main-color;
+                @include var(background, main-background-color);
+                @include var(color, main-color);
                 padding: .2rem;
                 margin: 0;
             }
 
             button:hover, button:focus{
-                background-color: $shade-background-color;
-                color: $main-color;
+                @include var(background, shade-background-color);
+                @include var(color, main-color);
             }
 
             textarea{
                 border: none;
-                background-color: $main-background-color;
-                color: $main-color;
+                @include var(background, main-background-color);
+                @include var(color, main-color);
                 margin: 0 0 .5rem 0;
                 max-width: 100%;
             }
@@ -226,7 +262,7 @@ body{
 
             .drop-container{
                 h2{
-                    background-color: $shade-background-color;
+                    @include var(background, shade-background-color);
                     padding: 0.5rem 1rem;
                     margin-top: 4px;
                     margin-bottom: 0;
@@ -235,7 +271,7 @@ body{
 
                 ul{
                     display: none;
-                    background-color: $main-background-color;
+                    @include var(background, main-background-color);
                     padding: .2rem 0 .2rem .5rem;
                     margin: 0;
                 }
@@ -254,7 +290,7 @@ body{
                         }
 
                         a:hover, a:focus{
-                            background-color:  $shade-background-color;
+                            @include var(background, shade-background-color);
 
                         }
                     }
