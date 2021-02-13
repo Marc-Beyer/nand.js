@@ -77,12 +77,17 @@ body #menu-bar ul li a {
   font-weight: bold;
   height: 100%;
   min-width: 4rem;
-  border-right: 1px solid black;
-  border-color: var(--main-border-color);
+  font-size: 0.9rem;
+}
+
+body #menu-bar ul li button:hover, body #menu-bar ul li button:focus {
+  background: var(--shade-background-color);
+  color: var(--main-color);
 }
 
 body #menu-bar ul li a {
-  padding: .2em;
+  padding: .2rem 1.2rem;
+  text-decoration: none;
 }
 
 body #menu-bar ul li .img-btn {
@@ -99,11 +104,6 @@ body #menu-bar ul li .img-btn img {
   padding: 0;
 }
 
-body #menu-bar ul li button:hover, body #menu-bar ul li button:focus {
-  background: var(--main-background-color);
-  color: var(--main-color);
-}
-
 body #menu-bar ul li .submenu {
   position: absolute;
   -webkit-box-orient: vertical;
@@ -111,8 +111,10 @@ body #menu-bar ul li .submenu {
       -ms-flex-direction: column;
           flex-direction: column;
   display: none;
+  height: auto;
   border-top: 1px solid black;
   border-color: var(--main-border-color);
+  background: var(--main-background-color);
 }
 
 body #menu-bar ul li .submenu li {
@@ -124,6 +126,7 @@ body #menu-bar ul li .submenu li button {
   border: 1px solid black;
   border-color: var(--main-border-color);
   border-top: none;
+  padding: .5em 1em;
 }
 
 body #menu-bar ul li:hover .submenu {

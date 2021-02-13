@@ -84,12 +84,18 @@ body{
                     font-weight: bold;
                     height: 100%;
                     min-width: 4rem;
-                    border-right: 1px solid black;
-                    @include var(border-color, main-border-color);
+                    font-size: 0.9rem;
+                }
+
+
+                button:hover, button:focus{
+                    @include var(background, shade-background-color);
+                    @include var(color, main-color);
                 }
 
                 a{
-                    padding: .2em;
+                    padding: .2rem 1.2rem;
+                    text-decoration: none;
                 }
 
                 .img-btn{
@@ -106,17 +112,14 @@ body{
                     }
                 }
 
-                button:hover, button:focus{
-                    @include var(background, main-background-color);
-                    @include var(color, main-color);
-                }
-
                 .submenu{
                     position: absolute;
                     flex-direction: column;
                     display: none;
+                    height: auto;
                     border-top: 1px solid black;
                     @include var(border-color, main-border-color);
+                    @include var(background, main-background-color);
 
                     li{
                         width: 100%;
@@ -126,6 +129,7 @@ body{
                             border: 1px solid black;
                             @include var(border-color, main-border-color);
                             border-top: none;
+                            padding: .5em 1em;
                         }
                     }
                 }
