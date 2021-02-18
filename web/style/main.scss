@@ -4,14 +4,14 @@ $vars: (
     shade-background-color: rgb(4, 107, 167),
     close-btn-background-color: rgb(167, 4, 58),
 
-    dark-background-color: rgb(0, 0, 0),
-
     main-color: rgb(228, 228, 228),
 
     main-border-color: rgb(36, 152, 219)
 );
 
 @mixin var ($key, $variable){
+    // Create a Fallbvack
+    #{$key}: map-get($map: $vars, $key: $variable);
     #{$key}: var(--#{$variable});
 }
 
@@ -50,30 +50,33 @@ body{
         float: left;
     }
 
+    /* ---------
+        MENU 
+    ------------*/
     #menu-bar{
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        height: 2rem;
+        height: 32px;
         
         @include var(background, main-background-color);
         border: 1px solid black;
         @include var(border-color, main-border-color);
-
+    
         ul{
             display: flex;
             flex-direction: row;
-            margin: 0;
-            padding: 0;
+            justify-content: flex-start;
             height: 100%;
-
+    
             list-style: none;
-
+    
             li{
+                display: block;
                 height: 100%;
                 cursor: pointer;
-
+    
                 button,
                 a{
                     display: block;
@@ -82,48 +85,50 @@ body{
                     background: none;
                     @include var(color, main-color);
                     font-weight: bold;
-                    height: 100%;
-                    min-width: 4rem;
                     font-size: 0.9rem;
+                    height: 100%;
+                    padding: 0 10px;
                 }
-
-
-                button:hover, button:focus{
+    
+                a{
+                    
+                }
+    
+                button:hover, 
+                button:focus,
+                a:hover,
+                a:focus{
                     @include var(background, shade-background-color);
                     @include var(color, main-color);
                 }
-
-                a{
-                    padding: .2rem 1.2rem;
-                    text-decoration: none;
-                }
-
+    
                 .img-btn{
-                    width: 2rem;
-                    height: 2rem;
+                    height: 100%;
                     margin: 0;
-                    padding: 6px;
-
+                    padding: 5px;
+    
                     img{
-                        max-width: 100%;
-                        max-height: 100%;
+                        display: inline-block;
+                        max-width: 60%;
+                        max-height: 60%;
                         margin: 0;
                         padding: 0;
                     }
                 }
-
+    
                 .submenu{
                     position: absolute;
                     flex-direction: column;
                     display: none;
                     height: auto;
+                    width: 200px;
                     border-top: 1px solid black;
                     @include var(border-color, main-border-color);
                     @include var(background, main-background-color);
-
+    
                     li{
                         width: 100%;
-
+    
                         button{
                             width: 100%;
                             border: 1px solid black;
@@ -134,7 +139,7 @@ body{
                     }
                 }
             }
-
+    
             li:hover{
                 .submenu{
                     display: block;
@@ -143,6 +148,9 @@ body{
         }
     }
 
+    /* ---------
+        ERROR 
+    ------------*/
     #error-container{
         position: fixed;
         bottom: 1rem;
@@ -172,6 +180,10 @@ body{
         }
     }
 
+    
+    /* ---------
+        MOVABLE 
+    ------------*/
     .movable-window{
         position: fixed;
         top: 3rem;
@@ -248,6 +260,7 @@ body{
 
             .color-picker{
                 border: none;
+                border: 1px solid black;
                 padding: 0;
             }
 

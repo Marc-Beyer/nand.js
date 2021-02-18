@@ -24,15 +24,24 @@ var OptionsWindow = /** @class */ (function (_super) {
         _this.createColorInput("active-color", OPTIONS.COLOR.active);
         _this.createColorInput("background-color", OPTIONS.COLOR.background);
         _this.createColorInput("dark-color", OPTIONS.COLOR.dark);
-        return _this;
         //this.createColorInput("highlight-color", OPTIONS.COLOR.highlight);
+        var hr = document.createElement("hr");
+        hr.style.margin = "10px 0";
+        _this.append(hr);
+        _this.createColorInputForCSS("canvas-background-color");
+        _this.createColorInputForCSS("main-background-color");
+        _this.createColorInputForCSS("shade-background-color");
+        _this.createColorInputForCSS("close-btn-background-color");
+        _this.createColorInputForCSS("main-color");
+        _this.createColorInputForCSS("main-border-color");
+        return _this;
     }
     OptionsWindow.prototype.createColorInput = function (name, value) {
         var div = document.createElement("div");
         div.className = "flex-row";
         var text = document.createElement("div");
         text.textContent = name;
-        text.style.width = "40%";
+        text.style.width = "70%";
         var input = document.createElement("input");
         input.className = "grow color-picker";
         input.value = value;
@@ -41,6 +50,29 @@ var OptionsWindow = /** @class */ (function (_super) {
         input.addEventListener("change", function () {
             OPTIONS.COLOR[str] = input.value;
             mainCircuit.refrashCanvas();
+        });
+        div.append(text);
+        div.append(input);
+        this.append(div);
+    };
+    OptionsWindow.prototype.createColorInputForCSS = function (name) {
+        var value = window.getComputedStyle(document.documentElement).getPropertyValue("--" + name);
+        value = value.substr(1);
+        if (value == "white") {
+            value = "#ffffff";
+        }
+        console.log(name + ":" + value);
+        var div = document.createElement("div");
+        div.className = "flex-row";
+        var text = document.createElement("div");
+        text.textContent = name;
+        text.style.width = "70%";
+        var input = document.createElement("input");
+        input.className = "grow color-picker";
+        input.value = value;
+        input.type = "color";
+        input.addEventListener("change", function () {
+            document.documentElement.style.setProperty("--" + name, "#" + input.value);
         });
         div.append(text);
         div.append(input);

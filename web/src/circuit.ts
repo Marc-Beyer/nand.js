@@ -3,6 +3,7 @@ class Circuit{
     
     public gates: Gate[] = [];
     public connectionManager: ConnectionManager;
+    public actionManager: ActionManager = new ActionManager();
     public gloabalOffset: Position2D = {x: 0, y: 0};
     public mainCanvas: HTMLCanvasElement;
     public activeGate: Gate;
@@ -10,6 +11,7 @@ class Circuit{
     public activeConnection: Connection = null;
 
     private isMouseDown: boolean;
+    private isControlDown: boolean;
     private drawPreviewConnection: Position2D = null;
     private activeOffset: Position2D = null;
 
@@ -63,6 +65,7 @@ class Circuit{
 
         // Add keydown event handler
         document.addEventListener("keydown", this.keydownEventHandler);
+        document.addEventListener("keyup", this.keyupEventHandler);
 
         // Add resize event handler
         window.addEventListener('resize', this.reportWindowSize);
@@ -186,13 +189,18 @@ class Circuit{
     }
 
     // Delete the gate and all connections
-    public deleteGate(gate: Gate){
+    public deleteGate(gate: Gate, saveAction: boolean = true): Action[] | null{
         let gateIndex = this.gates.indexOf(gate);
         if (gateIndex > -1) {
-            this.connectionManager.deleteAllConnections(gate);
+            let groupActions: Action[] = this.connectionManager.deleteAllConnections(gate);
+            groupActions.unshift(new DeleteGate_Action(gate));
+            if(saveAction){
+                this.actionManager.addAction(new Group_Action(groupActions));
+            }
             this.gates.splice(gateIndex, 1);
             gate.onDestroy();
             this.refrashCanvas();
+            return groupActions;
         }
     }
 
@@ -316,6 +324,16 @@ class Circuit{
                 mainCircuit.refrashCanvas();
                 mainCircuit.activeConnection = null;
             }
+        }else if(e.key === "Control"){
+            this.isControlDown = true;
+        }else if(this.isControlDown && e.key === "z"){
+            mainCircuit.actionManager.undo();
+        }
+    }
+
+    private keyupEventHandler(e: KeyboardEvent) {
+        if(e.key === "Control"){
+            this.isControlDown = false;
         }
     }
 
@@ -326,67 +344,77 @@ class Circuit{
         mainCircuit.refrashCanvas();
     }
 
-    public addGate(nr: number, position: Position2D, para: any[] = null){
+    public addBackGate(gate: Gate){
+        mainCircuit.gates.unshift(gate);
+        this.refrashCanvas();
+    }
+
+    public addGate(nr: number, position: Position2D, para: any[] = null, saveAction: boolean = true){
+        let newGate: Gate = null;
         switch (nr) {
             case GATE_TYPE.CONST_HIGH_Gate:
-                mainCircuit.gates.unshift(new CONST_HIGH_Gate(position));
+                newGate = (new CONST_HIGH_Gate(position));
             break;
             case GATE_TYPE.CONST_LOW_Gate:
-                mainCircuit.gates.unshift(new CONST_LOW_Gate(position));
+                newGate = (new CONST_LOW_Gate(position));
             break;
             case GATE_TYPE.Switch:
-                mainCircuit.gates.unshift(new Switch_Gate(position));
+                newGate = (new Switch_Gate(position));
             break;
             case GATE_TYPE.Buffer:
-                mainCircuit.gates.unshift(new Buffer_Gate(position));
+                newGate = (new Buffer_Gate(position));
             break;
             case GATE_TYPE.NOT:
-                mainCircuit.gates.unshift(new NOT_Gate(position));
+                newGate = (new NOT_Gate(position));
             break;
             case GATE_TYPE.AND:
-                mainCircuit.gates.unshift(new AND_Gate(position));
+                newGate = (new AND_Gate(position));
             break;
             case GATE_TYPE.OR:
-                mainCircuit.gates.unshift(new OR_Gate(position));
+                newGate = (new OR_Gate(position));
             break;
             case GATE_TYPE.NAND:
-                mainCircuit.gates.unshift(new NAND_Gate(position));
+                newGate = (new NAND_Gate(position));
             break;
             case GATE_TYPE.NOR:
-                mainCircuit.gates.unshift(new NOR_Gate(position));
+                newGate = (new NOR_Gate(position));
             break;
             case GATE_TYPE.XOR:
-                mainCircuit.gates.unshift(new XOR_Gate(position));
+                newGate = (new XOR_Gate(position));
             break;
             case GATE_TYPE.XNOR:
-                mainCircuit.gates.unshift(new XNOR_Gate(position));
+                newGate = (new XNOR_Gate(position));
             break;
             case GATE_TYPE.Lamp:
-                mainCircuit.gates.unshift(new Lamp_Gate(position));
+                newGate = (new Lamp_Gate(position));
             break;
             case GATE_TYPE.Display:
-                mainCircuit.gates.unshift(new Display_Gate(position));
+                newGate = (new Display_Gate(position));
             break;
             case GATE_TYPE.Lable:
-                console.log("ADD LABLE");
-                mainCircuit.gates.unshift(new Lable_Gate(position, (para != null && para[0] != null) ? para[0] : "Lable"));
+                newGate = (new Lable_Gate(position, (para != null && para[0] != null) ? para[0] : "Lable"));
             break;
             case GATE_TYPE.Connection:
-                mainCircuit.gates.unshift(new Connection_Gate(position));
+                newGate = (new Connection_Gate(position));
             break;
             case GATE_TYPE.Button:
-                mainCircuit.gates.unshift(new Button_Gate(position));
+                newGate = (new Button_Gate(position));
             break;
             case GATE_TYPE.Clock:
-                mainCircuit.gates.unshift(new Clock_Gate(position));
+                newGate = (new Clock_Gate(position));
             break;
             case GATE_TYPE.Segment_Display:
-                mainCircuit.gates.unshift(new Segment_Display_Gate(position));
+                newGate = (new Segment_Display_Gate(position));
             break;
             case GATE_TYPE.RS_Latch:
-                mainCircuit.gates.unshift(new RS_Latch_Gate(position));
+                newGate = (new RS_Latch_Gate(position));
             break;
         }
-        mainCircuit.refrashCanvas();
+
+        if(newGate != null){
+            mainCircuit.gates.unshift(newGate);
+            if(saveAction)this.actionManager.addAction(new CreateGate_Action(newGate));
+            mainCircuit.refrashCanvas();
+        }
     }
 }

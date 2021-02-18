@@ -97,6 +97,19 @@ document.getElementById("open-logic-gate-window-btn").addEventListener("click", 
         height: 200
     });
 });
+document.getElementById("open-active-gate-window-btn").addEventListener("click", function () {
+    if (activeInfoWindow != null) {
+        activeInfoWindow.htmlElement.remove();
+    }
+    activeInfoWindow = new ActiveInfoWindow({
+        position: {
+            x: mainCircuit.mainCanvas.getBoundingClientRect().width - 220,
+            y: 50
+        },
+        width: 200,
+        height: 200
+    });
+});
 //
 // Options
 //

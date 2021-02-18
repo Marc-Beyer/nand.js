@@ -20,7 +20,7 @@ var OPTIONS: Options = {
 }
 
 // Set activeInfoWindow
-var activeInfoWindow = null;
+var activeInfoWindow : ActiveInfoWindow = null;
 // Create a new Circuit
 var mainCircuit = new Circuit({x: 10, y: 10});
 // Create a new SaveManager
@@ -101,6 +101,20 @@ document.getElementById("open-logic-gate-window-btn").addEventListener("click", 
     new GatesWindow({
         position: {
             x: 0,
+            y: 50
+        },
+        width: 200,
+        height: 200
+    });
+});
+
+document.getElementById("open-active-gate-window-btn").addEventListener("click", () => {
+    if(activeInfoWindow != null){
+        activeInfoWindow.htmlElement.remove();
+    }
+    activeInfoWindow = new ActiveInfoWindow({
+        position: {
+            x: mainCircuit.mainCanvas.getBoundingClientRect().width-220,
             y: 50
         },
         width: 200,

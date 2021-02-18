@@ -54,7 +54,7 @@ class ConnectionManager {
         ctx.strokeStyle = OPTIONS.COLOR.main;
     }
 
-    public addConnection(connection: Connection): boolean{
+    public addConnection(connection: Connection, saveAction: boolean = true): boolean{
         for (let iterator of this.connections) {
             if(iterator.toGate == connection.toGate && iterator.toInputNr == connection.toInputNr){
                 return false;
@@ -67,6 +67,7 @@ class ConnectionManager {
             }
         }
         this.connections.push(connection);
+        if(saveAction)mainCircuit.actionManager.addAction(new CreateConnection_Action(connection));
         if(connection.toGate.updateInput(connection.toInputNr, connection.fromGate.getOutput(connection.fromOutputNr))){
             this.updateConnectedGates(connection.toGate);
         }
@@ -88,31 +89,44 @@ class ConnectionManager {
         }
     }
 
-    public deleteAllConnections(gate: Gate){
+    public deleteAllConnections(gate: Gate, groupActions: Action[] = []): Action[]{
         for (let index = 0; index < this.connections.length; index++) {
             if(this.connections[index].toGate == gate){
+                groupActions.push(new DeleteConnection_Action(this.connections[index]));
                 this.connections.splice(index, 1);
-                this.deleteAllConnections(gate);
-                return;
+                groupActions.concat(this.deleteAllConnections(gate, groupActions));
+                return groupActions;
             }
             if(this.connections[index].fromGate == gate){
                 let connectedGate = this.connections[index].toGate;
                 this.connections[index].toGate.updateInput(this.connections[index].toInputNr, false);
                 this.updateConnectedGates(this.connections[index].toGate);
+                
+                groupActions.push(new DeleteConnection_Action(this.connections[index]));
                 this.connections.splice(index, 1);
-                this.deleteAllConnections(gate);
+                groupActions = groupActions.concat(this.deleteAllConnections(gate, groupActions));
 
                 if(connectedGate instanceof Connection_Gate){
-                    mainCircuit.deleteGate(connectedGate);
+                    groupActions = groupActions.concat(mainCircuit.deleteGate(connectedGate, false));
                 }
-                return;
+                return groupActions;
             }
         }
+        return groupActions;
     }
 
-    public removeConnection(connection: Connection){
+    public removeConnection(connection: Connection, saveAction: boolean = true){
         let index:number = this.connections.indexOf(connection);
         if(index >= 0){
+            if(connection.toGate  instanceof Connection_Gate){
+                let groupActions = mainCircuit.deleteGate(connection.toGate, false);
+                if(saveAction){
+                    groupActions.push(new DeleteConnection_Action(connection));
+                    mainCircuit.actionManager.addAction(new Group_Action(groupActions));
+                }
+            }else if(saveAction){
+                mainCircuit.actionManager.addAction(new DeleteConnection_Action(connection));
+            }
             let gate: Gate = connection.toGate;
             let inputNr: number = connection.toInputNr;
             this.connections.splice(index, 1);

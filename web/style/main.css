@@ -3,7 +3,6 @@
   --canvas-background-color: white;
   --shade-background-color: #046ba7;
   --close-btn-background-color: #a7043a;
-  --dark-background-color: black;
   --main-color: #e4e4e4;
   --main-border-color: #2498db;
 }
@@ -24,11 +23,23 @@ html, body {
 }
 
 body {
+  background: #0e5a86;
   background: var(--main-background-color);
+  color: #e4e4e4;
   color: var(--main-color);
+  /* ---------
+        MENU 
+    ------------*/
+  /* ---------
+        ERROR 
+    ------------*/
+  /* ---------
+        MOVABLE 
+    ------------*/
 }
 
 body canvas {
+  background: white;
   background: var(--canvas-background-color);
   width: 100%;
   height: 100%;
@@ -42,9 +53,11 @@ body #menu-bar {
   top: 0;
   left: 0;
   right: 0;
-  height: 2rem;
+  height: 32px;
+  background: #0e5a86;
   background: var(--main-background-color);
   border: 1px solid black;
+  border-color: #2498db;
   border-color: var(--main-border-color);
 }
 
@@ -56,13 +69,15 @@ body #menu-bar ul {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  margin: 0;
-  padding: 0;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   height: 100%;
   list-style: none;
 }
 
 body #menu-bar ul li {
+  display: block;
   height: 100%;
   cursor: pointer;
 }
@@ -73,33 +88,34 @@ body #menu-bar ul li a {
   cursor: pointer;
   border: none;
   background: none;
+  color: #e4e4e4;
   color: var(--main-color);
   font-weight: bold;
-  height: 100%;
-  min-width: 4rem;
   font-size: 0.9rem;
+  height: 100%;
+  padding: 0 10px;
 }
 
-body #menu-bar ul li button:hover, body #menu-bar ul li button:focus {
+body #menu-bar ul li button:hover,
+body #menu-bar ul li button:focus,
+body #menu-bar ul li a:hover,
+body #menu-bar ul li a:focus {
+  background: #046ba7;
   background: var(--shade-background-color);
+  color: #e4e4e4;
   color: var(--main-color);
-}
-
-body #menu-bar ul li a {
-  padding: .2rem 1.2rem;
-  text-decoration: none;
 }
 
 body #menu-bar ul li .img-btn {
-  width: 2rem;
-  height: 2rem;
+  height: 100%;
   margin: 0;
-  padding: 6px;
+  padding: 5px;
 }
 
 body #menu-bar ul li .img-btn img {
-  max-width: 100%;
-  max-height: 100%;
+  display: inline-block;
+  max-width: 60%;
+  max-height: 60%;
   margin: 0;
   padding: 0;
 }
@@ -112,8 +128,11 @@ body #menu-bar ul li .submenu {
           flex-direction: column;
   display: none;
   height: auto;
+  width: 200px;
   border-top: 1px solid black;
+  border-color: #2498db;
   border-color: var(--main-border-color);
+  background: #0e5a86;
   background: var(--main-background-color);
 }
 
@@ -124,6 +143,7 @@ body #menu-bar ul li .submenu li {
 body #menu-bar ul li .submenu li button {
   width: 100%;
   border: 1px solid black;
+  border-color: #2498db;
   border-color: var(--main-border-color);
   border-top: none;
   padding: .5em 1em;
@@ -180,8 +200,10 @@ body .movable-window {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  background: #0e5a86;
   background: var(--main-background-color);
   border: 1px solid black;
+  border-color: #2498db;
   border-color: var(--main-border-color);
 }
 
@@ -199,10 +221,12 @@ body .movable-window .header .drag-container {
   padding: 1rem;
   cursor: -webkit-grab;
   cursor: grab;
+  background: #0e5a86;
   background: var(--main-background-color);
 }
 
 body .movable-window .header .drag-container .box {
+  background: #0e5a86;
   background: var(--main-background-color);
   height: .2rem;
 }
@@ -210,6 +234,7 @@ body .movable-window .header .drag-container .box {
 body .movable-window .header .close-btn {
   height: 2.2rem;
   width: 2.2rem;
+  background: #a7043a;
   background: var(--close-btn-background-color);
   color: #ffffff;
   font-weight: bold;
@@ -234,25 +259,32 @@ body .movable-window .content {
       -ms-flex-direction: column;
           flex-direction: column;
   padding: .5rem;
+  background: #046ba7;
   background: var(--shade-background-color);
 }
 
 body .movable-window .content button {
   border: none;
+  background: #0e5a86;
   background: var(--main-background-color);
+  color: #e4e4e4;
   color: var(--main-color);
   padding: .2rem;
   margin: 0;
 }
 
 body .movable-window .content button:hover, body .movable-window .content button:focus {
+  background: #046ba7;
   background: var(--shade-background-color);
+  color: #e4e4e4;
   color: var(--main-color);
 }
 
 body .movable-window .content textarea {
   border: none;
+  background: #0e5a86;
   background: var(--main-background-color);
+  color: #e4e4e4;
   color: var(--main-color);
   margin: 0 0 .5rem 0;
   max-width: 100%;
@@ -260,6 +292,7 @@ body .movable-window .content textarea {
 
 body .movable-window .content .color-picker {
   border: none;
+  border: 1px solid black;
   padding: 0;
 }
 
@@ -282,6 +315,7 @@ body .movable-window .content .flex-row :first-child {
 }
 
 body .movable-window .content .drop-container h2 {
+  background: #046ba7;
   background: var(--shade-background-color);
   padding: 0.5rem 1rem;
   margin-top: 4px;
@@ -291,6 +325,7 @@ body .movable-window .content .drop-container h2 {
 
 body .movable-window .content .drop-container ul {
   display: none;
+  background: #0e5a86;
   background: var(--main-background-color);
   padding: .2rem 0 .2rem .5rem;
   margin: 0;
@@ -311,6 +346,7 @@ body .movable-window .content .open ul li a {
 }
 
 body .movable-window .content .open ul li a:hover, body .movable-window .content .open ul li a:focus {
+  background: #046ba7;
   background: var(--shade-background-color);
 }
 

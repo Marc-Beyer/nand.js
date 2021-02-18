@@ -47,7 +47,8 @@ var ConnectionManager = /** @class */ (function () {
         }
         ctx.strokeStyle = OPTIONS.COLOR.main;
     };
-    ConnectionManager.prototype.addConnection = function (connection) {
+    ConnectionManager.prototype.addConnection = function (connection, saveAction) {
+        if (saveAction === void 0) { saveAction = true; }
         for (var _i = 0, _a = this.connections; _i < _a.length; _i++) {
             var iterator = _a[_i];
             if (iterator.toGate == connection.toGate && iterator.toInputNr == connection.toInputNr) {
@@ -61,6 +62,8 @@ var ConnectionManager = /** @class */ (function () {
             }
         }
         this.connections.push(connection);
+        if (saveAction)
+            mainCircuit.actionManager.addAction(new CreateConnection_Action(connection));
         if (connection.toGate.updateInput(connection.toInputNr, connection.fromGate.getOutput(connection.fromOutputNr))) {
             this.updateConnectedGates(connection.toGate);
         }
@@ -82,29 +85,44 @@ var ConnectionManager = /** @class */ (function () {
             }
         }
     };
-    ConnectionManager.prototype.deleteAllConnections = function (gate) {
+    ConnectionManager.prototype.deleteAllConnections = function (gate, groupActions) {
+        if (groupActions === void 0) { groupActions = []; }
         for (var index = 0; index < this.connections.length; index++) {
             if (this.connections[index].toGate == gate) {
+                groupActions.push(new DeleteConnection_Action(this.connections[index]));
                 this.connections.splice(index, 1);
-                this.deleteAllConnections(gate);
-                return;
+                groupActions.concat(this.deleteAllConnections(gate, groupActions));
+                return groupActions;
             }
             if (this.connections[index].fromGate == gate) {
                 var connectedGate = this.connections[index].toGate;
                 this.connections[index].toGate.updateInput(this.connections[index].toInputNr, false);
                 this.updateConnectedGates(this.connections[index].toGate);
+                groupActions.push(new DeleteConnection_Action(this.connections[index]));
                 this.connections.splice(index, 1);
-                this.deleteAllConnections(gate);
+                groupActions = groupActions.concat(this.deleteAllConnections(gate, groupActions));
                 if (connectedGate instanceof Connection_Gate) {
-                    mainCircuit.deleteGate(connectedGate);
+                    groupActions = groupActions.concat(mainCircuit.deleteGate(connectedGate, false));
                 }
-                return;
+                return groupActions;
             }
         }
+        return groupActions;
     };
-    ConnectionManager.prototype.removeConnection = function (connection) {
+    ConnectionManager.prototype.removeConnection = function (connection, saveAction) {
+        if (saveAction === void 0) { saveAction = true; }
         var index = this.connections.indexOf(connection);
         if (index >= 0) {
+            if (connection.toGate instanceof Connection_Gate) {
+                var groupActions = mainCircuit.deleteGate(connection.toGate, false);
+                if (saveAction) {
+                    groupActions.push(new DeleteConnection_Action(connection));
+                    mainCircuit.actionManager.addAction(new Group_Action(groupActions));
+                }
+            }
+            else if (saveAction) {
+                mainCircuit.actionManager.addAction(new DeleteConnection_Action(connection));
+            }
             var gate = connection.toGate;
             var inputNr = connection.toInputNr;
             this.connections.splice(index, 1);

@@ -41,3 +41,10 @@ __Clock-control__
 __Timing-diagram integration__
 
 __Design__
+
+__@Media__
+
+    prefers-color-scheme: dark
+    print
+    script
+    ...

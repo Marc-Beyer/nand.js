@@ -35,6 +35,7 @@
                     <ul class="submenu">
                         <li><button id="move-to-center-btn">Move to (0,0)</button></li>
                         <li><button id="open-logic-gate-window-btn">Open LogicGate-window</button></li>
+                        <li><button id="open-active-gate-window-btn">Open ActiveGate-window</button></li>
                     </ul>
                 </li>
                 <li>
@@ -46,12 +47,15 @@
                 <li>
                     <button id="options-btn" class="img-btn"><img src="./images/connection-style-0.svg"><img src="./images/connection-style-1.svg"></button>
                     <ul class="submenu">
-                        <li><button id="straight-lines-btn">Straight lines</button></li>
+                        <li><button id="straight-lines-btn">Grid lines</button></li>
                         <li><button id="direct-lines-btn">Direct lines</button></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="https://github.com/Marc-Beyer/nand.js/blob/main/README.md">Help</a>
+                    <button id="undo-btn" title="Ctrl+Z">Undo</a>
+                </li>
+                <li>
+                    <button onclick="window.open('https://github.com/Marc-Beyer/nand.js/blob/main/README.md', '_blank')">Help</a>
                 </li>
             </ul>
         </div>
@@ -64,6 +68,14 @@
         <script src='./scripts/connectionManager.js'></script>
         <script src='./scripts/circuit.js'></script>
         
+        <script src='./scripts/Action.js'></script>
+        <script src='./scripts/Actions/CreateGate_Action.js'></script>
+        <script src='./scripts/Actions/DeleteGate_Action.js'></script>
+        <script src='./scripts/Actions/CreateConnection_Action.js'></script>
+        <script src='./scripts/Actions/DeleteConnection_Action.js'></script>
+        <script src='./scripts/Actions/Group_Action.js'></script>
+        <script src='./scripts/ActionManager.js'></script>
+
         <script src='./scripts/mWindow.js'></script>
         <script src='./scripts/windows/savefileWindow.js'></script>
         <script src='./scripts/windows/gatesWindow.js'></script>
