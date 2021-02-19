@@ -41,9 +41,14 @@ var GatesWindow = /** @class */ (function (_super) {
             { itemName: "Lable", value: GATE_TYPE.Lable },
             { itemName: "RS FlipFlop/Latch", value: GATE_TYPE.RS_Latch }
         ]);
+        var flipFlopDropContainer = new DropContainer("FlipFlops", [
+            { itemName: "RS FlipFlop", value: GATE_TYPE.RS_Latch },
+            { itemName: "RCS FlipFlop", value: GATE_TYPE.RCS_Latch }
+        ]);
         _this.append(inputsDropContainer.htmlElement);
         _this.append(logicGatesDropContainer.htmlElement);
         _this.append(outputsDropContainer.htmlElement);
+        _this.append(flipFlopDropContainer.htmlElement);
         _this.append(otherDropContainer.htmlElement);
         var dropContainer = document.getElementsByClassName("drop-container");
         var _loop_1 = function (index) {

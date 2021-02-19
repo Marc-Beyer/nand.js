@@ -28,10 +28,15 @@ class GatesWindow extends MWindow {
             {itemName: "Lable", value: GATE_TYPE.Lable},
             {itemName: "RS FlipFlop/Latch", value: GATE_TYPE.RS_Latch}
         ]);
+        let flipFlopDropContainer: DropContainer = new DropContainer("FlipFlops", [
+            {itemName: "RS FlipFlop", value: GATE_TYPE.RS_Latch},
+            {itemName: "RCS FlipFlop", value: GATE_TYPE.RCS_Latch}
+        ]);
         
         this.append(inputsDropContainer.htmlElement);
         this.append(logicGatesDropContainer.htmlElement);
         this.append(outputsDropContainer.htmlElement);
+        this.append(flipFlopDropContainer.htmlElement);
         this.append(otherDropContainer.htmlElement);
 
         let dropContainer = document.getElementsByClassName("drop-container");

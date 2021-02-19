@@ -555,7 +555,9 @@ class Connection_Gate extends Gate {
     }
 }
 
-
+/* 
+    FlipFlops
+*/
 
 class RS_Latch_Gate extends Gate {
     public savedInput: boolean = false;
@@ -581,6 +583,37 @@ class RS_Latch_Gate extends Gate {
         super.drawGate(ctx, offset);
         // Set style
         ctx.fillText("R         Q", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + this.transform.height- 10);
+        ctx.fillText("            _", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + this.transform.height- 27);
+    }
+}
+
+class RCS_Latch_Gate extends Gate {
+    public savedInput: boolean = false;
+
+    constructor(position: Position2D) {
+        super("S         Q", 3, 2, position, (inputs: boolean[]) => {
+            if(inputs[1]){
+                if(inputs[0])this.savedInput = true;
+                if(inputs[2])this.savedInput = false;
+            }
+            if(this.savedInput){
+                return [true, false];
+            }else{
+                return [false, true];
+            }
+            
+        });
+        this.type = GATE_TYPE.RCS_Latch;
+        this.name = "RCS_Latch";
+        this.transform.height = 80;
+    }
+    
+    // Overrite the drawGate()
+    public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        super.drawGate(ctx, offset);
+        // Set style
+        ctx.fillText("R         Q", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + this.transform.height- 10);
+        ctx.fillText("C            ", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + this.transform.height/2+5);
         ctx.fillText("            _", this.transform.position.x + this.transform.width/2 + offset.x, this.transform.position.y + offset.y + this.transform.height- 27);
     }
 }

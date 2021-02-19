@@ -26,7 +26,7 @@ var mainCircuit = new Circuit({ x: 10, y: 10 });
 // Create a new SaveManager
 var saveManager = new SaveManager(mainCircuit);
 //mainCircuit.addGate(GATE_TYPE.Segment_Display, {x: 700, y: 300}, []);
-//mainCircuit.addGate(GATE_TYPE.RS_Latch, {x: 700, y: 300}, []);
+//mainCircuit.addGate(GATE_TYPE.RCS_Latch, {x: 700, y: 300}, []);
 // Add Listener to error-container
 var errorContainer = document.getElementById("error-container-close-btn");
 errorContainer.addEventListener("click", function () {

@@ -408,6 +408,9 @@ class Circuit{
             case GATE_TYPE.RS_Latch:
                 newGate = (new RS_Latch_Gate(position));
             break;
+            case GATE_TYPE.RCS_Latch:
+                newGate = (new RCS_Latch_Gate(position));
+            break;
         }
 
         if(newGate != null){

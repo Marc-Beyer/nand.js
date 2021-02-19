@@ -61,7 +61,6 @@ var OptionsWindow = /** @class */ (function (_super) {
         if (value == "white") {
             value = "#ffffff";
         }
-        console.log(name + ":" + value);
         var div = document.createElement("div");
         div.className = "flex-row";
         var text = document.createElement("div");
