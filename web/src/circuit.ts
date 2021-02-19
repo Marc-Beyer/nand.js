@@ -27,7 +27,6 @@ class Circuit{
         return this._zoomFactor;
     }
     public set zoomFactor(value: number) {
-        //console.log("this._zoomFactor",this.zoomFactor);
         let oldWidth = this.mainCanvas.width;
         let oldHeight = this.mainCanvas.height;
         this.mainCanvas.width = this.mainCanvasRealWidth * value;
@@ -88,7 +87,7 @@ class Circuit{
         
         for (let i = this.gates.length-1; i >= 0; i--) {
             if(this.activeGate == this.gates[i]){
-                this.ctx.lineWidth = OPTIONS.strokeSize +2;
+                this.ctx.lineWidth = OPTIONS.strokeSize + OPTIONS.highlightedStroke;
             }
             this.gates[i].drawGate(this.ctx, this.gloabalOffset);
             this.ctx.lineWidth = OPTIONS.strokeSize;

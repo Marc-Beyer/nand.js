@@ -220,14 +220,40 @@ var Button_Gate = /** @class */ (function (_super) {
     // Overrite the drawGate()
     Button_Gate.prototype.drawGate = function (ctx, offset) {
         _super.prototype.drawGate.call(this, ctx, offset);
+        // Set style
+        ctx.fillStyle = OPTIONS.COLOR.dark;
         // Draw background
-        ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + offset.y + this.transform.height / 4, this.transform.width / 2, this.transform.height / 2);
+        //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/2, this.transform.height/2);
+        // Set style
+        ctx.fillStyle = OPTIONS.COLOR.main;
+        var xPos = this.transform.position.x + this.transform.width / 2 + offset.x;
+        var yPos = this.transform.position.y + this.transform.height / 3 + offset.y;
+        // Draw background
         if (this.buttonState) {
-            // Set style
-            ctx.fillStyle = OPTIONS.COLOR.dark;
-            ctx.fillRect(this.transform.position.x + offset.x + this.transform.width / 4 + 2, this.transform.position.y + offset.y + this.transform.height / 4 + 2, this.transform.width / 2 - 4, this.transform.height / 2 - 4);
-            ctx.fillStyle = OPTIONS.COLOR.main;
+            ctx.beginPath();
+            ctx.moveTo(this.transform.position.x + this.transform.width - this.transform.width / 8 + offset.x, this.transform.position.y + this.transform.height / 2 + offset.y);
+            ctx.lineTo(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + this.transform.height / 16 * 4 + offset.y);
+            ctx.stroke();
+            yPos -= this.transform.height / 6;
+            //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
         }
+        else {
+            ctx.beginPath();
+            ctx.moveTo(this.transform.position.x + this.transform.width - this.transform.width / 8 + offset.x, this.transform.position.y + this.transform.height / 2 + offset.y);
+            ctx.lineTo(this.transform.position.x + offset.x + this.transform.width / 4, this.transform.position.y + this.transform.height / 4 * 3 + offset.y);
+            ctx.stroke();
+            //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/2, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
+        }
+        ctx.moveTo(xPos, yPos);
+        ctx.lineTo(xPos + this.transform.width / 4, yPos);
+        ctx.moveTo(xPos + this.transform.width / 32 * 3, yPos);
+        ctx.lineTo(xPos + this.transform.width / 32 * 3, yPos + this.transform.height / 3);
+        ctx.moveTo(xPos + this.transform.width / 32 * 5, yPos);
+        ctx.lineTo(xPos + this.transform.width / 32 * 5, yPos + this.transform.height / 3);
+        ctx.stroke();
+        ctx.fillText("1", this.transform.position.x + offset.x + this.transform.width / 8, this.transform.position.y + this.transform.height / 16 * 5 + offset.y);
+        ctx.fillText("0", this.transform.position.x + offset.x + this.transform.width / 8, this.transform.position.y + this.transform.height / 16 * 15 + offset.y);
+        //ctx.fillText("0", this.transform.position.x + this.transform.width - this.transform.width/8 + offset.x, this.transform.position.y + this.transform.height/16*10  + offset.y);
     };
     return Button_Gate;
 }(Gate));

@@ -51,7 +51,6 @@ class OptionsWindow extends MWindow {
         if(value == "white"){
             value = "#ffffff";
         }
-        console.log(name+":"+value);
         let div = document.createElement("div");
         div.className = "flex-row";
         let text = document.createElement("div");

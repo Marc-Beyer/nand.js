@@ -9,7 +9,8 @@ var OPTIONS = {
         dark: "#AAAAAA",
         highlight: "#0000FF",
     },
-    gateStyle: 0
+    gateStyle: 0,
+    highlightedStroke: 1
     /*COLOR:{
         main: "#DDDDDD",
         active: "#FF0000",

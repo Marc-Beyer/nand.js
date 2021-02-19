@@ -15,7 +15,7 @@ var ConnectionManager = /** @class */ (function () {
             }
             if (mainCircuit.activeConnection == connection) {
                 //ctx.strokeStyle = OPTIONS.COLOR.highlight;
-                ctx.lineWidth = OPTIONS.strokeSize + 2;
+                ctx.lineWidth = OPTIONS.strokeSize + OPTIONS.highlightedStroke;
             }
             var outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             var inputPosition = connection.toGate.getInputPosition(connection.toInputNr);

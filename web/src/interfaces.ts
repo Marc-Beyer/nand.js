@@ -38,7 +38,8 @@ interface Options{
     strokeSize: number,
     negatedIOStyle: number,
     COLOR: Color,
-    gateStyle: number
+    gateStyle: number,
+    highlightedStroke: number
 }
 
 interface Position2D{

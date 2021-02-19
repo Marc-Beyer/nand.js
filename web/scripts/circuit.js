@@ -42,7 +42,6 @@ var Circuit = /** @class */ (function () {
             return this._zoomFactor;
         },
         set: function (value) {
-            //console.log("this._zoomFactor",this.zoomFactor);
             var oldWidth = this.mainCanvas.width;
             var oldHeight = this.mainCanvas.height;
             this.mainCanvas.width = this.mainCanvasRealWidth * value;
@@ -70,7 +69,7 @@ var Circuit = /** @class */ (function () {
         mainCircuit.connectionManager.drawConnations(this.ctx, this.gloabalOffset);
         for (var i = this.gates.length - 1; i >= 0; i--) {
             if (this.activeGate == this.gates[i]) {
-                this.ctx.lineWidth = OPTIONS.strokeSize + 2;
+                this.ctx.lineWidth = OPTIONS.strokeSize + OPTIONS.highlightedStroke;
             }
             this.gates[i].drawGate(this.ctx, this.gloabalOffset);
             this.ctx.lineWidth = OPTIONS.strokeSize;

@@ -18,7 +18,7 @@ class ConnectionManager {
             }
             if(mainCircuit.activeConnection == connection){
                 //ctx.strokeStyle = OPTIONS.COLOR.highlight;
-                ctx.lineWidth = OPTIONS.strokeSize + 2;
+                ctx.lineWidth = OPTIONS.strokeSize + OPTIONS.highlightedStroke;
             }
             let outputPosition = connection.fromGate.getOutputPosition(connection.fromOutputNr);
             let inputPosition = connection.toGate.getInputPosition(connection.toInputNr);

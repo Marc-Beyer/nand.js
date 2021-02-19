@@ -207,7 +207,53 @@ class Button_Gate extends Gate {
         mainCircuit.connectionManager.updateConnectedGates(this);
     }
 
-    // Overrite the drawGate()
+     // Overrite the drawGate()
+     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
+        super.drawGate(ctx, offset);
+
+        // Set style
+        ctx.fillStyle = OPTIONS.COLOR.dark;
+
+        // Draw background
+        //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/2, this.transform.height/2);
+        
+        // Set style
+        ctx.fillStyle = OPTIONS.COLOR.main;
+
+        let xPos = this.transform.position.x + this.transform.width/2 + offset.x;
+        let yPos = this.transform.position.y + this.transform.height/3 + offset.y;
+
+        // Draw background
+        if(this.buttonState){
+            ctx.beginPath();
+            ctx.moveTo(this.transform.position.x + this.transform.width - this.transform.width/8 + offset.x, this.transform.position.y + this.transform.height/2 + offset.y);
+            ctx.lineTo(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + this.transform.height/16*4 + offset.y);
+            ctx.stroke();
+            yPos -= this.transform.height/6;
+            //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
+        }else{
+            ctx.beginPath();
+            ctx.moveTo(this.transform.position.x + this.transform.width - this.transform.width/8 + offset.x, this.transform.position.y + this.transform.height/2 + offset.y);
+            ctx.lineTo(this.transform.position.x + offset.x + this.transform.width/4, this.transform.position.y + this.transform.height/4*3 + offset.y);
+            ctx.stroke();
+            //ctx.fillRect(this.transform.position.x + offset.x + this.transform.width/2, this.transform.position.y + offset.y + this.transform.height/4, this.transform.width/4, this.transform.height/2);
+        }
+
+        ctx.moveTo(xPos, yPos);
+        ctx.lineTo(xPos + this.transform.width/4, yPos);
+        ctx.moveTo(xPos + this.transform.width/ 32 * 3 , yPos);
+        ctx.lineTo(xPos + this.transform.width/ 32 * 3, yPos + this.transform.height/3);
+        ctx.moveTo(xPos + this.transform.width/ 32 * 5, yPos);
+        ctx.lineTo(xPos + this.transform.width/ 32 * 5, yPos + this.transform.height/3);
+        ctx.stroke();
+
+        ctx.fillText("1", this.transform.position.x + offset.x + this.transform.width/8, this.transform.position.y + this.transform.height/16*5 + offset.y);
+        ctx.fillText("0", this.transform.position.x + offset.x + this.transform.width/8, this.transform.position.y + this.transform.height/16*15 + offset.y);
+        //ctx.fillText("0", this.transform.position.x + this.transform.width - this.transform.width/8 + offset.x, this.transform.position.y + this.transform.height/16*10  + offset.y);
+
+    }
+
+    /* Old Overrite the drawGate()
     public drawGate(ctx: CanvasRenderingContext2D, offset: Position2D){
         super.drawGate(ctx, offset);
 
@@ -221,6 +267,7 @@ class Button_Gate extends Gate {
             ctx.fillStyle = OPTIONS.COLOR.main;
         }
     }
+    */
 }
 
 class Switch_Gate extends Gate {
