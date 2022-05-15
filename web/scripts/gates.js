@@ -546,9 +546,9 @@ var RS_Latch_Gate = /** @class */ (function (_super) {
     };
     return RS_Latch_Gate;
 }(Gate));
-var RCS_Latch_Gate = /** @class */ (function (_super) {
-    __extends(RCS_Latch_Gate, _super);
-    function RCS_Latch_Gate(position) {
+var Gated_RS_Latch_Gate = /** @class */ (function (_super) {
+    __extends(Gated_RS_Latch_Gate, _super);
+    function Gated_RS_Latch_Gate(position) {
         var _this = _super.call(this, "S         Q", 3, 2, position, function (inputs) {
             if (inputs[1]) {
                 if (inputs[0])
@@ -564,19 +564,19 @@ var RCS_Latch_Gate = /** @class */ (function (_super) {
             }
         }) || this;
         _this.savedInput = false;
-        _this.type = GATE_TYPE.RCS_Latch;
-        _this.name = "RCS_Latch";
+        _this.type = GATE_TYPE.Gated_RS_Latch;
+        _this.name = "Gated_RS_Latch";
         _this.transform.height = 80;
         return _this;
     }
     // Overrite the drawGate()
-    RCS_Latch_Gate.prototype.drawGate = function (ctx, offset) {
+    Gated_RS_Latch_Gate.prototype.drawGate = function (ctx, offset) {
         _super.prototype.drawGate.call(this, ctx, offset);
         // Set style
         ctx.fillText("R         Q", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + this.transform.height - 10);
         ctx.fillText("C            ", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + this.transform.height / 2 + 5);
         ctx.fillText("            _", this.transform.position.x + this.transform.width / 2 + offset.x, this.transform.position.y + offset.y + this.transform.height - 27);
     };
-    return RCS_Latch_Gate;
+    return Gated_RS_Latch_Gate;
 }(Gate));
 //# sourceMappingURL=gates.js.map

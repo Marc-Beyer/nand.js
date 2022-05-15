@@ -2,13 +2,158 @@
 <html lang="en">
 <head>
     <meta charset='utf-8'>
-    <title>Page Title</title>
+    <title>Digital helper</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <script>
-        location.href = "./web";
-    </script>
+    <link rel='stylesheet' type='text/css' media='screen' href='./style/main.css'>
+    <script src="./scripts/main.js" defer></script>
 </head>
 <body>
+    <nav><a href="./web/">Start Simulator</a></nav>
+    <section>
+
+        <div id="control-panel">
+            <fieldset>
+                <legend>Control</legend>
+                <label>Inputs: <input type="number" value="3" id="tt-in"></label>
+                <label>Outputs: <input type="number" value="1" id="tt-out"></label>
+                <button></button>
+            </fieldset>
+        </div>
+
+        <div id="truth-table-panel">
+            <table id="truth-table">
+                <tr>
+                    <th>A</th>
+                    <th>B</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </table>
+        </div>
+        <div id="knf-dnf-panel">
+            <div class="flex-row">
+                <h3>KNF:</h3>
+                <h3 class="flex-grow" id="knf"></h3>
+            </div>
+            <div class="flex-row">
+                <h3>DNF:</h3>
+                <h3 class="flex-grow" id="dnf"></h3>
+            </div>
+        </div>
+
+        <template>
+            <div id="kv-table-panel">
+                <table id="kv-table-4">
+                    <tr>
+                        <th></th>
+                        <th colspan="2">B</th>
+                        <th colspan="2">¬B</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">A</th>
+                        <td class="a b c d">0</td>
+                        <td class="a b nc d">0</td>
+                        <td class="a nb nc d">0</td>
+                        <td class="a nb c d">0</td>
+                        <th>D</th>
+                    </tr>
+                    <tr>
+                        <td class="a b c nd">0</td>
+                        <td class="a b nc nd">0</td>
+                        <td class="a nb nc nd">0</td>
+                        <td class="a nb c nd">0</td>
+                        <th rowspan="2">¬D</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">¬A</th>
+                        <td class="na b c nd">0</td>
+                        <td class="na b nc nd">0</td>
+                        <td class="na nb nc nd">0</td>
+                        <td class="na nb c nd">0</td>
+                    </tr>
+                    <tr>
+                        <td class="na b c d">0</td>
+                        <td class="na b nc d">0</td>
+                        <td class="na nb nc d">0</td>
+                        <td class="na nb c d">0</td>
+                        <th>D</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>C</th>
+                        <th colspan="2">¬C</th>
+                        <th>C</th>
+                        <th></th>
+                    </tr>
+                </table>
     
+                <br>
+    
+                <table id="kv-table-3">
+                    <tr>
+                        <th></th>
+                        <th colspan="2">B</th>
+                        <th colspan="2">¬B</th>
+                    </tr>
+                    <tr>
+                        <th>A</th>
+                        <td class="a b c">0</td>
+                        <td class="a b nc">0</td>
+                        <td class="a nb nc">0</td>
+                        <td class="a nb c">0</td>
+                    </tr>
+                    <tr>
+                        <th>¬A</th>
+                        <td class="na b c">0</td>
+                        <td class="na b nc">0</td>
+                        <td class="na nb nc">0</td>
+                        <td class="na nb c">0</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>C</th>
+                        <th colspan="2">¬C</th>
+                        <th>C</th>
+                    </tr>
+                </table>
+                
+                <br>
+    
+                <table id="kv-table-2">
+                    <tr>
+                        <th></th>
+                        <th>B</th>
+                        <th>¬B</th>
+                    </tr>
+                    <tr>
+                        <th>A</th>
+                        <td class="a b">0</td>
+                        <td class="a nb">0</td>
+                    </tr>
+                    <tr>
+                        <th>¬A</th>
+                        <td class="na b">0</td>
+                        <td class="na nb">0</td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+        
+    </section>
 </body>
 </html>

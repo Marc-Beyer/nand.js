@@ -43,7 +43,7 @@ var GatesWindow = /** @class */ (function (_super) {
         ]);
         var flipFlopDropContainer = new DropContainer("FlipFlops", [
             { itemName: "RS FlipFlop", value: GATE_TYPE.RS_Latch },
-            { itemName: "RCS FlipFlop", value: GATE_TYPE.RCS_Latch }
+            { itemName: "RCS FlipFlop", value: GATE_TYPE.Gated_RS_Latch }
         ]);
         _this.append(inputsDropContainer.htmlElement);
         _this.append(logicGatesDropContainer.htmlElement);

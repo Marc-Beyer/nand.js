@@ -19,7 +19,7 @@ var GATE_TYPE;
     GATE_TYPE[GATE_TYPE["Button"] = 16] = "Button";
     GATE_TYPE[GATE_TYPE["Segment_Display"] = 17] = "Segment_Display";
     GATE_TYPE[GATE_TYPE["RS_Latch"] = 18] = "RS_Latch";
-    GATE_TYPE[GATE_TYPE["RCS_Latch"] = 19] = "RCS_Latch";
+    GATE_TYPE[GATE_TYPE["Gated_RS_Latch"] = 19] = "Gated_RS_Latch";
 })(GATE_TYPE || (GATE_TYPE = {}));
 var IO_TYPE;
 (function (IO_TYPE) {

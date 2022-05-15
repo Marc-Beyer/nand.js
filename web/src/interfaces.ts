@@ -18,7 +18,7 @@ enum GATE_TYPE{
     Button,
     Segment_Display,
     RS_Latch,
-    RCS_Latch
+    Gated_RS_Latch
 }
 
 enum IO_TYPE{

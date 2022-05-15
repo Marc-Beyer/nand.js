@@ -587,7 +587,7 @@ class RS_Latch_Gate extends Gate {
     }
 }
 
-class RCS_Latch_Gate extends Gate {
+class Gated_RS_Latch_Gate extends Gate {
     public savedInput: boolean = false;
 
     constructor(position: Position2D) {
@@ -603,8 +603,8 @@ class RCS_Latch_Gate extends Gate {
             }
             
         });
-        this.type = GATE_TYPE.RCS_Latch;
-        this.name = "RCS_Latch";
+        this.type = GATE_TYPE.Gated_RS_Latch;
+        this.name = "Gated_RS_Latch";
         this.transform.height = 80;
     }
     

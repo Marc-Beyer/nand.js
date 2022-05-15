@@ -385,8 +385,8 @@ var Circuit = /** @class */ (function () {
             case GATE_TYPE.RS_Latch:
                 newGate = (new RS_Latch_Gate(position));
                 break;
-            case GATE_TYPE.RCS_Latch:
-                newGate = (new RCS_Latch_Gate(position));
+            case GATE_TYPE.Gated_RS_Latch:
+                newGate = (new Gated_RS_Latch_Gate(position));
                 break;
         }
         if (newGate != null) {
